@@ -16,6 +16,8 @@ import Visit from "./components/guest/Visit";
 import Profile from "./components/guest/Profile";
 import AboutUs from "./components/guest/AboutUs";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
+import  Piechart  from "./components/thongke/Piechart";
+import Linechart from "./components/thongke/Linechart";
 
 class App extends Component {
 
@@ -121,6 +123,8 @@ class App extends Component {
                     </Route>
                     <NavBot />
                 </Route>
+                <Route path="/thongkesoluong" component={Piechart}/>
+                <Route path="/thongkedoanhthu" component={Linechart}/>
                 <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                 <Route path="/staff">
                     {auth !== null && (this.isAdmin(auth.roles) || this.isStaff(auth.roles)) ? (
