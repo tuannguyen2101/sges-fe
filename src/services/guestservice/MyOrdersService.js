@@ -16,7 +16,7 @@ class MyOrdersService {
         return fetch("http://localhost:8080/guest/order?username=" + username + "&password=" + password, requestOptions)
     }
 
-    addOrder = (username, password, order) => {
+    addOrder = (order) => {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Cookie", "JSESSIONID=32AA9655D2E2801D58EBE81A961C4AE6");

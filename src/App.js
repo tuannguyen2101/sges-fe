@@ -18,9 +18,6 @@ import AboutUs from "./components/guest/AboutUs";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount = () => {
         this.getProfile();

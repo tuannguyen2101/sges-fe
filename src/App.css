@@ -42,3 +42,15 @@
 .btnCancle:hover {
   cursor: pointer;
 }
+
+.btn-checkout {
+  border: none;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+.btn-checkout:hover {
+  background-color: lightgray;
+  color: black;
+} 
