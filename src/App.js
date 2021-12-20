@@ -16,6 +16,7 @@ import Visit from "./components/guest/Visit";
 import Profile from "./components/guest/Profile";
 import AboutUs from "./components/guest/AboutUs";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
+import { withRouter } from 'react-router';
 
 class App extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class App extends Component {
     }
 
     componentDidMount = () => {
+        // this.props.history.push("/sges");
         this.getProfile();
     };
 
@@ -124,7 +126,7 @@ class App extends Component {
                     </Route>
                     <NavBot />
                 </Route>
-                <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
+                <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                 <Route path="/staff">
                     {auth !== null && (this.isAdmin(auth.roles) || this.isStaff(auth.roles)) ? (
                         <Dashboard auth={this.props.auth} />
