@@ -15,7 +15,7 @@ import * as action from "./actions/index";
 import Visit from "./components/guest/Visit";
 import Profile from "./components/guest/Profile";
 import AboutUs from "./components/guest/AboutUs";
-import OAuth2RedirectHandler from "./components/oauth2/OAuth2Redir
+import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import  Piechart  from "./components/thongke/Piechart";
 import Linechart from "./components/thongke/Linechart";
 import Barchartmonth from "./components/thongke/Barchartmonth";
