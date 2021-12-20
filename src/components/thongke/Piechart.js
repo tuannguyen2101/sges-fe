@@ -38,7 +38,7 @@ export default class Piechart extends Component{
 
     render(){
         return(
-            <div>
+            <div className="container">
                 <h3 className="text-center">Thống kê số lượng sản phẩm</h3>
             <Pie   
               data={{

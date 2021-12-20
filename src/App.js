@@ -18,6 +18,7 @@ import AboutUs from "./components/guest/AboutUs";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
 import  Piechart  from "./components/thongke/Piechart";
 import Linechart from "./components/thongke/Linechart";
+import Barchartmonth from "./components/thongke/Barchartmonth";
 
 class App extends Component {
 
@@ -125,6 +126,7 @@ class App extends Component {
                 </Route>
                 <Route path="/thongkesoluong" component={Piechart}/>
                 <Route path="/thongkedoanhthu" component={Linechart}/>
+                <Route path="/month" component={Barchartmonth}/>
                 <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
                 <Route path="/staff">
                     {auth !== null && (this.isAdmin(auth.roles) || this.isStaff(auth.roles)) ? (

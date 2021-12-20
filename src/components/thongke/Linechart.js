@@ -35,7 +35,7 @@ export default class Linechart extends Component{
 
     render(){
         return(
-            <div>
+            <div className="container">
                 <h3 className="text-center">Thống kê tổng doanh thu từng năm</h3>
             <Line
               data={{
@@ -67,7 +67,7 @@ export default class Linechart extends Component{
                   {
                     label: 'Tổng doanh thu',
                     data: quantityPro,
-                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 2,
                   },
