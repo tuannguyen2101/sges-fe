@@ -15,13 +15,14 @@ import * as action from "./actions/index";
 import Visit from "./components/guest/Visit";
 import Profile from "./components/guest/Profile";
 import AboutUs from "./components/guest/AboutUs";
-import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
+import OAuth2RedirectHandler from "./components/oauth2/OAuth2Redir
 import  Piechart  from "./components/thongke/Piechart";
 import Linechart from "./components/thongke/Linechart";
 
 class App extends Component {
 
     componentDidMount = () => {
+        // this.props.history.push("/sges");
         this.getProfile();
     };
 

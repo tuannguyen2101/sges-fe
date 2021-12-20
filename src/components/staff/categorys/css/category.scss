@@ -1,0 +1,93 @@
+.breadcrumb {
+    a {
+        color: #828f99;
+        text-decoration: none;
+    }
+}
+.admin-category {
+    width: 100%;
+    .container {
+        .py-5 {
+            padding: 1.5rem 0 !important;
+            a {
+                color: #828f99;
+            }
+            .col-auto {
+                .btn {
+                    margin-left: 10px;
+                    color: #fff;
+                    background-color: #068cc1;
+                }
+                .btn-xoa {
+                    color: #08283d;
+                    background-color: #e6e8eb;
+                }
+            }
+            .row {
+                margin-top: -16px;
+            }
+        }
+        .card {
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+            .form-group {
+                padding: 10px 0;
+                border: none;
+                label {
+                    padding-bottom: 6px;
+                }
+            }
+            .p-4 {
+                .form-group {
+                    position: relative;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    i {
+                        position: absolute;
+                        background-color: #068cc1;
+                        color: #fff;
+                        height: 40px;
+                        line-height: 40px;
+                        padding: 0 20px;
+                        border-radius: 5px 0 0 5px;
+                    }
+                    input {
+                        line-height: 40px;
+                        height: 40px;
+                        width: 100%;
+                        padding-left: 65px;
+                        border: none;
+                        background-color: #e6e8eb;
+                        border-radius: 5px;
+                    }
+                    .btn {
+                        position: absolute;
+                        background-color: #068cc1;
+                        right: 0;
+                        color: #fff;
+                        height: 40px;
+                    }
+                }
+            }
+            .table {
+                tbody {
+                    .data-item {
+                        cursor: pointer;
+                        &:hover {
+                            background-color: #e6e8eb;
+                        }
+                        td {
+                            a {
+                                .btn {
+                                    width: 100%;
+                                    text-align: left;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
