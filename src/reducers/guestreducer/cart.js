@@ -10,14 +10,14 @@ const myReducer = (state = cart, action) => {
         case ADD_TO_CART : {
             var check = false;
             _.forEach(state, val => {
-                if(val.prod.id === action.cartItem.prod.id && val.size === action.cartItem.size) {
+                if(val.prod.id === action.cartItem.prod.id && val.size === action.cartItem.size && val.color === action.cartItem.color) {
                     check = true;
                     return;
                 }
             })
             if(check) {
                 return [...state].map(val => {
-                    return val.prod.id === action.cartItem.prod.id && val.size === action.cartItem.size ? 
+                    return val.prod.id === action.cartItem.prod.id && val.size === action.cartItem.size && val.color === action.cartItem.color? 
                     {prod: val.prod, size: val.size, qty: Number(val.qty) + action.cartItem.qty} : val
                 })
             }
@@ -31,7 +31,7 @@ const myReducer = (state = cart, action) => {
         case REMOVE_FROM_CART : {
             console.log("remove")
             return [...state].filter(val => {
-                return val.prod.id !== action.cartItem.prod.id || val.size !== action.cartItem.size
+                return val.prod.id !== action.cartItem.prod.id || val.size !== action.cartItem.size || val.color !== action.cartItem.color
             })
         }
         default: return state

@@ -48,7 +48,7 @@ class MyOrders extends Component {
             <div className="row mt-5">
                 <div className="col-2"></div>
                 <div className="col-8">
-                    <h4>{this.props.auth.username} orders</h4>
+                    <h4>{`Lịch sử mua hàng`}</h4>
                     <table className="table table-bordered">
                         <thead>
                         <tr>

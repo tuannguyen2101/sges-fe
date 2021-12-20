@@ -22,6 +22,9 @@ class CartItem extends Component {
     }
 
     onChange = (event) => {
+        if(this.getQuantity() < Number(event.target.value)){
+            return;
+        }
         var { cartItem } = this.props
         this.setState ({
             qty: event.target.value
@@ -30,40 +33,43 @@ class CartItem extends Component {
         this.props.updateCart(cartItem);
     }
 
+    getQuantity = () => {
+        var { productDetails } = this.props.cartItem.prod
+        const qty = productDetails.filter(val => {
+            return val.size === this.props.cartItem.size && val.color === this.props.cartItem.color;
+        }).map(val => val.qty)[0]
+        return qty
+    } 
+
     render() {
         var { cartItem } = this.props
-        var size = '';
-        if (cartItem.size === 0) {
-            size = 'S';
-        } else if (cartItem.size === 1) {
-            size = 'M';
-        } else if (cartItem.size === 2) {
-            size = 'L';
-        } else if (cartItem.size === 3) {
-            size = 'XL';
-        }
         return (
             <tr className='border border-start-0 border-end-0 border-top-1 border-bottom-1'>
                 <td>
                     <div className='row p-3'>
                         <div className='col-4'>
                             <img
-                                width='50%'
+                                width='70%'
                                 alt='i am a product'
                                 src={"http://localhost:8080/file/read/" + cartItem.prod.image} />
                         </div>
                         <div className='col-8'>
                             <h6>{cartItem.prod.name}</h6>
-                            <div>{cartItem.prod.price}$</div>
-                            <div>Size: {size}</div>
+                            <div>{cartItem.prod.sale > 0 ? <del>{cartItem.prod.price}</del> : cartItem.prod.price}$</div>
+                            <div>{cartItem.prod.sale > 0 ? cartItem.prod.sale : ""}$</div>
+                            <span>Size: {cartItem.size}</span>
+                            &nbsp; | &nbsp;
+                            <span>Màu: {cartItem.color}</span>
                         </div>
                     </div>
                 </td>
                 <td className='p-3'>
                     <input type='number' className='border border-1 border-dark w-50 mb-3'
+                        min={1}
                         value={this.state.qty}
                         onChange={this.onChange}
                     />
+                    <span>&nbsp;{`Kho: ${this.getQuantity()}`}</span>
                     <div>Total: {cartItem.prod.price * cartItem.qty}$</div>
                 </td>
                 <td>
