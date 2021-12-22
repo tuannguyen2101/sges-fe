@@ -1,11 +1,11 @@
 let base64 = require("base-64");
 class CategoryService {
-    findAll = (auth, n, s) => {
+    findAll = (n, s) => {
         if (n === undefined) {
             n = 0;
         }
         if (s === undefined) {
-            s = 10;
+            s = 100;
         }
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
@@ -75,6 +75,21 @@ class CategoryService {
         };
 
         return fetch("http://localhost:8080/staff/category", requestOptions);
+    };
+
+    delete = (id) => {
+        var myHeaders = new Headers();
+        var token = localStorage.getItem("token");
+        myHeaders.append("Authorization", "Bearer " + token);
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Cookie", "JSESSIONID=2062E42F9947801BCF060BD635705CFF");
+
+        var requestOptions = {
+            method: "DELETE",
+            headers: myHeaders,
+            redirect: "follow",
+        };
+        return fetch(`http://localhost:8080/staff/category/${id}`, requestOptions);
     };
 }
 

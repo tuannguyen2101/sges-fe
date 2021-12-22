@@ -1,71 +1,101 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./css/pagination.css";
+import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 
-// const { pageNumber, pageSize, first, last, setPageNumber, setPageSize } = useContext(PageContext)
+const Paginate = (props) => {
+    const page = useSelector((state) => state.category);
+    const dispatch = useDispatch();
 
-const prevOnClick = () => {
-    // if (first === false) {
-    //     setPageNumber(pageNumber - 1)
-    // }
-};
+    const {
+        thisPageProps,
+        prevOnClickProps,
+        nextOnClickProps,
+        onChangePageSizeProps,
+        selectPageProps,
+    } = props;
 
-const nextOnClick = () => {
-    // if (last === false) {
-    //     setPageNumber(pageNumber + 1)
-    // }
-};
+    const onChangePageSize = (event) => {
+        onChangePageSizeProps(event.target.value);
+    };
 
-const onChangePageSize = (event: any) => {
-    // setPageSize(event.target.value as number)
-};
+    const selectPage = (event) => {
+        selectPageProps(event.target.textContent - 1);
+    };
 
-const Paginate = () => {
     return (
         <div className="paginate-footer">
             <div className="pagination row d-flex align-items-center">
-                <div className="col">
-                    Hiển thị
-                    <select className="col pageSize mx-3" onChange={onChangePageSize}>
+                <div className="col-6 d-flex-center">
+                    <span>Hiển thị tối đa</span>
+                    <select
+                        className="col-3 pageSize mx-3"
+                        onChange={onChangePageSize}
+                        value={thisPageProps.size}
+                    >
                         <option key={5} value="5">
                             5
                         </option>
                         <option key={10} value="10">
                             10
                         </option>
-                        <option key={15} value="15">
-                            15
+                        <option key={20} value="20">
+                            20
+                        </option>
+                        <option key={30} value="30">
+                            30
                         </option>
                     </select>
-                    bản ghi
+                    <span>bản ghi</span>
                 </div>
-                <div className="pageNumber col-auto">
+                <div className="pageNumber col-6 text-end d-flex-center">
+                    {page.first !== true ? (
+                        <>
+                            <Link to="#">
+                                <div className="btn btn-outline-primary" onClick={prevOnClickProps}>
+                                    <BsArrowLeft fontSize={16} />
+                                </div>
+                            </Link>
+                            {page.last !== false ? (
+                                <Link to="#">
+                                    <div className="btn btn-outline-primary" onClick={selectPage}>
+                                        {page.number - 1}
+                                    </div>
+                                </Link>
+                            ) : null}
+                            <Link to="#">
+                                <div className="btn btn-outline-primary" onClick={selectPage}>
+                                    {page.number}
+                                </div>
+                            </Link>
+                        </>
+                    ) : null}
                     <Link to="#">
-                        <div className="btn btn-control" onClick={prevOnClick}>
-                            Previous
-                        </div>
+                        <div className="btn btn-outline-primary active">{page.number + 1}</div>
                     </Link>
 
-                    <Link to="#">
-                        <div className="btn">1</div>
-                    </Link>
-                    <Link to="#">
-                        <div className="btn">2</div>
-                    </Link>
-                    <Link to="#">
-                        <div className="btn btn-control">3</div>
-                    </Link>
-                    <Link to="#">
-                        <div className="btn">4</div>
-                    </Link>
-                    <Link to="#">
-                        <div className="btn">5</div>
-                    </Link>
-                    <Link to="#">
-                        <div className="btn btn-control" onClick={nextOnClick}>
-                            Next
-                        </div>
-                    </Link>
+                    {page.last !== true ? (
+                        <>
+                            <Link to="#">
+                                <div className="btn btn-outline-primary" onClick={selectPage}>
+                                    {page.number + 2}
+                                </div>
+                            </Link>
+                            {page.first !== false ? (
+                                <Link to="#">
+                                    <div className="btn btn-outline-primary" onClick={selectPage}>
+                                        {page.number + 3}
+                                    </div>
+                                </Link>
+                            ) : null}
+                            <Link to="#">
+                                <div className="btn btn-outline-primary" onClick={nextOnClickProps}>
+                                    <BsArrowRight fontSize={16} />
+                                </div>
+                            </Link>
+                        </>
+                    ) : null}
                 </div>
             </div>
         </div>

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
     },
     drawer: {
-        zIndex: "-1",
+        zIndex: "1",
         [theme.breakpoints.up("sm")]: {
             width: drawerWidth,
             flexShrink: 0,
@@ -135,7 +135,7 @@ function Dashboard(props) {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
+            <AppBar position="fixed" className={classes.appBar} style={{ zIndex: "1" }}>
                 <Toolbar style={{ backgroundColor: "white", color: "#353A40" }}>
                     <div className="row w-100">
                         <Typography variant="h6" noWrap className="col-6">
@@ -187,8 +187,8 @@ function Dashboard(props) {
                     </Drawer>
                 </Hidden>
             </nav>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
+            <main className={classes.content} style={{ paddingTop: "64px" }}>
+                {/* <div className={classes.toolbar} /> */}
                 <Route exact path="/staff/product">
                     <ProductIndex />
                 </Route>

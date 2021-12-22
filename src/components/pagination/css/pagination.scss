@@ -9,13 +9,20 @@
     }
     .pageNumber {
         a {
-            margin: 0 2px;
-            border-radius: 5px;
-            padding: 2px 5px;
+            padding: 2px;
             border: none;
         }
-        .btn-control {
-            color: aliceblue;
+        .btn-outline-primary {
+            color: #068cc1;
+            border: 1px solid #068cc1;
+            &:hover {
+                height: 120%;
+                color: #fff;
+                background-color: #068cc1;
+            }
+        }
+        .active {
+            color: #fff;
             background-color: #068cc1;
         }
     }

@@ -91,6 +91,18 @@
   background-color: #e6e8eb;
 }
 
+.admin-category .container .card .table tbody .data-item td {
+  padding: 0;
+  height: 68px;
+  line-height: 68px;
+}
+
+.admin-category .container .card .table tbody .data-item td a {
+  height: 68px;
+  line-height: 68px;
+  display: block;
+}
+
 .admin-category .container .card .table tbody .data-item td a .btn {
   width: 100%;
   text-align: left;

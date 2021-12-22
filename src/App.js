@@ -16,12 +16,11 @@ import Visit from "./components/guest/Visit";
 import Profile from "./components/guest/Profile";
 import AboutUs from "./components/guest/AboutUs";
 import OAuth2RedirectHandler from "./components/oauth2/OAuth2RedirectHandler";
-import  Piechart  from "./components/thongke/Piechart";
+import Piechart from "./components/thongke/Piechart";
 import Linechart from "./components/thongke/Linechart";
 import Barchartmonth from "./components/thongke/Barchartmonth";
 
 class App extends Component {
-
     componentDidMount = () => {
         // this.props.history.push("/sges");
         this.getProfile();
@@ -73,6 +72,7 @@ class App extends Component {
         let { auth } = this.props;
         return (
             <Router>
+                <Redirect exact to="/sges" />
                 <Route path="/sges">
                     <NavTop isStaff={this.isStaff} isAdmin={this.isAdmin} />
                     <Route exact path="/sges">
@@ -125,10 +125,10 @@ class App extends Component {
                     </Route>
                     <NavBot />
                 </Route>
-                <Route path="/thongkesoluong" component={Piechart}/>
-                <Route path="/thongkedoanhthu" component={Linechart}/>
-                <Route path="/month" component={Barchartmonth}/>
-                <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/>
+                <Route path="/thongkesoluong" component={Piechart} />
+                <Route path="/thongkedoanhthu" component={Linechart} />
+                <Route path="/month" component={Barchartmonth} />
+                <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
                 <Route path="/staff">
                     {auth !== null && (this.isAdmin(auth.roles) || this.isStaff(auth.roles)) ? (
                         <Dashboard auth={this.props.auth} />

@@ -1,30 +1,33 @@
-import React, { Component, useEffect, useState } from "react";
-import CategoryDetail from "./CategoryDetail";
-import { Link } from "react-router-dom";
-import Paginate from "../../pagination/Paginate";
-import "./css/category.css";
-import CategoryItem from "./CategoryItem";
-import CategoryService from "../../../services/staffservice/CategoryService";
-import { useDispatch, useSelector } from "react-redux";
-import { GET_ALL_CATEGORY } from "./../../../constants/constants";
-import { findAll } from "./../../../actions/categoryActions";
-import { result } from "lodash";
+import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import CategoryService from "../../../services/staffservice/CategoryService";
+import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
+import Paginate from "../../pagination/Paginate";
+import { findAll } from "./../../../actions/categoryActions";
+import CategoryItem from "./CategoryItem";
+import "./css/category.css";
 
 const CategoryIndex = () => {
     const data = useSelector((state) => state.category.categories);
+    const page = useSelector((state) => state.category);
     const dispatch = useDispatch();
+
+    const [loop, setLoop] = useState({ loop: true });
 
     const [currentCate, setCurrentCate] = useState({
         id: null,
         name: null,
         status: 1,
     });
+    const [thisPage, setThisPage] = useState({
+        number: 0,
+        size: 10,
+    });
 
     const getAll = () => {
-        CategoryService.findAll()
+        CategoryService.findAll(thisPage.number, thisPage.size)
             .then((response) => response.json())
             .then((result) => {
                 dispatch(findAll(result));
@@ -34,79 +37,88 @@ const CategoryIndex = () => {
 
     useEffect(() => {
         getAll();
-    }, [currentCate]);
+    }, [loop, thisPage]);
 
-    const upd = () => {
+    const create = (callback) => {
         CategoryService.create(currentCate)
             .then((response) => response.json())
             .then((result) => {
                 console.log(result);
+                if (callback) callback();
             })
             .catch((error) => console.log("error", error));
     };
 
-    const createNewCategory = async () => {
+    const createNewCategory = () => {
         if (validate() === true) {
-            await upd();
-            toast.success("Thêm danh mục thành công!", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
+            create(() => {
+                NotiSuccess("Thêm danh mục mới thành công!");
+                setLoop({
+                    loop: !loop,
+                });
+                setCurrentCate({
+                    id: null,
+                    name: null,
+                    status: 1,
+                });
             });
         }
     };
 
     const validate = () => {
         const { name, status } = currentCate;
-        let n = String.toString(name);
         if (name === null || name === "") {
-            toast.error("Tên danh mục không được để trống", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            NotiError("Tên danh mục không được để trống!");
             return false;
         }
-        if (name.length <= 3 || name.length >= 45) {
-            toast.error("Tên danh mục phải lớn hơn 2 và nhỏ hơn 45 ký tự", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+        if (name.length <= 2 || name.length >= 45) {
+            NotiError("Tên danh mục phải lớn hơn 2 và nhỏ hơn 45 ký tự!");
             return false;
         }
         if (status < 0 && status > 1) {
-            toast.error("Trạng thái danh mục không hợp lệ", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            NotiError("Trạng thái danh mục không hợp lệ!");
             return false;
         }
         return true;
     };
 
-    const changeData = async (event) => {
+    const changeData = (event) => {
         const dataChange = event.target;
-        await setCurrentCate({
+        setCurrentCate({
             ...currentCate,
             [dataChange.name]: dataChange.value,
+        });
+    };
+
+    const prevOnClick = () => {
+        if (page.first !== true) {
+            setThisPage({
+                ...thisPage,
+                number: Number(thisPage.number) - 1,
+            });
+        }
+    };
+
+    const nextOnClick = () => {
+        if (page.last !== true) {
+            setThisPage({
+                ...thisPage,
+                number: Number(thisPage.number) + 1,
+            });
+        }
+    };
+
+    const onChangePageSize = (size) => {
+        setThisPage({
+            ...thisPage,
+            size: Number(size),
+        });
+    };
+
+    const selectPage = (number) => {
+        setThisPage({
+            ...thisPage,
+            number: Number(number),
         });
     };
 
@@ -129,7 +141,7 @@ const CategoryIndex = () => {
                             <h3 className="m-0">Categories</h3>
                         </div>
                         <div className="col-auto d-flex">
-                            <Link to="#" data-bs-toggle="modal" data-bs-target="#exampleModalNew">
+                            <Link to="#" data-bs-toggle="modal" data-bs-target="#modalCreate">
                                 <div className="btn">
                                     <FiPlus />
                                     <span className="px-1">Thêm Danh mục mới</span>
@@ -138,7 +150,7 @@ const CategoryIndex = () => {
                         </div>
                         <div
                             className="modal fade pt-5"
-                            id="exampleModalNew"
+                            id="modalCreate"
                             aria-labelledby="exampleModalLabel"
                             aria-hidden="true"
                         >
@@ -146,7 +158,7 @@ const CategoryIndex = () => {
                                 <div className="modal-content">
                                     <div className="modal-header">
                                         <h5 className="modal-title" id="exampleModalLabel">
-                                            Quản lý danh mục
+                                            Thêm danh mục mới
                                         </h5>
                                         <Link to="#">
                                             <div
@@ -203,7 +215,7 @@ const CategoryIndex = () => {
                                                     color: "#fff",
                                                 }}
                                             >
-                                                Lưu thay đổi
+                                                Thêm danh mục
                                             </div>
                                         </Link>
                                     </div>
@@ -216,18 +228,14 @@ const CategoryIndex = () => {
                     <div className="p-4 row" />
                     <div className="dropdown-divider"></div>
                     <CategoryItem />
-                    <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
+                    <Noti />
+                    <Paginate
+                        thisPageProps={thisPage}
+                        prevOnClickProps={prevOnClick}
+                        nextOnClickProps={nextOnClick}
+                        onChangePageSizeProps={onChangePageSize}
+                        selectPageProps={selectPage}
                     />
-                    {data ? <Paginate /> : <Paginate />}
                 </div>
             </div>
         </div>

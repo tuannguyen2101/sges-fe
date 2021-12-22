@@ -3,7 +3,7 @@ import {
     GET_ALL_CATEGORY,
     CREATE_CATEGORY,
     DELETE_CATEGORY,
-} from "./../../constants/constants";
+} from "../../constants/constants";
 
 const initCategory = {
     categories: [],
@@ -33,13 +33,6 @@ const myReducer = (state = initCategory, action) => {
         case CREATE_CATEGORY:
             return {
                 ...state,
-                categories: data.content,
-                first: data.first,
-                last: data.last,
-                totalElements: data.totalElements,
-                totalPages: data.totalPages,
-                number: data.number,
-                size: data.size,
                 data,
             };
         case UPDATE_CATEGORY:
