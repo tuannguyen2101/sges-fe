@@ -13,7 +13,7 @@ function Barchartmonth(){
             // console.log(res.data)
             // setSelectedOption(res.data)
             setGetYear(res.data)
-            console.log(res);
+            // console.log(res);
         })
         .catch(err =>{
             console.log(err)
@@ -35,7 +35,7 @@ function Barchartmonth(){
               name.push(element[0]);
               datas.push(element[2]);
             });
-            console.log("a",name,datas)
+            // console.log("a",name,datas)
             setGetData({
                 labels: name,
                 datasets: [
@@ -71,6 +71,8 @@ function Barchartmonth(){
     useEffect(() => {
         if(selectedOption!=null){
             getData(selectedOption);
+        }else{
+          getData(2021);
         }
       }, [selectedOption]);
 

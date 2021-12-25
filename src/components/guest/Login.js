@@ -2,7 +2,8 @@ import { Component } from "react"
 import LoginService from "../../services/loginservice/LoginService";
 import * as action from "../../actions";
 import { connect } from "react-redux";
-
+import googleLogo from '../../img/google.png';
+import '../../css/login.css'
 class Login extends Component {
 
     constructor(props) {
@@ -103,9 +104,14 @@ class Login extends Component {
                                 <input className="form-control border border-3 rounded-0" type="password" name="password" onChange={this.onChangeHand} placeholder="Nhập mật khẩu" />
                             </div>
                             {alert}
+                            <a className="btn btn-block social-btn google"
+                           href="http://localhost:8080/oauth2/authorize/google">
+                            <img src={googleLogo} alt="google"/>Log in with Google
+                           </a>
                             <button className="mt-3 p-0 pt-2 btn w-100 rounded-0" style={{ backgroundColor: '#A3C7BD' }}>
                                 <h5 style={{ color: 'white' }}>Đăng nhập</h5>
                             </button>
+                            
                         </form>
                     </div>
                 </div>
