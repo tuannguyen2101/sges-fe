@@ -16,6 +16,7 @@ import { Link, Route } from "react-router-dom";
 import Authorized from "../admin/Authorized";
 import OrderList from "./orders/OrderList";
 import { connect } from "react-redux";
+import CustomerIndex from "./customer/CustomerIndex";
 
 const drawerWidth = 240;
 
@@ -107,7 +108,7 @@ function Dashboard(props) {
                         <ListItemText primary="Home" />
                     </ListItem>
                 </Link>
-                {["Product", "Category", "Order"].map((text, index) => (
+                {["Product", "Category", "Order", "Customer"].map((text, index) => (
                     <Link key={index} className={classes.links} to={"/staff/" + text.toLowerCase()}>
                         <ListItem button key={text}>
                             <i className="bi bi-file-earmark-ppt-fill me-2"></i>
@@ -200,6 +201,9 @@ function Dashboard(props) {
                 </Route>
                 <Route exact path="/staff/Order">
                     <OrderList />
+                </Route>
+                <Route exact path="/staff/customer">
+                    <CustomerIndex />
                 </Route>
             </main>
         </div>

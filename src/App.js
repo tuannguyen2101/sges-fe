@@ -72,7 +72,7 @@ class App extends Component {
         let { auth } = this.props;
         return (
             <Router>
-                {/* <Redirect exact to="/sges" /> */}
+                <Redirect exact to="/sges" />
                 <Route path="/sges">
                     <NavTop isStaff={this.isStaff} isAdmin={this.isAdmin} />
                     <Route exact path="/sges">
@@ -91,49 +91,31 @@ class App extends Component {
                         <Login setRole={this.setRole} />
                     </Route>
                     <Route exact path="/sges/checkout">
-                        {auth === null ? (
-                            <Route exact path="/sges/login">
-                                <Login setRole={this.setRole} />
-                            </Route>
-                        ) : (
-                            <CheckOut />
-                        )}
+                        {auth === null ? <Redirect to="/sges/login" /> : <CheckOut />}
                     </Route>
                     <Route exact path="/sges/myorder">
-                        {auth === null ? (
-                            <Route exact path="/sges/login">
-                                <Login setRole={this.setRole} />
-                            </Route>
-                        ) : (
-                            <MyOrders />
-                        )}
+                        {auth === null ? <Redirect to="/sges/login" /> : <MyOrders />}
                     </Route>
                     <Route exact path="/sges/visit">
                         <Visit />
                     </Route>
                     <Route exact path="/sges/myprofile">
                         {auth === null ? (
-                            <Route exact path="/sges/login">
-                                <Login setRole={this.setRole} />
-                            </Route>
+                            <Redirect to="/sges/login" />
                         ) : (
                             <Profile auth={auth} isUpdate={false} />
                         )}
                     </Route>
                     <Route exact path="/sges/updateprofile">
                         {auth === null ? (
-                            <Route exact path="/sges/login">
-                                <Login setRole={this.setRole} />
-                            </Route>
+                            <Redirect to="/sges/login" />
                         ) : (
                             <Profile auth={auth} isUpdate={true} />
                         )}
                     </Route>
                     <Route exact path="/sges/changepassword">
                         {auth === null ? (
-                            <Route exact path="/sges/login">
-                                <Login setRole={this.setRole} />
-                            </Route>
+                            <Redirect to="/sges/login" />
                         ) : (
                             <Profile auth={auth} changepass={true} />
                         )}
@@ -151,9 +133,7 @@ class App extends Component {
                     {auth !== null && (this.isAdmin(auth.roles) || this.isStaff(auth.roles)) ? (
                         <Dashboard auth={this.props.auth} />
                     ) : (
-                        <Route exact path="/sges/login">
-                            <Login setRole={this.setRole} />
-                        </Route>
+                        <Redirect to="/sges/login" />
                     )}
                 </Route>
             </Router>

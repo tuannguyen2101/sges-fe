@@ -8,17 +8,18 @@ import myOrders from "./guestreducer/myOrder";
 import auth from "./guestreducer/auth";
 import profile from "./profile";
 import category from "./staffreducer/category";
+import customer from "./staffreducer/customer";
 const myReducer = combineReducers({
     prods,
     prodDetail,
     cart,
     myOrders,
     auth,
-    //staff
     products,
     productDetail,
     profile,
     category,
+    customer,
 });
 
 export default myReducer;
