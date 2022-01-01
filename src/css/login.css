@@ -3,3 +3,6 @@
     margin-top: -3px;
     text-align: center;
 }
+.btn.btn-block{
+    border: 1px solid rgba(124, 105, 86, 0.658);
+}
