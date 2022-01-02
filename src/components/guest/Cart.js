@@ -1,115 +1,109 @@
 import { Component } from "react";
-import CartItem from "./CartItem";
-import { Link } from "react-router-dom"
-import { connect } from "react-redux"
-import Paypal from "./Paypal";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import MyOrdersService from "../../services/guestservice/MyOrdersService";
+import CartItem from "./CartItem";
+import Paypal from "./Paypal";
 
 class Cart extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             paymentMethod: 0, // 0: cod 1: paypal
             isShowPaypal: false,
             order: {
-                name: '',
-                email: '',
-                phone: '',
-                address: ''
+                name: "",
+                email: "",
+                phone: "",
+                address: "",
             },
             validname: {
                 status: true,
-                message: ""
+                message: "",
             },
             validemail: {
                 status: true,
-                message: ""
+                message: "",
             },
             validphone: {
                 status: true,
-                message: ""
+                message: "",
             },
             validaddress: {
                 status: true,
-                message: ""
-            }
-        }
+                message: "",
+            },
+        };
     }
 
     validate = () => {
-        const { name, email, phone, address } = this.state.order
+        const { name, email, phone, address } = this.state.order;
         const isValid = name !== "" && email !== "" && phone !== "" && address !== "";
         if (name === "") {
             this.setState({
                 validname: {
                     status: false,
-                    message: "Không bỏ trống họ và tên"
-                }
-            })
+                    message: "Không bỏ trống họ và tên",
+                },
+            });
         } else {
             this.setState({
                 validname: {
                     status: true,
-                    message: ""
-                }
-            })
+                    message: "",
+                },
+            });
         }
 
         if (email === "") {
             this.setState({
                 validemail: {
                     status: false,
-                    message: "Không bỏ trống email"
-                }
-            })
+                    message: "Không bỏ trống email",
+                },
+            });
         } else {
             this.setState({
                 validemail: {
                     status: true,
-                    message: ""
-                }
-
-            })
+                    message: "",
+                },
+            });
         }
 
         if (phone === "") {
             this.setState({
                 validphone: {
                     status: false,
-                    message: "Không bỏ trống số điện thoại"
-                }
-
-            })
+                    message: "Không bỏ trống số điện thoại",
+                },
+            });
         } else {
             this.setState({
                 validphone: {
                     status: true,
-                    message: ""
-                }
-
-            })
+                    message: "",
+                },
+            });
         }
 
         if (address === "") {
             this.setState({
                 validaddress: {
                     status: false,
-                    message: "Không bỏ trống địa chỉ nhận hàng"
-
-                }
-            })
+                    message: "Không bỏ trống địa chỉ nhận hàng",
+                },
+            });
         } else {
             this.setState({
                 validaddress: {
                     status: true,
-                    message: ""
-                }
-
-            })
+                    message: "",
+                },
+            });
         }
         return isValid;
-    }
+    };
 
     onChangeInfo = (event) => {
         const { name, value } = event.target;
@@ -117,108 +111,118 @@ class Cart extends Component {
             order: {
                 ...this.state.order,
                 [name]: value,
-            }
-        })
-    }
+            },
+        });
+    };
 
     order = () => {
         let order = {
-            "id": -1,
-            "accountId": this.props.auth.id,
-            "createDate": new Date(),
-            "address": this.state.order.address,
-            "status": 0,
-            "name": this.state.order.name,
-            "phone": this.state.order.phone,
-            "email": this.state.order.email
-        }
+            id: -1,
+            accountId: this.props.auth.id,
+            createDate: new Date(),
+            address: this.state.order.address,
+            status: 0,
+            name: this.state.order.name,
+            phone: this.state.order.phone,
+            email: this.state.order.email,
+        };
 
         MyOrdersService.addOrder(order)
-            .then(response => response.text())
-            .then(result => {
-                console.log(result)
+            .then((response) => response.text())
+            .then((result) => {
+                console.log(result);
                 let order = JSON.parse(result);
                 let { cart } = this.props;
-                let orderDetailList = cart.map(val => {
+                let orderDetailList = cart.map((val) => {
                     return {
-                        "id": -1,
-                        "orderId": order.id,
-                        "productId": val.prod.id,
-                        "size": val.size,
-                        "color": val.color,
-                        "quantity": val.qty
-                    }
-                })
+                        id: -1,
+                        orderId: order.id,
+                        productId: val.prod.id,
+                        size: val.size,
+                        color: val.color,
+                        quantity: val.qty,
+                    };
+                });
                 for (let o of orderDetailList) {
                     MyOrdersService.addOrderDetail(o)
-                        .then(response => response.text())
-                        .then(result => console.log(result))
-                        .catch(error => console.log('error', error));
+                        .then((response) => response.text())
+                        .then((result) => console.log(result))
+                        .catch((error) => console.log("error", error));
                 }
             })
-            .catch(error => console.log('error', error))
+            .catch((error) => console.log("error", error))
             .finally(() => {
-                alert("Đặt hành thành công!")
+                alert("Đặt hành thành công!");
             });
-    }
+    };
 
     onPay = () => {
         if (this.validate()) {
             if (this.state.paymentMethod === 1) {
                 this.setState({
-                    isShowPaypal: true
-                })
+                    isShowPaypal: true,
+                });
             }
             if (this.state.paymentMethod === 0) {
                 this.order();
             }
-        }
-        else alert("Điền đầy đủ thông tin trước khi thanh toán")
-    }
+        } else alert("Điền đầy đủ thông tin trước khi thanh toán");
+    };
 
     render() {
         var { cart } = this.props;
-        const { validname, validemail, validphone, validaddress } = this.state
+        const { validname, validemail, validphone, validaddress } = this.state;
         var subTotal = 0;
         var element = cart.map((val, ind) => {
-            const price = val.prod.sale > 0 ? val.prod.sale : val.prod.price
-            subTotal += price * val.qty
-            return <CartItem key={ind}
-                cartItem={val}
-                deleteFromCart={this.props.deleteFromCart}
-                updateCart={this.props.updateCart}
-            />
-        })
+            const price = val.prod.sale > 0 ? val.prod.sale : val.prod.price;
+            subTotal += price * val.qty;
+            return (
+                <CartItem
+                    key={ind}
+                    cartItem={val}
+                    deleteFromCart={this.props.deleteFromCart}
+                    updateCart={this.props.updateCart}
+                />
+            );
+        });
         return (
-            <div className='row m-0 mt-5'>
-                <div className='col-md-2'></div>
-                <div className='col-md-8'>
-                    <div className='row'>
-                        <div className='col-md-7' style={{ borderRight: "1px solid lightgray" }}>
+            <div className="row m-0 mt-5">
+                <div className="col-md-2"></div>
+                <div className="col-md-8">
+                    <div className="row">
+                        <div className="col-md-7" style={{ borderRight: "1px solid lightgray" }}>
                             <div>
                                 <h4>Giỏ hàng</h4>
                                 <table>
-                                    <tbody>
-                                        {element}
-                                    </tbody>
+                                    <tbody>{element}</tbody>
                                 </table>
                                 <br />
                                 <select className="form-select" aria-label="Default select example">
                                     <option selected>Chọn mã giảm giá</option>
                                     <option value="1">Miễn phí vận chuyển</option>
-                                    <option value="1">Giảm giá 10% cho đơn hàng lớn hơn 300k</option>
+                                    <option value="1">
+                                        Giảm giá 10% cho đơn hàng lớn hơn 300k
+                                    </option>
                                 </select>
                                 <br />
-                                <table className='w-100 mb-4'>
+                                <table className="w-100 mb-4">
                                     <tbody>
-                                        <tr className='border border-start-0 border-end-0 border-top-1 border-bottom-1'>
-                                            <td className='row pt-3'>
-                                                <div className='col-6 text-start pb-3'>Tạm tính</div>
-                                                <div className='col-6 text-end pb-3'>{subTotal}$</div>
-                                                <div className='col-6 text-start pb-3'>Mã giảm giá</div>
-                                                <div className='col-6 text-end pb-3'>0đ</div>
-                                                <div className='col-6 text-start pb-3'>Phí giao hàng</div>
-                                                <div className='col-6 text-end pb-3'>FREE</div>
+                                        <tr className="border border-start-0 border-end-0 border-top-1 border-bottom-1">
+                                            <td className="row pt-3">
+                                                <div className="col-6 text-start pb-3">
+                                                    Tạm tính
+                                                </div>
+                                                <div className="col-6 text-end pb-3">
+                                                    {subTotal}$
+                                                </div>
+                                                <div className="col-6 text-start pb-3">
+                                                    Mã giảm giá
+                                                </div>
+                                                <div className="col-6 text-end pb-3">0đ</div>
+                                                <div className="col-6 text-start pb-3">
+                                                    Phí giao hàng
+                                                </div>
+                                                <div className="col-6 text-end pb-3">FREE</div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -226,53 +230,91 @@ class Cart extends Component {
                                 <h4>Tổng tiền: {subTotal}$</h4>
                             </div>
                         </div>
-                        <div className='col-md-5'>
+                        <div className="col-md-5">
                             <div>
                                 <h4>Thông tin thanh toán</h4>
                                 <form>
                                     <div className="mb-3">
-                                        <label for="name" className="form-label">Tên người nhận hàng</label>
-                                        <input type="text" className="form-control" id="name"
+                                        <label for="name" className="form-label">
+                                            Tên người nhận hàng
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="name"
                                             name="name"
                                             onChange={this.onChangeInfo}
                                             value={this.state.order.name}
                                         />
-                                        {
-                                            validname.status ? "" : <div id="emailHelp" className="form-text text-danger">{validname.message}</div>
-                                        }
+                                        {validname.status ? (
+                                            ""
+                                        ) : (
+                                            <div id="emailHelp" className="form-text text-danger">
+                                                {validname.message}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-3">
-                                        <label for="exampleInputEmail1" className="form-label">Email</label>
-                                        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                        <label for="exampleInputEmail1" className="form-label">
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            className="form-control"
+                                            id="exampleInputEmail1"
+                                            aria-describedby="emailHelp"
                                             name="email"
                                             onChange={this.onChangeInfo}
                                             value={this.state.order.email}
                                         />
-                                        {
-                                            validemail.status ? "" : <div id="emailHelp" className="form-text text-danger">{validemail.message}</div>
-                                        }
+                                        {validemail.status ? (
+                                            ""
+                                        ) : (
+                                            <div id="emailHelp" className="form-text text-danger">
+                                                {validemail.message}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-3">
-                                        <label for="phone" className="form-label">Số điện thoại</label>
-                                        <input type="number" className="form-control" id="phone"
+                                        <label for="phone" className="form-label">
+                                            Số điện thoại
+                                        </label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            id="phone"
                                             name="phone"
                                             onChange={this.onChangeInfo}
                                             value={this.state.order.phone}
                                         />
-                                        {
-                                            validphone.status ? "" : <div id="emailHelp" className="form-text text-danger">{validphone.message}</div>
-                                        }
+                                        {validphone.status ? (
+                                            ""
+                                        ) : (
+                                            <div id="emailHelp" className="form-text text-danger">
+                                                {validphone.message}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-3">
-                                        <label for="exampleInputEmail1" className="form-label">Địa chỉ nhận hàng</label>
-                                        <input type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                        <label for="exampleInputEmail1" className="form-label">
+                                            Địa chỉ nhận hàng
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="exampleInputEmail1"
+                                            aria-describedby="emailHelp"
                                             name="address"
                                             onChange={this.onChangeInfo}
                                             value={this.state.order.address}
                                         />
-                                        {
-                                            validaddress.status ? "" : <div id="emailHelp" className="form-text text-danger">{validaddress.message}</div>
-                                        }
+                                        {validaddress.status ? (
+                                            ""
+                                        ) : (
+                                            <div id="emailHelp" className="form-text text-danger">
+                                                {validaddress.message}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="mb-3">
                                         <div className="row">
@@ -306,8 +348,14 @@ class Cart extends Component {
                                 <div className="form-check">
                                     <input
                                         checked={this.state.paymentMethod === 0}
-                                        onClick={() => this.setState({ paymentMethod: 0, isShowPaypal: false })}
-                                        className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                                        onClick={() =>
+                                            this.setState({ paymentMethod: 0, isShowPaypal: false })
+                                        }
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="flexRadioDefault"
+                                        id="flexRadioDefault1"
+                                    />
                                     <label className="form-check-label" for="flexRadioDefault1">
                                         Thanh toán khi nhận hàng (COD)
                                     </label>
@@ -316,44 +364,61 @@ class Cart extends Component {
                                     <input
                                         checked={this.state.paymentMethod === 1}
                                         onClick={() => this.setState({ paymentMethod: 1 })}
-                                        className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                                        className="form-check-input"
+                                        type="radio"
+                                        name="flexRadioDefault"
+                                        id="flexRadioDefault2"
+                                    />
                                     <label className="form-check-label" for="flexRadioDefault2">
                                         Thanh toán bằng ví điện tử
                                     </label>
                                 </div>
-                                {
-                                    this.props.auth !== null ?
-                                        this.props.cart.length > 0 ? <button className="mt-3 w-100 btn-checkout" onClick={this.onPay}>Thanh toán</button> : ''
-                                        :
-                                        <button className="mt-3 w-100 btn-checkout">
-                                            <Link style={{ textDecoration: 'none', color: 'white' }} to={"/sges/login"}>
-                                                Đăng nhập để thanh toán
-                                            </Link>
+                                {this.props.auth !== null ? (
+                                    this.props.cart.length > 0 ? (
+                                        <button
+                                            className="mt-3 w-100 btn-checkout"
+                                            onClick={this.onPay}
+                                        >
+                                            Thanh toán
                                         </button>
-                                }
+                                    ) : (
+                                        ""
+                                    )
+                                ) : (
+                                    <button className="mt-3 w-100 btn-checkout">
+                                        <Link
+                                            style={{ textDecoration: "none", color: "white" }}
+                                            to={"/sges/login"}
+                                        >
+                                            Đăng nhập để thanh toán
+                                        </Link>
+                                    </button>
+                                )}
                                 <div className="mt-3">
-                                    {this.state.isShowPaypal ? <Paypal totalPay={subTotal} onOrder={this.order}/> : ""}
+                                    {this.state.isShowPaypal ? (
+                                        <Paypal totalPay={subTotal} onOrder={this.order} />
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='col-md-2'></div>
+                <div className="col-md-2"></div>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         cart: state.cart,
-        auth: state.auth
-    }
-}
+        auth: state.auth,
+    };
+};
 
-const mapDispatchToProps = dispatch => {
-    return {
-
-    }
-}
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

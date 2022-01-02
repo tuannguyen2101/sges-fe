@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Noti from "../../noti/Noti";
 import Paginate from "../../pagination/Paginate";
-import "./css/customer.css";
+import "../../../css/customer/customer.scss";
 import CustomerItem from "./CustomerItem";
 
 const CustomerIndex = () => {
@@ -42,7 +42,7 @@ const CustomerIndex = () => {
                                     </li>
                                 </ol>
                             </nav>
-                            <h3 className="m-0">Khách hàng</h3>
+                            <h3 className="m-0">Danh sách khách hàng</h3>
                         </div>
                         <div className="col-auto d-flex">
                             <Link to="#" data-bs-toggle="modal" data-bs-target="#modalCreate">

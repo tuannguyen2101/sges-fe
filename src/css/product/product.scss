@@ -1,0 +1,54 @@
+.product-new-item {
+    .card {
+        border: none;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 0px 2px 0px;
+        // transition: box-shadow 1s;
+        &:hover {
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+        a {
+            .p-img {
+                position: relative;
+                max-height: 300px;
+                min-height: 276.6px;
+                img {
+                    max-height: 300px;
+                    min-height: 276.6px;
+                    width: 100%;
+                    object-fit: cover;
+                }
+                .new-icon {
+                    position: absolute;
+                    top: -7px;
+                    left: -7px;
+                    font-size: xx-large;
+                }
+            }
+            .card-body {
+                padding: 16px;
+                .p-title {
+                    height: 42px;
+                    display: inline-block;
+                    word-wrap: break-word;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    text-overflow: ellipsis;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                }
+                .p-price {
+                    .price-price {
+                        color: #0000008a;
+                        text-decoration: line-through;
+                        margin-right: 5px;
+                    }
+                    .price-sale {
+                        color: red;
+                        font-size: 1rem;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

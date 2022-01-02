@@ -1,0 +1,48 @@
+.sges-shop {
+    min-height: 1000px;
+    .shop-title {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            filter: brightness(40%);
+        }
+        .title-shop {
+            position: absolute;
+            text-align: center;
+            h1 {
+                color: #fff;
+            }
+        }
+    }
+    .shop-content {
+        .container-fluid {
+            .filter {
+                background-color: #fff;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 0px 2px 0px;
+                margin: 0 12px;
+                .filter-content {
+                    .col-right {
+                        .col-auto {
+                            padding-left: 12px;
+                            .sort-by-btn {
+                                border-radius: 5px;
+                                border: 1px solid #ced4da;
+                                span {
+                                    color: #08283d;
+                                }
+                                &:hover {
+                                    background-color: #ced4da;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

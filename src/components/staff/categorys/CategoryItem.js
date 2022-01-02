@@ -1,12 +1,11 @@
-import React, { Component, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { findAll, update } from "./../../../actions/categoryActions";
-import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import CategoryService from "../../../services/staffservice/CategoryService";
-import { NotiSuccess } from "./../../noti/Noti";
 import { NotiError } from "../../noti/Noti";
+import { findAll } from "./../../../actions/categoryActions";
+import { NotiSuccess } from "./../../noti/Noti";
 
 const CategoryItem = () => {
     const data = useSelector((state) => state.category.categories);

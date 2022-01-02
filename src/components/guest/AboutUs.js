@@ -1,13 +1,12 @@
 import React from "react";
-import "../../css/about.css";
-import { Link } from "react-router-dom";
-import stories from "../../img/stories.jpg";
-import clothing from "../../img/clothing.jpg";
+import "../../css/about.scss";
 import banner from "../../img/banner.webp";
+import clothing from "../../img/clothing.jpg";
+import stories from "../../img/stories.jpg";
 
 const AboutUs = () => {
     return (
-        <div className="about">
+        <div className="about pb-5">
             <div className="about-section">
                 <section className="d-flex align-items-center section-storis">
                     <div className="col-6 d-flex justify-content-end left-column">

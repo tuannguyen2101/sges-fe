@@ -1,31 +1,29 @@
 import React, { Component } from "react";
-import { connect } from "react-redux"
-import * as actions from "../../actions/index"
+import { connect } from "react-redux";
+import * as actions from "../../actions/index";
 import MyOrdersService from "../../services/guestservice/MyOrdersService";
 class MyOrderItem extends Component {
-
     removeOrder = () => {
-        let confirm = window.confirm("Are you sure ?")
+        let confirm = window.confirm("Are you sure ?");
         if (confirm) {
             let { auth, myOrderItem } = this.props;
             myOrderItem.status = 3;
             MyOrdersService.removeOrder(auth.username, auth.password, myOrderItem)
-                .then(response => response.text())
-                .then(result => {
+                .then((response) => response.text())
+                .then((result) => {
                     this.props.removeOrder(myOrderItem);
                 })
-                .catch(error => console.log('error', error));
+                .catch((error) => console.log("error", error));
         }
-    }
+    };
 
     render() {
-        let { myOrderItem } = this.props
+        let { myOrderItem } = this.props;
         let status = "";
         if (myOrderItem.status === 0) {
-            status = "Ordering"
-        }
-        else if (myOrderItem.status === 1) {
-            status = "Complete"
+            status = "Ordering";
+        } else if (myOrderItem.status === 1) {
+            status = "Complete";
         }
         return (
             <tr>
@@ -34,25 +32,33 @@ class MyOrderItem extends Component {
                 <th>{myOrderItem.createDate}</th>
                 <th>{myOrderItem.address}</th>
                 <th>{status}</th>
-                <td className="text-center ps-0 pe-0"><i className="bi bi-eye btnViewMore"></i></td>
-                <td className="text-center ps-0 pe-0">{myOrderItem.status === 0 ? <i className="bi bi-x-circle btnCancle" onClick={this.removeOrder}></i> : ""}</td>
+                <td className="text-center ps-0 pe-0">
+                    <i className="bi bi-eye btnViewMore"></i>
+                </td>
+                <td className="text-center ps-0 pe-0">
+                    {myOrderItem.status === 0 ? (
+                        <i className="bi bi-x-circle btnCancle" onClick={this.removeOrder}></i>
+                    ) : (
+                        ""
+                    )}
+                </td>
             </tr>
-        )
+        );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        auth: state.auth
-    }
-}
+        auth: state.auth,
+    };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        removeOrder: order => {
-            dispatch(actions.removeOrder(order))
-        }
-    }
-}
+        removeOrder: (order) => {
+            dispatch(actions.removeOrder(order));
+        },
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyOrderItem);
