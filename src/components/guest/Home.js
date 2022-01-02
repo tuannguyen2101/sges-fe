@@ -132,7 +132,7 @@ const Home = () => {
                                       return (
                                           <div className="col-3 pb-4 product-new-item" key={index}>
                                               <div className="card">
-                                                  <Link to="#">
+                                                  <Link to={"/product/" + value.id}>
                                                       <div className="p-img">
                                                           <img
                                                               src={
@@ -141,6 +141,11 @@ const Home = () => {
                                                               }
                                                               className="card-img-top"
                                                               alt={value.name}
+                                                              onError={(e) => {
+                                                                  e.target.onerror = null;
+                                                                  e.target.src =
+                                                                      "http://localhost:8080/file/read/no-image-800x600.png";
+                                                              }}
                                                           />
                                                           <img
                                                               src={newIcon}
@@ -196,7 +201,7 @@ const Home = () => {
                                       return (
                                           <div className="col-3 pb-4 product-new-item" key={index}>
                                               <div className="card">
-                                                  <Link to="#">
+                                                  <Link to={"/product/" + value.id}>
                                                       <div className="p-img">
                                                           <img
                                                               src={
@@ -205,6 +210,11 @@ const Home = () => {
                                                               }
                                                               className="card-img-top"
                                                               alt={value.name}
+                                                              onError={(e) => {
+                                                                  e.target.onerror = null;
+                                                                  e.target.src =
+                                                                      "https://bizflyportal.mediacdn.vn/bizflyportal/459/347/2020/06/02/17/37/70515910726734841.jpg";
+                                                              }}
                                                           />
                                                           <img
                                                               src={newIcon}
