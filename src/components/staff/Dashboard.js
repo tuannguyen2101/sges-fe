@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Outlet, Route, Routes } from "react-router-dom";
 import Authorized from "../admin/Authorized";
 import CategoryIndex from "./categorys/CategoryIndex";
 import CustomerIndex from "./customer/CustomerIndex";
@@ -102,14 +102,14 @@ function Dashboard(props) {
             </div>
             <hr></hr>
             <List>
-                <Link className={classes.links} to="/sges">
+                <Link className={classes.links} to="/">
                     <ListItem button>
                         <i className="bi bi-house-door-fill me-2"></i>
                         <ListItemText primary="Home" />
                     </ListItem>
                 </Link>
                 {["Product", "Category", "Order", "Customer"].map((text, index) => (
-                    <Link key={index} className={classes.links} to={"/staff/" + text.toLowerCase()}>
+                    <Link key={index} className={classes.links} to={text.toLowerCase()}>
                         <ListItem button key={text}>
                             <i className="bi bi-file-earmark-ppt-fill me-2"></i>
                             <ListItemText primary={text} />
@@ -117,7 +117,7 @@ function Dashboard(props) {
                     </Link>
                 ))}
                 {isAdmin(props.auth.roles) ? (
-                    <Link className={classes.links} to="/staff/Adminstrator">
+                    <Link className={classes.links} to="Adminstrator">
                         <ListItem button>
                             <i className="bi bi-house-door-fill me-2"></i>
                             <ListItemText primary="Adminstrator" />
@@ -189,24 +189,7 @@ function Dashboard(props) {
                 </Hidden>
             </nav>
             <main className={classes.content} style={{ paddingTop: "64px" }}>
-                {/* <div className={classes.toolbar} /> */}
-                <Routes>
-                    <Route exact path="/staff/product">
-                        <ProductIndex />
-                    </Route>
-                    <Route exact path="/staff/category">
-                        <CategoryIndex />
-                    </Route>
-                    <Route exact path="/staff/Adminstrator">
-                        <Authorized />
-                    </Route>
-                    <Route exact path="/staff/Order">
-                        <OrderList />
-                    </Route>
-                    <Route exact path="/staff/customer">
-                        <CustomerIndex />
-                    </Route>
-                </Routes>
+                <Outlet />
             </main>
         </div>
     );

@@ -1,64 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../css/home/home.scss";
 import hangmoive from "../../img/hang-moi-ve.jpg";
 import newIcon from "../../img/new-corner-label.png";
-import pnew1 from "../../img/new1.jpg";
-import pnew2 from "../../img/new2.jpg";
-import pnew3 from "../../img/new3.jpg";
-import pnew4 from "../../img/new4.jpg";
-import sanphambanchay from "../../img/san-pham-ban-chay.jpg";
+import sanphambanchayTitle from "../../img/san-pham-ban-chay.jpg";
 import slide1 from "../../img/slide1.png";
 import slide2 from "../../img/slide2.jpg";
 import slide3 from "../../img/slide3.jpg";
 import productService from "../../services/guestservice/productService";
 
-const productNew = [
-    {
-        img: pnew1,
-        title: "Áo Sơ Mi Tay Ngắn",
-        price: 380000,
-        priceSale: 219000,
-        sold: 54,
-    },
-    {
-        img: pnew2,
-        title: "Áo Sơ Mi Nam Nữ Ngắn Tay SGES Họa Tiết Bandana Unisex",
-        price: 470000,
-        priceSale: 249000,
-        sold: 15,
-    },
-    {
-        img: pnew3,
-        title: "Quần Thun Nhung Tăm Culottes Pants Ống Rộng Lưng Thun SGES Unisex Nam Nữ",
-        price: 440000,
-        priceSale: 235000,
-        sold: 690,
-    },
-    {
-        img: pnew4,
-        title: "Quần short kaki nam nữ Donut SGES Unisex cá tính cực chất",
-        price: 315000,
-        priceSale: 165000,
-        sold: 109,
-    },
-    {
-        img: pnew4,
-        title: "Quần short kaki nam nữ Donut SGES Unisex cá tính cực chất",
-        price: 315000,
-        priceSale: 165000,
-        sold: 109,
-    },
-    {
-        img: pnew4,
-        title: "Quần short kaki nam nữ Donut SGES Unisex cá tính cực chất",
-        price: 315000,
-        priceSale: 165000,
-        sold: 109,
-    },
-];
-
 const Home = () => {
+    const [productNews, setProductNews] = useState([]);
+
+    const [sanPhamBanChay, setSanPhamBanChay] = useState([]);
+
+    const findProductNewByTop = () => {
+        productService
+            .findProductNew()
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                setSanPhamBanChay(
+                    ...new Array(
+                        result.map((value, index) => {
+                            return value;
+                        })
+                    )
+                );
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const timSanPhamBanChay = () => {
+        productService
+            .timSanPhamBanChay()
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                setProductNews(
+                    ...new Array(
+                        result.map((value, index) => {
+                            return value;
+                        })
+                    )
+                );
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    useEffect(() => {
+        findProductNewByTop();
+        timSanPhamBanChay();
+    }, []);
+
     return (
         <div className="sges-home">
             <div className="container-fluid p-0">
@@ -91,13 +85,19 @@ const Home = () => {
                     </div>
                     <div className="carousel-inner slide-img">
                         <div className="carousel-item active slide-img-item">
-                            <img src={slide1} className="d-block w-100" alt="..." />
+                            <Link to="/shop">
+                                <img src={slide1} className="d-block w-100" alt="..." />
+                            </Link>
                         </div>
                         <div className="carousel-item slide-img-item">
-                            <img src={slide2} className="d-block w-100" alt="..." />
+                            <Link to="/shop">
+                                <img src={slide2} className="d-block w-100" alt="..." />
+                            </Link>
                         </div>
                         <div className="carousel-item slide-img-item">
-                            <img src={slide3} className="d-block w-100" alt="..." />
+                            <Link to="/shop">
+                                <img src={slide3} className="d-block w-100" alt="..." />
+                            </Link>
                         </div>
                     </div>
                     <button
@@ -127,107 +127,123 @@ const Home = () => {
                     </div>
                     <div className="content d-flex">
                         <div className="row m-0">
-                            {productNew.map((value, index) => {
-                                return (
-                                    <div className="col-3 pb-4 product-new-item" key={index}>
-                                        <div className="card" key={index}>
-                                            <Link to="#">
-                                                <div className="p-img">
-                                                    <img
-                                                        src={value.img}
-                                                        className="card-img-top"
-                                                        alt={value.title}
-                                                    />
-                                                    <img
-                                                        src={newIcon}
-                                                        className="new-icon"
-                                                        alt=""
-                                                        height="58px"
-                                                    />
-                                                </div>
-                                                <div className="card-body d-grid">
-                                                    <p className="card-text p-title">
-                                                        {value.title}
-                                                    </p>
-                                                    <p className="card-text p-price">
-                                                        <span className="price-price">
-                                                            {value.price.toLocaleString("vi-VN", {
-                                                                style: "currency",
-                                                                currency: "VND",
-                                                            })}
-                                                        </span>
-                                                        <span className="price-sale">
-                                                            {value.priceSale.toLocaleString(
-                                                                "vi-VN",
-                                                                {
-                                                                    style: "currency",
-                                                                    currency: "VND",
-                                                                }
-                                                            )}
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {productNews
+                                ? productNews.map((value, index) => {
+                                      return (
+                                          <div className="col-3 pb-4 product-new-item" key={index}>
+                                              <div className="card">
+                                                  <Link to="#">
+                                                      <div className="p-img">
+                                                          <img
+                                                              src={
+                                                                  "http://localhost:8080/file/read/" +
+                                                                  value.image
+                                                              }
+                                                              className="card-img-top"
+                                                              alt={value.name}
+                                                          />
+                                                          <img
+                                                              src={newIcon}
+                                                              className="new-icon"
+                                                              alt=""
+                                                              height="58px"
+                                                          />
+                                                      </div>
+                                                      <div className="card-body d-grid">
+                                                          <p className="card-text p-title">
+                                                              {value.name}
+                                                          </p>
+                                                          <p className="card-text p-price">
+                                                              <span className="price-price">
+                                                                  {value.price.toLocaleString(
+                                                                      "vi-VN",
+                                                                      {
+                                                                          style: "currency",
+                                                                          currency: "VND",
+                                                                      }
+                                                                  )}
+                                                              </span>
+                                                              <span className="price-sale">
+                                                                  {value.sale.toLocaleString(
+                                                                      "vi-VN",
+                                                                      {
+                                                                          style: "currency",
+                                                                          currency: "VND",
+                                                                      }
+                                                                  )}
+                                                              </span>
+                                                          </p>
+                                                      </div>
+                                                  </Link>
+                                              </div>
+                                          </div>
+                                      );
+                                  })
+                                : null}
                         </div>
                     </div>
                 </div>
                 <div className="sges-product-new container py-2">
                     <div className="py-5 d-flex justify-content-center">
                         <div className="title d-flex justify-content-center align-item-center py-2 w-100">
-                            <img src={sanphambanchay} alt="" />
+                            <img src={sanphambanchayTitle} alt="" />
                         </div>
                     </div>
                     <div className="content d-flex">
                         <div className="row m-0">
-                            {productNew.map((value, index) => {
-                                return (
-                                    <div className="col-3 pb-4 product-new-item" key={index}>
-                                        <div className="card" key={index}>
-                                            <Link to="#">
-                                                <div className="p-img">
-                                                    <img
-                                                        src={value.img}
-                                                        className="card-img-top"
-                                                        alt={value.title}
-                                                    />
-                                                    <img
-                                                        src={newIcon}
-                                                        className="new-icon"
-                                                        alt=""
-                                                        height="58px"
-                                                    />
-                                                </div>
-                                                <div className="card-body d-grid">
-                                                    <p className="card-text p-title">
-                                                        {value.title}
-                                                    </p>
-                                                    <p className="card-text p-price">
-                                                        <span className="price-price">
-                                                            {value.price.toLocaleString("vi-VN", {
-                                                                style: "currency",
-                                                                currency: "VND",
-                                                            })}
-                                                        </span>
-                                                        <span className="price-sale">
-                                                            {value.priceSale.toLocaleString(
-                                                                "vi-VN",
-                                                                {
-                                                                    style: "currency",
-                                                                    currency: "VND",
-                                                                }
-                                                            )}
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            {sanPhamBanChay
+                                ? sanPhamBanChay.map((value, index) => {
+                                      return (
+                                          <div className="col-3 pb-4 product-new-item" key={index}>
+                                              <div className="card">
+                                                  <Link to="#">
+                                                      <div className="p-img">
+                                                          <img
+                                                              src={
+                                                                  "http://localhost:8080/file/read/" +
+                                                                  value.image
+                                                              }
+                                                              className="card-img-top"
+                                                              alt={value.name}
+                                                          />
+                                                          <img
+                                                              src={newIcon}
+                                                              className="new-icon"
+                                                              alt=""
+                                                              height="58px"
+                                                          />
+                                                      </div>
+                                                      <div className="card-body d-grid">
+                                                          <p className="card-text p-title">
+                                                              {value.name}
+                                                          </p>
+                                                          <p className="card-text p-price">
+                                                              <span className="price-price">
+                                                                  {value.price.toLocaleString(
+                                                                      "vi-VN",
+                                                                      {
+                                                                          style: "currency",
+                                                                          currency: "VND",
+                                                                      }
+                                                                  )}
+                                                              </span>
+                                                              <span className="price-sale">
+                                                                  {value.sale.toLocaleString(
+                                                                      "vi-VN",
+                                                                      {
+                                                                          style: "currency",
+                                                                          currency: "VND",
+                                                                      }
+                                                                  )}
+                                                              </span>
+                                                          </p>
+                                                      </div>
+                                                  </Link>
+                                              </div>
+                                          </div>
+                                      );
+                                  })
+                                : null}
                         </div>
                     </div>
                 </div>

@@ -1,90 +1,43 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { BsCartDash, BsSearch } from "react-icons/bs";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "../../css/header/navtop.scss";
 import logo from "../../img/sges.jpg";
 import logoText from "../../img/sgesText.png";
-
-const navData = [
-    {
-        path: "/shop",
-        title: "Sản phẩm",
-    },
-    {
-        path: "/shop",
-        title: "Áo",
-        subMenu: [
-            {
-                path: "#",
-                title: "Áo khoác",
-            },
-            {
-                path: "#",
-                title: "Mascot SGES",
-            },
-            {
-                path: "#",
-                title: "Áo sơ mi",
-            },
-            {
-                path: "#",
-                title: "Áo phản quang",
-            },
-            {
-                path: "#",
-                title: "Áo in",
-            },
-            {
-                path: "#",
-                title: "Áo Basic",
-            },
-        ],
-    },
-    {
-        path: "#",
-        title: "Quần",
-        subMenu: [
-            {
-                path: "#",
-                title: "Quần jogger",
-            },
-            {
-                path: "#",
-                title: "Quần StreetStyle",
-            },
-            {
-                path: "#",
-                title: "Quần Short",
-            },
-        ],
-    },
-    {
-        path: "#",
-        title: "Khác",
-        subMenu: [
-            {
-                path: "#",
-                title: "Balo, túi",
-            },
-            {
-                path: "#",
-                title: "Phụ kiện",
-            },
-        ],
-    },
-    {
-        path: "/visit",
-        title: "Cửa hàng",
-    },
-    {
-        path: "/about",
-        title: "Giới thiệu",
-    },
-];
+import SupCateService from "../../services/guestservice/SupCateService";
 
 const NavTop = () => {
     const auth = useSelector((state) => state.auth);
+
+    let { cId } = useParams();
+
+    // const [categories, setCategories] = useState([]);
+
+    const [supCate, setSupCate] = useState([]);
+
+    const findAll = () => {
+        SupCateService.findAll()
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                setSupCate(
+                    ...new Array(
+                        result.map((value, index) => {
+                            return value;
+                        })
+                    )
+                );
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    useEffect(() => {
+        findAll();
+    }, []);
+
     return (
         <>
             <div className="sges-header">
@@ -118,17 +71,27 @@ const NavTop = () => {
                             </Link>
                         </div>
                         <div className="col-6 p-0 header-right">
-                            <Link to="#">
-                                <div className="btn">
-                                    <span>Đăng ký</span>
-                                </div>
-                            </Link>
-                            <span>|</span>
-                            <Link to="/login">
-                                <div className="btn">
-                                    <span>Đăng nhập</span>
-                                </div>
-                            </Link>
+                            {auth ? (
+                                <Link to="/admin">
+                                    <div className="btn">
+                                        <span>Quản lý cửa hàng</span>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link to="/login">
+                                        <div className="btn">
+                                            <span>Đăng ký</span>
+                                        </div>
+                                    </Link>
+                                    <span>|</span>
+                                    <Link to="/login">
+                                        <div className="btn">
+                                            <span>Đăng nhập</span>
+                                        </div>
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -153,22 +116,29 @@ const NavTop = () => {
                             </Link>
                         </div>
                         <div className="col-auto col-mid p-0">
-                            {navData.map((value, index) => {
+                            <div className="drop-down">
+                                <Link to={"/shop"} className="subtitle-link">
+                                    <div className="btn sup-title">
+                                        <span>Sản phẩm</span>
+                                    </div>
+                                </Link>
+                            </div>
+                            {supCate.map((value, index) => {
                                 return (
                                     <div className="drop-down" key={index}>
-                                        <Link to={value.path} className="subtitle-link">
+                                        <Link to={""} className="subtitle-link">
                                             <div className="btn sup-title">
-                                                <span>{value.title}</span>
+                                                <span>{value.name}</span>
                                             </div>
                                         </Link>
                                         <div className="drop-down-content" key={index}>
-                                            {value.subMenu &&
-                                                value.subMenu.length &&
-                                                value.subMenu.map((value, index) => {
+                                            {value.categories &&
+                                                value.categories.length &&
+                                                value.categories.map((value, index) => {
                                                     return (
-                                                        <Link to={value.path} key={index}>
+                                                        <Link to={value.id} key={index}>
                                                             <div className="btn sub-title">
-                                                                {value.title}
+                                                                {value.name}
                                                             </div>
                                                         </Link>
                                                     );
@@ -177,6 +147,20 @@ const NavTop = () => {
                                     </div>
                                 );
                             })}
+                            <div className="drop-down">
+                                <Link to="/visit" className="subtitle-link">
+                                    <div className="btn sup-title">
+                                        <span>Cửa hàng</span>
+                                    </div>
+                                </Link>
+                            </div>
+                            <div className="drop-down">
+                                <Link to="/about" className="subtitle-link">
+                                    <div className="btn sup-title">
+                                        <span>Giới thiệu</span>
+                                    </div>
+                                </Link>
+                            </div>
                         </div>
                         <div className="col-3 text-end col-right p-0">
                             <Link to="#">
