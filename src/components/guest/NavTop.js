@@ -88,7 +88,7 @@ const NavTop = () => {
     return (
         <>
             <div className="sges-header">
-                <div className="container-fluid">
+                <div className="container">
                     <div className="row m-0">
                         <div className="col-6 p-0 header-left">
                             <Link to="#">
@@ -134,7 +134,7 @@ const NavTop = () => {
                 </div>
             </div>
             <div className="sges-nav-top">
-                <div className="container-fluid">
+                <div className="container">
                     <nav className="navbar p-0 m-0">
                         <div className="col-3 col-left p-0">
                             <Link className="navbar-brand p-0 m-0" to="/">
@@ -187,7 +187,7 @@ const NavTop = () => {
                                 </div>
                             </Link>
                             <span>|</span>
-                            <Link to="#">
+                            <Link to="/cart">
                                 <div className="btn">
                                     <span className="cart-icon">
                                         <BsCartDash />

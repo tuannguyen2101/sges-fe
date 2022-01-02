@@ -10,10 +10,9 @@
             .p-img {
                 position: relative;
                 max-height: 300px;
-                min-height: 276.6px;
-                img {
+                height: 100%;
+                .card-img-top {
                     max-height: 300px;
-                    min-height: 276.6px;
                     width: 100%;
                     object-fit: cover;
                 }
