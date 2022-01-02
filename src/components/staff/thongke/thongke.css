@@ -1,0 +1,80 @@
+.thongke{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.thongkeItem{
+flex: 1;
+margin: 0px 20px;
+padding: 30px;
+border-radius: 10px;
+-webkit-box-shadow: 6px 5px 5px 0px #000000; 
+box-shadow: 6px 5px 5px 0px #000000;
+}
+.thongkeTitle{
+    font-size: 20px;
+}
+.thongkeMeneyContainer{
+    margin: 10px 0px;
+    display: flex;
+    align-items: center;
+}
+.thongkeMoney{
+    font-size: 30px;
+    font-weight: 600;
+}
+.thongkeMoneyRate{
+    
+    align-items: center;
+    margin-left: 20px;
+}
+.thongkeIcon{
+    font-size: 10px;
+    margin-left: 5px;
+    color: red;
+}
+.thongkeIconUp{
+    font-size: 10px;
+    margin-left: 5px;
+    color: green;
+}
+.chart{
+    width: 100%;
+    margin: 20px;
+    padding: 20px;
+}
+.chi{
+    text-align: left;
+}
+.chart1{
+    text-align: center;
+    width: 49%;
+    float: left;
+    /* -webkit-box-shadow: 6px 5px 5px 0px #000000; 
+    box-shadow: 6px 5px 5px 0px #000000; */
+    
+}
+.chart2{
+    text-align: center;
+    width: 49%;
+    height: 600px;
+    float: left;
+    margin-left: 10px;
+    /* -webkit-box-shadow: 6px 5px 5px 0px #000000; 
+    box-shadow: 6px 5px 5px 0px #000000; */
+}
+
+.dashboard{
+    margin-left: 40px;
+    color: rgb(255, 94, 0);
+  
+  }
+  .chi{
+    margin-left: 40px;
+    margin-top: 40px;
+    color: rgb(47, 0, 255);
+  }
+  .chi:hover{
+      color: rgb(231, 25, 169);
+  }
