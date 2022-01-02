@@ -7,7 +7,7 @@ import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
 import Paginate from "../../pagination/Paginate";
 import { findAll } from "./../../../actions/categoryActions";
 import CategoryItem from "./CategoryItem";
-import "./css/category.css";
+import "../../../css/category/category.scss";
 
 const CategoryIndex = () => {
     const data = useSelector((state) => state.category.categories);

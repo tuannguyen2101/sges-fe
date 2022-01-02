@@ -1,12 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import "./css/pagination.css";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
+import "../../css/paginate/pagination.scss";
 
 const Paginate = (props) => {
     const page = useSelector((state) => state.category);
-    const dispatch = useDispatch();
 
     const {
         thisPageProps,

@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import "../../css/profile.css";
-import { Link, Redirect } from "react-router-dom";
-import { RiUserLine, RiFileList3Line } from "react-icons/ri";
-import moduleName from "../../services/guestservice/ProfileService";
-import { useDispatch, useSelector } from "react-redux";
-import { UPDATE_PROFILE } from "./../../constants/constants";
-import ProfileService from "../../services/guestservice/ProfileService";
 import { BiShow } from "react-icons/bi";
-import LoginService from "../../services/loginservice/LoginService";
+import { RiFileList3Line, RiUserLine } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import "../../css/profile.scss";
 import avatar from "../../img/avatar.png";
+import ProfileService from "../../services/guestservice/ProfileService";
+import LoginService from "../../services/loginservice/LoginService";
+import { UPDATE_PROFILE } from "./../../constants/constants";
 
 const Profile = ({ isUpdate, changepass }) => {
     const profile = useSelector((state) => state.profile);
@@ -77,7 +76,7 @@ const Profile = ({ isUpdate, changepass }) => {
             .catch((error) => console.log("error", error));
     };
 
-    var redirect = success ? <Redirect to="/sges/myprofile"></Redirect> : <></>;
+    // var redirect = success ? <Redirect to="/sges/myprofile"></Redirect> : <></>;
 
     const changePassword = () => {
         if (checkValidate) {
@@ -132,7 +131,7 @@ const Profile = ({ isUpdate, changepass }) => {
 
     return (
         <div className="profile">
-            {redirect}
+            {/* {redirect} */}
             <div className="container">
                 <div className="row m-0 profile-layout">
                     <div className="col-3 py-3 profile-menu">

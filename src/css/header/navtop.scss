@@ -1,0 +1,160 @@
+.sges-header {
+    background-color: #fff;
+    height: 38px;
+    .col-6 {
+        display: flex;
+        align-items: center;
+    }
+    .header-right {
+        justify-content: end;
+    }
+    span {
+        color: #08283d;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    a {
+        &:hover {
+            background-color: #eee;
+        }
+    }
+}
+.container-fluid {
+    padding: 0 200px;
+}
+.sges-nav-top {
+    height: 84px;
+    background-color: #08283d;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    .navbar {
+        display: flex;
+        align-items: center;
+        height: 84px;
+        .col-left {
+            z-index: 2;
+            .navbar-brand {
+                .btn {
+                    align-items: center;
+                    .logo-img {
+                        box-shadow: 0 0 10px #65b5eb;
+                        border-radius: 20%;
+                        border-radius: 50%;
+                    }
+                    .logo-text {
+                        position: relative;
+                        span {
+                            position: absolute;
+                            color: #1e96e6;
+                            top: 10px;
+                            right: 0;
+                        }
+                    }
+                }
+            }
+        }
+        .col-mid {
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            line-height: 84px;
+            .drop-down {
+                display: flex;
+                position: relative;
+                .drop-down-content {
+                    background-color: #eee;
+                    margin-top: 84px;
+                    position: absolute;
+                    min-width: 200px;
+                    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                    display: none;
+                    a {
+                        display: flex;
+                        justify-content: left;
+                        align-items: center;
+                        height: 50px;
+                        .sub-title {
+                            color: #08283d;
+                        }
+                        &:hover {
+                            background-color: #e0dede;
+                        }
+                    }
+                }
+                &:hover {
+                    .subtitle-link {
+                        background-color: #0a334e;
+                        .sup-title {
+                            span {
+                                color: #1e96e6;
+                            }
+                        }
+                    }
+                    .drop-down-content {
+                        display: block;
+                    }
+                }
+                a {
+                    min-width: 90px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .sup-title {
+                        color: #eee;
+                        font-size: larger;
+                        font-weight: 500;
+                        border-radius: 0;
+                    }
+                }
+            }
+        }
+        .col-right {
+            span {
+                color: #eee;
+            }
+            height: 100%;
+            // background-color: #1e96e6;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            .btn {
+                position: relative;
+                &:hover {
+                    .cart-icon {
+                        color: #1e96e6;
+                    }
+                }
+                .cart-icon {
+                    color: #eee;
+                    font-size: x-large;
+                }
+                .search-icon {
+                    font-size: x-large;
+                }
+                .cart-qty {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-color: #1e96e6;
+                    color: #eee;
+                    font-size: small;
+                    height: 20px;
+                    width: 20px;
+                    border-radius: 50%;
+                }
+            }
+            .btn-search {
+                position: relative;
+                &:hover {
+                    .search-icon {
+                        color: #1e96e6;
+                    }
+                }
+            }
+        }
+    }
+}

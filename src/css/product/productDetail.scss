@@ -1,0 +1,141 @@
+.sges-product-detail {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 1000px;
+    .container {
+        .link-product-page {
+            .breadcrumb {
+                font-size: large;
+            }
+        }
+        .product-detail-content {
+            background-color: #fff;
+            box-shadow: rgb(99 99 99 / 20%) 0px 0px 2px 0px;
+            .card {
+                border: none;
+                .row {
+                    span {
+                        background-color: #fafafa;
+                    }
+                    .discription-content {
+                        .prprprprp {
+                            white-space: pre-wrap;
+                            font-size: 0.875rem;
+                            line-height: 1.875rem;
+                        }
+                    }
+                    .product-image {
+                        img {
+                            width: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                    .product-info {
+                        // display: flex;
+                        // flex-direction: column;
+                        // justify-content: space-between;
+                        .info-top {
+                            .info-name {
+                                span {
+                                    word-wrap: break-word;
+                                    font-size: 20px;
+                                    font-weight: 500;
+                                    line-height: 24px;
+                                }
+                            }
+                            .info-price {
+                                background-color: #fafafa;
+                                .price-price {
+                                    font-size: 16px;
+                                    font-weight: 400;
+                                    text-decoration: line-through;
+                                    color: #0000008a;
+                                }
+                                .price-sale {
+                                    font-size: 30px;
+                                    font-weight: 500;
+                                    color: #d0011b;
+                                }
+                                .discount {
+                                    background-color: #d0011b;
+                                    color: #fff;
+                                    font-weight: 500;
+                                }
+                            }
+                        }
+                        .info-bot {
+                            .info-detail {
+                                .title {
+                                    width: 120px;
+                                    text-transform: capitalize;
+                                    align-items: center;
+                                    color: #757575;
+                                    font-size: large;
+                                }
+                                .content {
+                                    display: flex;
+                                    justify-content: start;
+                                    align-items: stretch;
+                                    .btn {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        margin-right: 10px;
+                                        padding: 0 20px;
+                                        height: 38px;
+                                        line-height: 38px;
+                                        border: 1px solid #00000017;
+                                        border-radius: 0;
+                                    }
+                                }
+                                .info-quantity {
+                                    .content {
+                                        .btn {
+                                            padding: 0;
+                                            margin: 0;
+                                            width: 38px;
+                                        }
+                                        input {
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            text-align: center;
+                                            height: 38px;
+                                            line-height: 38px;
+                                            border-radius: 0;
+                                            border-top: 1px solid #00000017;
+                                            border-bottom: 1px solid #00000017;
+                                            border-left: none;
+                                            border-right: none;
+                                            outline: none;
+                                        }
+                                    }
+                                }
+                            }
+                            .purcharse {
+                                display: flex;
+                                justify-content: start;
+                                align-items: center;
+                                .btn {
+                                    margin: 0 10px;
+                                    padding: 0;
+                                    height: 58px;
+                                    width: 210px;
+                                    line-height: 58px;
+                                    border: none;
+                                    background-color: #1e96e6;
+                                    color: #fff;
+                                    border-radius: 0;
+                                }
+                                .btn-add {
+                                    color: #1e96e6;
+                                    background-color: #fff;
+                                    border: 1px solid #1e96e6;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

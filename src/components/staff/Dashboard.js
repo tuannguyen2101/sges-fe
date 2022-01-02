@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Drawer from "@material-ui/core/Drawer";
@@ -7,16 +5,18 @@ import Hidden from "@material-ui/core/Hidden";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import ProductIndex from "./products/ProductIndex";
-import CategoryIndex from "./categorys/CategoryIndex";
-import { Link, Route } from "react-router-dom";
-import Authorized from "../admin/Authorized";
-import OrderList from "./orders/OrderList";
+import PropTypes from "prop-types";
+import React from "react";
 import { connect } from "react-redux";
+import { Link, Route, Routes } from "react-router-dom";
+import Authorized from "../admin/Authorized";
+import CategoryIndex from "./categorys/CategoryIndex";
 import CustomerIndex from "./customer/CustomerIndex";
+import OrderList from "./orders/OrderList";
+import ProductIndex from "./products/ProductIndex";
 
 const drawerWidth = 240;
 
@@ -190,21 +190,23 @@ function Dashboard(props) {
             </nav>
             <main className={classes.content} style={{ paddingTop: "64px" }}>
                 {/* <div className={classes.toolbar} /> */}
-                <Route exact path="/staff/product">
-                    <ProductIndex />
-                </Route>
-                <Route exact path="/staff/category">
-                    <CategoryIndex />
-                </Route>
-                <Route exact path="/staff/Adminstrator">
-                    <Authorized />
-                </Route>
-                <Route exact path="/staff/Order">
-                    <OrderList />
-                </Route>
-                <Route exact path="/staff/customer">
-                    <CustomerIndex />
-                </Route>
+                <Routes>
+                    <Route exact path="/staff/product">
+                        <ProductIndex />
+                    </Route>
+                    <Route exact path="/staff/category">
+                        <CategoryIndex />
+                    </Route>
+                    <Route exact path="/staff/Adminstrator">
+                        <Authorized />
+                    </Route>
+                    <Route exact path="/staff/Order">
+                        <OrderList />
+                    </Route>
+                    <Route exact path="/staff/customer">
+                        <CustomerIndex />
+                    </Route>
+                </Routes>
             </main>
         </div>
     );

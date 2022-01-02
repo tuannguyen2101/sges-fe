@@ -9,6 +9,7 @@ import auth from "./guestreducer/auth";
 import profile from "./profile";
 import category from "./staffreducer/category";
 import customer from "./staffreducer/customer";
+import product from "./guestreducer/product";
 const myReducer = combineReducers({
     prods,
     prodDetail,
@@ -20,6 +21,7 @@ const myReducer = combineReducers({
     profile,
     category,
     customer,
+    product,
 });
 
 export default myReducer;

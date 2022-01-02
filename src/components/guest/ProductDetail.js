@@ -1,218 +1,292 @@
-import { size } from "lodash";
-import { Component } from "react";
-import { connect } from "react-redux"
-import * as actions from '../../actions/index'
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import "../../css/product/productDetail.scss";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import productService from "../../services/guestservice/productService";
 
-class ProductDetail extends Component {
+const ProductDetail = () => {
+    const products = useSelector((state) => state.product);
+    let { id } = useParams();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            sizes: [],
-            size: "",
-            color: "",
-            qty: 1,
+    const [item, setItem] = useState({
+        color: "",
+        size: "",
+        quantity: 1,
+    });
+
+    const [category, setCategory] = useState({
+        id: "",
+        name: "",
+        status: "",
+    });
+
+    const [productDetail, setProductDetail] = useState([]);
+
+    const [product, setProduct] = useState({
+        createDate: "",
+        description: "",
+        id: "",
+        image: "",
+        name: "",
+        price: "",
+        sale: "",
+        sold: "",
+        status: "",
+    });
+
+    const [sizes, setSizes] = useState([]);
+
+    const [colors, setColors] = useState([]);
+
+    const [quantity, setQuantity] = useState();
+
+    const findProduct = () => {
+        productService
+            .findById(id)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                setProduct({
+                    createDate: result.createDate,
+                    description: result.description,
+                    id: result.id,
+                    image: result.image,
+                    name: result.name,
+                    price: result.price,
+                    sale: result.sale,
+                    sold: result.sold,
+                    status: result.status,
+                });
+                setCategory({
+                    id: result.id,
+                    name: result.name,
+                    status: result.status,
+                });
+                setProductDetail(result.productDetails);
+                setColors([
+                    ...new Set(
+                        result.productDetails.map((value) => {
+                            return value.color;
+                        })
+                    ),
+                ]);
+                setSizes([
+                    ...new Set(
+                        result.productDetails.map((value) => {
+                            return value.size;
+                        })
+                    ),
+                ]);
+                setQuantity(tinhQty(result.productDetails));
+            })
+            .catch((error) => console.log("error", error));
+    };
+
+    const tinhQty = (q) => {
+        var qty = 0;
+        q.map((value, index) => {
+            qty += value.qty;
+        });
+        return qty;
+    };
+
+    const onChange = (event) => {
+        if (isNaN(event.target.value) || event.target.value < 1) {
+            setItem({ ...item, quantity: 1 });
+        } else {
+            setItem({
+                ...item,
+                [event.target.name]: event.target.value,
+            });
         }
-    }
+    };
 
-    componentDidMount = () => {
-        const {productDetails} = this.props.prodDetail
-        const colors = this.renderColor()
-        var sizes = productDetails.filter(val => {
-            return val.qty > 0 && val.color === colors[0]
-        }).map(val => {
-            return val.size
-        })
-        this.setState({
-            sizes
-        })
-        this.setState({
-            color: colors[0],
-            size: sizes[0]
-        })
-    }
+    const tang = () => {
+        setItem({
+            ...item,
+            quantity: item.quantity + 1,
+        });
+    };
 
-    onChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-    }
-
-    onChangeColor = (event) => {
-        const {productDetails} = this.props.prodDetail
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-        var sizes = productDetails.filter(val => {
-            return val.qty > 0 && val.color === event.target.value
-        }).map(val => {
-            return val.size
-        })
-        this.setState({
-            sizes
-        })
-    }
-
-    addToCart = (event) => {
-        event.preventDefault();
-        if(this.getQuantity(this.state.size, this.state.color) < Number(this.state.qty)){
-            alert("Nhập lại số lượng");
-            return
+    const giam = () => {
+        if ((item.quantity = 1 || item.quantity < 1)) {
+            setItem({
+                ...item,
+                quantity: 1,
+            });
+        } else {
+            setItem({
+                ...item,
+                quantity: item.quantity - 1,
+            });
         }
-        this.props.addToCart({
-            prod: this.props.prodDetail,
-            size: this.state.size,
-            color: this.state.color,
-            qty: Number(this.state.qty)
-        })
-        alert(`Đã thêm ${this.props.prodDetail.name} vào giỏ hàng`);
-    }
+    };
 
-    renderColor = () => {
-        var { productDetails } = this.props.prodDetail
-        const colors = [...new Set(productDetails.map(val => {
-            return val.color
-        }))];
-        return colors
-    }
+    const colorOnSelect = (color) => {};
 
-    getQuantity = () => {
-        var { productDetails } = this.props.prodDetail
-        const {size, color} = this.state
-        const qty = productDetails.filter(val => {
-            return val.size === size && val.color === color;
-        }).map(val => val.qty)[0]
-        return qty
-    } 
+    const sizeOnSelect = (size) => {};
 
-    render() {
-        var { prodDetail } = this.props
-        const colors = this.renderColor().map((val, ind) => {
-            return <option key={ind} value={val}>{val}</option>
-        })
-        const sizes = this.state.sizes.map((val, ind) => {
-            return <option key={ind} value={val}>{val}</option>
-        })
-        return (
-            <div>
-                <div className="p-4">
-                    <div className='row'>
-                        <div className='col-md-2'></div>
-                        <div className='col-md-4'>
-                            <span className="mb-0">{"Sản phẩm/" + prodDetail.name.toLocaleUpperCase()}</span>
-                        </div>
+    useEffect(() => {
+        findProduct();
+    }, [item]);
 
-                        <div className='col-md-2'></div>
-                    </div>
-
+    return (
+        <div className="sges-product-detail">
+            <div className="container">
+                <div className="link-product-page py-3">
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb m-0">
+                            <li className="breadcrumb-item">
+                                <Link to="/">Sges</Link>
+                            </li>
+                            <li className="breadcrumb-item">
+                                <Link to="/shop">Shop</Link>
+                            </li>
+                            <li
+                                className="breadcrumb-item active"
+                                aria-current="page"
+                                style={{ color: "#1e96e6" }}
+                            >
+                                {product.name}
+                            </li>
+                        </ol>
+                    </nav>
                 </div>
-                <div className="row m-0">
-                    <div className="col-md-2" />
-                    <div className="col-md-8">
-                        <div className="row">
-                            <div className='col-md-6'>
-                                <img
-                                    alt='i am a product'
-                                    src={"http://localhost:8080/file/read/" + prodDetail.image}
-                                    className='w-100' />
-                            </div>
-                            <div className="col-md-1"></div>
-                            <div className='col-md-5'>
-                                <div>
-                                    <h5>{prodDetail.name}</h5>
-                                    <div className='text-muted'>Mã SKU: {prodDetail.id}</div>
-                                    <div className='mt-3 mb-3'>
-                                    {prodDetail.sale > 0 ? <del className="text-secondary">{prodDetail.price}</del> : prodDetail.price}VNĐ
-                                    <br></br>
-                                    {prodDetail.sale > 0 ? <h5>{`${prodDetail.sale} VNĐ`}</h5> : ""}
+                <div className="d-flex justify-content-center align-items-center flex-column">
+                    <div className="container p-2 product-detail-content">
+                        <div className="card">
+                            <div className="row m-0">
+                                <div className="col-6 product-image">
+                                    <img
+                                        src={
+                                            product.image
+                                                ? "http://localhost:8080/file/read/" + product.image
+                                                : ""
+                                        }
+                                        alt=""
+                                    />
+                                </div>
+                                <div className="col-6 product-info">
+                                    <div className="info-top p-2">
+                                        <div className="info-name p-2">
+                                            <span>{product.name}</span>
+                                        </div>
+                                        <div className="info-sold text-start p-1">
+                                            <span>
+                                                <b>{product.sold}</b> Đã bán
+                                            </span>
+                                        </div>
+                                        <div className="info-price p-3 d-flex align-items-center justify-content-start">
+                                            <span className="price-price">
+                                                {product.price.toLocaleString("vi-VN", {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                })}
+                                            </span>
+                                            <span className="price-sale mx-3">
+                                                {product.sale.toLocaleString("vi-VN", {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                })}
+                                            </span>
+                                            <span className="discount px-1">
+                                                -{Math.round((100 / product.price) * product.sale)}%
+                                            </span>
+                                        </div>
                                     </div>
-
-                                    <form>
-                                        <div className='mb-3'>
-                                            <div className='text-muted'>Chọn màu</div>
-                                            <select className='form-control border-1 rounded-0 p-2'
-                                                value={this.state.color}
-                                                name='color'
-                                                onChange={this.onChangeColor}
-                                            >  
-                                            {
-                                               colors
-                                            }
-                                            </select>
-                                        </div>
-                                        <div className='mb-3'>
-                                            <div className='text-muted'>Size</div>
-                                            <select className='form-control border-1 rounded-0 p-2'
-                                                value={this.state.size}
-                                                name='size'
-                                                onChange={this.onChange}
-                                            >
-                                                {sizes}
-                                            </select>
-                                        </div>
-                                        <div className='mb-4'>
-                                            <div className='text-muted'>Số lượng</div>
-                                            <input type='number' className='form-control border-1 rounded-0 p-2 w-25'
-                                                min={1}
-                                                name='qty'
-                                                value={this.state.qty}
-                                                onChange={this.onChange}
-                                            />
-                                            <div className='text-danger'>Kho: {this.getQuantity()}</div>
-                                        </div>
-                                        <div className='row'>
-                                            <div className='col-md-12'>
-                                                <button className="mt-3 p-0 pt-2 btn w-100 rounded-0" style={{ backgroundColor: '#A3C7BD' }}
-                                                    onClick={this.addToCart}
-                                                >
-                                                    <h5 style={{ color: 'white' }}>Thêm vào giỏ hàng</h5>
-                                                </button>
+                                    <div className="info-bot">
+                                        <div className="info-detail p-3 d-flex flex-column">
+                                            <div className="info-color py-2 d-flex align-items-center">
+                                                <div className="title">Màu sắc</div>
+                                                <div className="content">
+                                                    {colors
+                                                        ? colors.map((value, index) => {
+                                                              return (
+                                                                  <div className="btn" key={index}>
+                                                                      {value}
+                                                                  </div>
+                                                              );
+                                                          })
+                                                        : null}
+                                                </div>
                                             </div>
-                                            <div className='col-md-12'>
-                                                <button className="mt-3 p-0 pt-2 btn w-100 rounded-0 bg-dark">
-                                                    <h5 style={{ color: 'white' }}>Mua ngay</h5>
-                                                </button>
+                                            <div className="info-size py-2 d-flex align-items-center">
+                                                <div className="title">Size</div>
+                                                <div className="content">
+                                                    {sizes
+                                                        ? sizes.map((value, index) => {
+                                                              return (
+                                                                  <div className="btn" key={index}>
+                                                                      {value}
+                                                                  </div>
+                                                              );
+                                                          })
+                                                        : null}
+                                                </div>
+                                            </div>
+                                            <div className="info-quantity py-2 row">
+                                                <div className="title col-2">Số lượng</div>
+                                                <div className="col">
+                                                    <div className="row m-0">
+                                                        <div className="content col-4 p-0">
+                                                            <div className="btn" onClick={giam}>
+                                                                <AiOutlineMinus />
+                                                            </div>
+                                                            <input
+                                                                className="col-4"
+                                                                type="text"
+                                                                name="quantity"
+                                                                value={item.quantity}
+                                                                onChange={onChange}
+                                                            />
+                                                            <div className="btn" onClick={tang}>
+                                                                <AiOutlinePlus />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-auto px-3 d-flex justify-content-start align-items-center">
+                                                            <span
+                                                                style={{
+                                                                    backgroundColor: "#fff",
+                                                                    color: "#757575",
+                                                                }}
+                                                            >
+                                                                {quantity} sản phẩm sẵn có
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
-                                    <br></br>
-                                    <hr></hr>
-                                    <div className='mt-3'>
-                                        <h6 className='fw-bold'>Thông tin sản phẩm</h6>
-                                        <p>
-                                            I'm a product prodDetail. I'm a great place to add more information about your product such as sizing, material, care and cleaning instructions.
-                                        </p>
-                                        <hr></hr>
-                                    </div>
-                                    <div className='mt-3'>
-                                        <h6 className='fw-bold'>Liên hệ</h6>
-                                        <i className="bi bi-facebook pe-2" />
-                                        <i className="bi bi-instagram pe-2" />
-                                        <i className="bi bi-twitter pe-2" />
-                                        <i className="bi bi-github pe-2" />
+                                        <div className="purcharse p-3">
+                                            <div className="row">
+                                                <div className="btn btn-add">Thêm vào giỏ hàng</div>
+                                                <div className="btn btn-buy">Mua ngay</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-2" />
+                    <div className="container p-2 product-detail-content mt-3">
+                        <div className="card">
+                            <div className="row m-0">
+                                <span className="p-3">
+                                    <h3>Mô tả sản phẩm</h3>
+                                </span>
+                            </div>
+                            <div className="row m-0">
+                                <div className="discription-content p-3">
+                                    <span className="prprprprp">{product.description}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
-const mapStateToProps = state => {
-    return {
-        prodDetail: state.prodDetail
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        addToCart: cartItem => {
-            dispatch(actions.addToCart(cartItem))
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);
+export default ProductDetail;

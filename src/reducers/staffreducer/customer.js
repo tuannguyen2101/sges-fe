@@ -2,12 +2,33 @@ import { CREATE_CUSTOMER, GET_ALL_CUSTOMER, UPDATE_CUSTOMER } from "../../consta
 
 const initCustomer = {
     customers: [],
-    last: false,
-    first: true,
-    totalElements: null,
-    totalPages: null,
-    number: null,
-    size: null,
+    page: {
+        last: false,
+        first: true,
+        totalElements: null,
+        totalPages: null,
+        number: null,
+        size: null,
+    },
+    customer: {
+        id: null,
+        code: null,
+        avartar: null,
+        contact: {
+            fullname: null,
+            age: null,
+            gender: null,
+            email: null,
+            address: null,
+            phone: null,
+        },
+        purchase: {
+            products: [],
+            total: null,
+            orderStatus: null,
+        },
+        class: null,
+    },
 };
 
 const myReducer = (state = initCustomer, action) => {
