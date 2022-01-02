@@ -8,6 +8,8 @@ import "../../css/header/navtop.scss";
 import logo from "../../img/sges.jpg";
 import logoText from "../../img/sgesText.png";
 import SupCateService from "../../services/guestservice/SupCateService";
+import { FaUserCircle } from "react-icons/fa";
+import ProfileService from "../../services/guestservice/ProfileService";
 
 const NavTop = () => {
     const auth = useSelector((state) => state.auth);
@@ -34,6 +36,22 @@ const NavTop = () => {
             .catch((error) => console.log("error", error));
     };
 
+    const isAdmin = (roles) => {
+        if (roles && roles.includes(1)) {
+            return true;
+        } else return false;
+    };
+
+    const isStaff = (roles) => {
+        if (roles && roles.includes(2)) {
+            return true;
+        } else return false;
+    };
+
+    const logout = () => {
+        ProfileService.logout();
+    };
+
     useEffect(() => {
         findAll();
     }, []);
@@ -55,7 +73,7 @@ const NavTop = () => {
                                     <span>Kết nối</span>
                                 </div>
                             </Link>
-                            <Link to="#">
+                            <Link to="https://www.facebook.com/sges.unisex/">
                                 <div className="btn px-1">
                                     <span>
                                         <FaFacebook />
@@ -71,13 +89,59 @@ const NavTop = () => {
                             </Link>
                         </div>
                         <div className="col-6 p-0 header-right">
-                            {auth ? (
-                                <Link to="/admin">
-                                    <div className="btn">
-                                        <span>Quản lý cửa hàng</span>
-                                    </div>
-                                </Link>
-                            ) : (
+                            {auth && (isStaff(auth.roles) || isAdmin(auth.roles)) && (
+                                <>
+                                    <Link to="/admin">
+                                        <div className="btn">
+                                            <span>Quản lý cửa hàng</span>
+                                        </div>
+                                    </Link>
+                                    <span>|</span>
+                                </>
+                            )}
+                            {auth && (
+                                <div className="dropdown">
+                                    <Link
+                                        to="#"
+                                        className="d-flex"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        <div className="btn">
+                                            <FaUserCircle />
+                                            <span style={{ paddingLeft: "10px" }}>
+                                                {(auth && auth.fullName) || "username"}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                    <ul className="dropdown-menu">
+                                        <li>
+                                            <Link className="dropdown-item" to="/sges/myprofile">
+                                                Tài khoản của tôi
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/sges/myorder">
+                                                Đơn mua
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <dir className="dropdown-divider"></dir>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                className="dropdown-item text-danger"
+                                                to="#"
+                                                onClick={logout}
+                                            >
+                                                Đăng xuất
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+
+                            {!auth && (
                                 <>
                                     <Link to="/login">
                                         <div className="btn">
