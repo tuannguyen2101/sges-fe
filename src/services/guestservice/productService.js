@@ -31,4 +31,20 @@ export default {
 
         return fetch("http://localhost:8080/guest/product/" + id, requestOptions);
     },
+    findProductNew: () => {
+        var requestOptions = {
+            method: "GET",
+            redirect: "follow",
+        };
+
+        return fetch("http://localhost:8080/guest/product/new", requestOptions);
+    },
+    timSanPhamBanChay: () => {
+        var requestOptions = {
+            method: "GET",
+            redirect: "follow",
+        };
+
+        return fetch("http://localhost:8080/guest/product/banchay", requestOptions);
+    },
 };

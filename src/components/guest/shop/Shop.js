@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import shopImg from "../../../img/shop2.jpg";
 import "../../../css/shop/shop.scss";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import pnew1 from "../../../img/new1.jpg";
 import pnew2 from "../../../img/new2.jpg";
 import pnew3 from "../../../img/new3.jpg";
@@ -15,7 +15,11 @@ import ProductItem from "../product/ProductItem";
 
 const Shop = () => {
     const product = useSelector((state) => state.product);
+
     const dispatch = useDispatch();
+
+    let { cId } = useParams();
+
     const [page, setPage] = useState({
         content: [],
         last: false,

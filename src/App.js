@@ -1,15 +1,81 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sges from "./components/guest/Sges";
 import Login from "./components/security/login/Login";
 import Dashboard from "./components/staff/Dashboard";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "./actions";
+import PrivateRoute from "./components/staff/PrivateRoute";
+import ProductIndex from "./components/staff/products/ProductIndex";
+import CategoryIndex from "./components/staff/categorys/CategoryIndex";
+import Authorized from "./components/admin/Authorized";
+import OrderList from "./components/staff/orders/OrderList";
+import CustomerIndex from "./components/staff/customer/CustomerIndex";
 
 const App = () => {
+    const auth = useSelector((state) => state.auth);
+
+    const dispatch = useDispatch();
+
+    const isAdmin = (roles) => {
+        if (roles && roles.includes(1)) {
+            return true;
+        } else return false;
+    };
+
+    const isStaff = (roles) => {
+        if (roles && roles.includes(2)) {
+            return true;
+        } else return false;
+    };
+
+    const getProfile = () => {
+        if (localStorage.getItem("token")) {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
+            myHeaders.append("Cookie", "JSESSIONID=C6B69B1366935F0C4E7CCAC8732291BA");
+
+            var requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow",
+            };
+
+            fetch("http://localhost:8080/getProfile", requestOptions)
+                .then((response) => response.text())
+                .then((result) => {
+                    console.log(result);
+                    let user = JSON.parse(result);
+                    let auth = {
+                        id: user.id,
+                        username: user.username,
+                        fullName: user.fullName,
+                        email: user.email,
+                        roles: user.roles,
+                    };
+                    dispatch(setAuth(auth));
+                })
+                .catch((error) => console.log("error", error));
+        }
+    };
+
+    useEffect(() => {
+        getProfile();
+    }, []);
+
     return (
         <Router>
             <Routes>
                 <Route path="/*" element={<Sges />} />
-                <Route path="admin/*" element={<Dashboard />} />
+                <Route path="/admin/*" element={<PrivateRoute />}>
+                    <Route path="/admin/*" element={<Dashboard />}>
+                        <Route path="product" element={<ProductIndex />} />
+                        <Route path="category" element={<CategoryIndex />} />
+                        <Route path="Adminstrator" element={<Authorized />} />
+                        <Route path="Order" element={<OrderList />} />
+                        <Route path="customer" element={<CustomerIndex />} />
+                    </Route>
+                </Route>
             </Routes>
         </Router>
     );
