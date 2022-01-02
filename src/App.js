@@ -11,6 +11,7 @@ import CategoryIndex from "./components/staff/categorys/CategoryIndex";
 import Authorized from "./components/admin/Authorized";
 import OrderList from "./components/staff/orders/OrderList";
 import CustomerIndex from "./components/staff/customer/CustomerIndex";
+import ProductDetail from "./components/guest/ProductDetail";
 
 const App = () => {
     const auth = useSelector((state) => state.auth);
@@ -74,6 +75,7 @@ const App = () => {
                         <Route path="Adminstrator" element={<Authorized />} />
                         <Route path="Order" element={<OrderList />} />
                         <Route path="customer" element={<CustomerIndex />} />
+                        <Route path="ProductDetail" element={<ProductDetail />} />
                     </Route>
                 </Route>
             </Routes>

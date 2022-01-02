@@ -167,113 +167,125 @@ class ProductDetail extends Component {
         return (
             <form>
                 <h5>{this.props.action === 0 ? "Add product" : "Update product"}</h5>
-                <div className="mb-2">
-                    <label htmlFor="name" className="form-label">
-                        Name
-                    </label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        name="name"
-                        onChange={this.onchange}
-                        value={productDetail.name}
-                    />
+                <div className="content-detail">
+                    <div className="row">
+                        <div className="col-8  info">
+                            <div className="title">
+                                <h6>Thông tin sản phẩm</h6>
+                            </div>
+                            <div className="mb-2">
+                                <label htmlFor="name" className="form-label">
+                                    Name
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="name"
+                                    name="name"
+                                    onChange={this.onchange}
+                                    value={productDetail.name}
+                                />
+                            </div>
+                            <div className="mb-2 row">
+                                <div className="col">
+                                    <label htmlFor="category" className="form-label">
+                                        Category
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        aria-label="Default select example"
+                                        name="categoryId"
+                                        onChange={this.onchange}
+                                        value={productDetail.categoryId}
+                                    >
+                                        <option value="-1">Choose Category</option>
+                                        {categoriesElement}
+                                    </select>
+                                </div>
+                                <div className="col">
+                                    <label htmlFor="price" className="form-label">
+                                        Price
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        type="number"
+                                        id="price"
+                                        name="price"
+                                        onChange={this.onchange}
+                                        value={productDetail.price}
+                                    />
+                                </div>
+                            </div>
+                            <div className="mb-2 row">
+                                <div className="col">
+                                    <label htmlFor="createdate" className="form-label">
+                                        Create date
+                                    </label>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        id="createdate"
+                                        readOnly
+                                        value={productDetail.createDate}
+                                    />
+                                </div>
+                                <div className="col">
+                                    <label htmlFor="status" className="form-label">
+                                        Status
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        aria-label="Default select example"
+                                        name="status"
+                                        onChange={this.onchange}
+                                        value={productDetail.status}
+                                    >
+                                        <option value="1">Active</option>
+                                        <option value="0">Unactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="mb-2 row">
+                                <div className="col">
+                                    <label className="form-label">Image</label>
+                                    <br></br>
+                                    <img
+                                        className="w-100"
+                                        alt="i am an"
+                                        src={"http://localhost:8080/file/read/" + productDetail.image}
+                                    ></img>
+                                </div>
+                                <div className="col">
+                                    <label htmlFor="image" className="form-label">
+                                        Choose image
+                                    </label>
+                                    <input
+                                        id="img"
+                                        type="file"
+                                        className="form-control"
+                                        name="image"
+                                        onChange={this.onChangeImage}
+                                    ></input>
+                                    <button className="btn" onClick={this.removeFile}>
+                                        <i className="bi bi-x-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="alert alert-primary" role="alert">
+                                A simple primary alert—check it out!
+                            </div>
+                            <button type="submit" className="btn btn-primary me-2" onClick={this.onSubmit}>
+                                Submit
+                            </button>
+                            <button type="submit" className="btn btn-danger" onClick={this.props.onCancel}>
+                                Cancel
+                            </button>
+                        </div>
+                        <div className="product-version">
+                            
+                        </div>
+                    </div>
                 </div>
-                <div className="mb-2 row">
-                    <div className="col">
-                        <label htmlFor="category" className="form-label">
-                            Category
-                        </label>
-                        <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            name="categoryId"
-                            onChange={this.onchange}
-                            value={productDetail.categoryId}
-                        >
-                            <option value="-1">Choose Category</option>
-                            {categoriesElement}
-                        </select>
-                    </div>
-                    <div className="col">
-                        <label htmlFor="price" className="form-label">
-                            Price
-                        </label>
-                        <input
-                            className="form-control"
-                            type="number"
-                            id="price"
-                            name="price"
-                            onChange={this.onchange}
-                            value={productDetail.price}
-                        />
-                    </div>
-                </div>
-                <div className="mb-2 row">
-                    <div className="col">
-                        <label htmlFor="createdate" className="form-label">
-                            Create date
-                        </label>
-                        <input
-                            className="form-control"
-                            type="text"
-                            id="createdate"
-                            readOnly
-                            value={productDetail.createDate}
-                        />
-                    </div>
-                    <div className="col">
-                        <label htmlFor="status" className="form-label">
-                            Status
-                        </label>
-                        <select
-                            className="form-select"
-                            aria-label="Default select example"
-                            name="status"
-                            onChange={this.onchange}
-                            value={productDetail.status}
-                        >
-                            <option value="1">Active</option>
-                            <option value="0">Unactive</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="mb-2 row">
-                    <div className="col">
-                        <label className="form-label">Image</label>
-                        <br></br>
-                        <img
-                            className="w-100"
-                            alt="i am an"
-                            src={"http://localhost:8080/file/read/" + productDetail.image}
-                        ></img>
-                    </div>
-                    <div className="col">
-                        <label htmlFor="image" className="form-label">
-                            Choose image
-                        </label>
-                        <input
-                            id="img"
-                            type="file"
-                            className="form-control"
-                            name="image"
-                            onChange={this.onChangeImage}
-                        ></input>
-                        <button className="btn" onClick={this.removeFile}>
-                            <i className="bi bi-x-circle"></i>
-                        </button>
-                    </div>
-                </div>
-                <div className="alert alert-primary" role="alert">
-                    A simple primary alert—check it out!
-                </div>
-                <button type="submit" className="btn btn-primary me-2" onClick={this.onSubmit}>
-                    Submit
-                </button>
-                <button type="submit" className="btn btn-danger" onClick={this.props.onCancel}>
-                    Cancel
-                </button>
             </form>
         );
     }

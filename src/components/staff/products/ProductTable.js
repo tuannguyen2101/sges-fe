@@ -37,24 +37,27 @@ class ProductTable extends Component {
                         </tr>
                     </thead>
                     <tbody>{element}</tbody>
+                    <tfoot>
+                        <tr>
+                            <th colSpan={9}>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <div className="paginate">
+                                            <button className="btn-paginate" onClick={this.prev}>
+                                                {"<<"}
+                                            </button>
+                                            <button className="btn-paginate-current">{this.props.page + 1}</button>
+                                            <button className="btn-paginate" onClick={this.next}>
+                                                {'>>'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
-                <nav aria-label="...">
-                    <ul className="pagination">
-                        <li className="page-item">
-                            <span className="page-link" onClick={this.prev}>
-                                Previous
-                            </span>
-                        </li>
-                        <li className="page-item active" aria-current="page">
-                            <span className="page-link">{this.props.page + 1}</span>
-                        </li>
-                        <li className="page-item">
-                            <span className="page-link" onClick={this.next}>
-                                Next
-                            </span>
-                        </li>
-                    </ul>
-                </nav>
+
             </div>
         );
     }
