@@ -30,7 +30,7 @@ const Sges = () => {
                     <Route path="visit" element={<Visit />} />
                     <Route path="about" element={<AboutUs />} />
 
-                    <Route path="myoder" element={<MyOrders />} />
+                    <Route path="myorder" element={<MyOrders />} />
                     <Route path="myprofile" element={<Profile />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { BiShow } from "react-icons/bi";
 import { RiFileList3Line, RiUserLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +11,14 @@ import LoginService from "../../services/loginservice/LoginService";
 import { UPDATE_PROFILE } from "./../../constants/constants";
 
 const Profile = ({ isUpdate, changepass }) => {
-    const profile = useSelector((state) => state.profile);
+    // const profile = useSelector((state) => state.profile);
     const auth = useSelector((state) => state.auth);
     const dispatch = useDispatch();
 
     const [currentProfile, setCurrentProfile] = useState({
-        username: auth.username,
-        email: auth.email,
-        fullName: auth.fullName,
+        username: "",
+        email: "",
+        fullName: "",
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
@@ -30,6 +31,17 @@ const Profile = ({ isUpdate, changepass }) => {
         showNewPass: false,
         showConfirmPass: false,
     });
+
+    const renProfile = () => {
+        setCurrentProfile({
+            username: auth ? auth.username : "",
+            email: auth ? auth.email : "",
+            fullName: auth ? auth.fullName : "",
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+        });
+    };
 
     const currentPassHande = () => {
         setShowPass({
@@ -76,7 +88,9 @@ const Profile = ({ isUpdate, changepass }) => {
             .catch((error) => console.log("error", error));
     };
 
-    // var redirect = success ? <Redirect to="/sges/myprofile"></Redirect> : <></>;
+    useEffect(() => {
+        renProfile();
+    }, [auth]);
 
     const changePassword = () => {
         if (checkValidate) {
@@ -131,7 +145,6 @@ const Profile = ({ isUpdate, changepass }) => {
 
     return (
         <div className="profile">
-            {/* {redirect} */}
             <div className="container">
                 <div className="row m-0 profile-layout">
                     <div className="col-3 py-3 profile-menu">
@@ -142,14 +155,14 @@ const Profile = ({ isUpdate, changepass }) => {
                             <div className="col-8 p-0">
                                 <div className="d-grid">
                                     <span>
-                                        <b>{auth.username}</b>
+                                        <b>{auth ? auth.username : ""}</b>
                                     </span>
-                                    <span>{auth.fullName}</span>
+                                    <span>{auth ? auth.fullName : ""}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="row m-0 sub-menu mt-4">
-                            <Link to="myprofile">
+                            <Link to="/myprofile">
                                 <div className="h-100 btn d-flex justify-content-center align-items-center">
                                     <div className="col-3 icon-submenu">
                                         <RiUserLine />
@@ -159,7 +172,7 @@ const Profile = ({ isUpdate, changepass }) => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link to="updateprofile">
+                            <Link to="/updateprofile">
                                 <div className="h-100 btn d-flex justify-content-center align-items-center">
                                     <div className="col-3 icon-submenu"></div>
                                     <div className="col-9 text-start">

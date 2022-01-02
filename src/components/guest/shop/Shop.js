@@ -76,7 +76,7 @@ const Shop = () => {
                 </div>
             </div>
             <div className="shop-content pb-5">
-                <div className="container-fluid">
+                <div className="container">
                     <div className="filter py-3 mt-5 mb-3">
                         <div className="filter-content row m-0">
                             <div className="col-left col-6 d-flex justify-content-start align-items-center">
@@ -125,7 +125,7 @@ const Shop = () => {
                     </div>
                     <div className="item-content d-flex">
                         <div className="row m-0 d-flex justify-content-center">
-                            <ProductItem product={product} />
+                            <ProductItem product={product.content} width="20%" />
                         </div>
                     </div>
                     <PaginateGuest />
