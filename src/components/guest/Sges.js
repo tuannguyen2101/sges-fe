@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import "../../css/sges/sges.scss";
 import NotFound from "../notfound/NotFound";
+import Login from "../security/login/Login";
 import AboutUs from "./AboutUs";
 import Cart from "./Cart";
 import CheckOut from "./CheckOut";
@@ -21,6 +22,7 @@ const Sges = () => {
             <main className="sges-main-content">
                 <Routes>
                     <Route path="" element={<Home />} />
+                    <Route path="login" element={<Login />} />
                     <Route path="shop" element={<Shop />} />
                     <Route path="product/:id" element={<ProductDetail />} />
                     <Route path="cart" element={<Cart />} />

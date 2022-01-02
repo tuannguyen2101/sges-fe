@@ -185,8 +185,8 @@ const Home = () => {
                         <div className="row m-0">
                             {productNew.map((value, index) => {
                                 return (
-                                    <div className="col-3 product-new-item" key={index}>
-                                        <div className="card">
+                                    <div className="col-3 pb-4 product-new-item" key={index}>
+                                        <div className="card" key={index}>
                                             <Link to="#">
                                                 <div className="p-img">
                                                     <img
