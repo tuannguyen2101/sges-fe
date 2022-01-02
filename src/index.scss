@@ -36,6 +36,7 @@ code {
 
 .search-area {
   border-top: 1px solid #DEE2E6;
+  border-bottom: 1px solid #DEE2E6;
   padding-top: 10px;
   padding-left: 35px;
   padding-bottom: 10px;
@@ -90,4 +91,63 @@ code {
 }
 .form-control {
   border-radius: 2px;
+}
+
+.btn-version {
+  background-color: #33A0FF;
+  color:white;
+  border-radius: 2px;
+  padding: 5px;
+  border: none;
+}
+
+.btn-add-property {
+  color: #33A0FF;
+  cursor: pointer;
+}
+
+.property-item {
+  color: black;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top:5px;
+  padding-bottom:5px;
+  border-radius: 25px;
+  background-color: #E6F4FF;
+  margin-right: 5px;
+  i {
+    margin-left: 5px;
+    font-size: 10px;
+    color: #1d80d6;
+    cursor: pointer;
+  }
+}
+
+.image-prod {
+  background: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  .image {
+    background-color: white;
+    padding: 30px;
+    img{
+      width: 100%;
+    }
+  }
+}
+
+.btn-save {
+  background-color: #33A0FF;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 10px;
+}
+.btn-cancel {
+  background-color: white;
+  border: 1px solid #33A0FF !important;
+  color: #33A0FF;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 10px;
 }

@@ -48,13 +48,21 @@ class ProductItem extends Component {
         return (
             <tr>
                 <th scope="row">{product.id}</th>
-                <td>{product.name}</td>
-                <td>{product.image}</td>
-                <td>{product.price} $</td>
-                <td>{product.createDate}</td>
-                <td>{this.state.categoryName}</td>
-                <td>{product.status}</td>
-                <td className="text-center ps-0 pe-0">
+                <td style={{width:'300px'}}>{product.name}</td>
+                <td className="text-center"><img
+                    width={50}
+                    height={50}
+                    style={{objectFit: 'cover'}}
+                    className=""
+                    alt="i am an"
+                    src={"http://localhost:8080/file/read/" + product.image}
+                ></img></td>
+                <td className="text-end">{product.price}</td>
+                <td className="text-center">{product.createDate}</td>
+                <td className="text-center">{this.state.categoryName}</td>
+                <td className="text-center">
+                <i className="bi bi-circle-fill" style={{color: `${product.status === 1 ? '#00ff44' : 'red'}`}}></i></td>
+                <td className="text-end ps-0 pe-0">
                     <button className="btn" onClick={this.onEdit}>
                         <i className="bi bi-pen"></i>
                     </button>
