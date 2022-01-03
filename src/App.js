@@ -11,6 +11,8 @@ import CategoryIndex from "./components/staff/categorys/CategoryIndex";
 import Authorized from "./components/admin/Authorized";
 import OrderList from "./components/staff/orders/OrderList";
 import CustomerIndex from "./components/staff/customer/CustomerIndex";
+import ThongKe from "./components/staff/thongke/ThongKe";
+import Barchartmonth from "./components/staff/thongke/Barchartmonth";
 
 const App = () => {
     const auth = useSelector((state) => state.auth);
@@ -67,6 +69,8 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/*" element={<Sges />} />
+                <Route path="thongke" element={<ThongKe/>}></Route>
+                <Route path="/theothang" element={<Barchartmonth/>}></Route>
                 <Route path="/admin/*" element={<PrivateRoute />}>
                     <Route path="/admin/*" element={<Dashboard />}>
                         <Route path="product" element={<ProductIndex />} />
@@ -74,6 +78,7 @@ const App = () => {
                         <Route path="Adminstrator" element={<Authorized />} />
                         <Route path="Order" element={<OrderList />} />
                         <Route path="customer" element={<CustomerIndex />} />
+                        
                     </Route>
                 </Route>
             </Routes>

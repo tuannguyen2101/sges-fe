@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 
+
 function Barchartmonth(){
     const[getdatas,setGetData]=useState([]);
     const[getYear,setGetYear] = useState([]);
@@ -72,11 +73,13 @@ function Barchartmonth(){
         if(selectedOption!=null){
             getData(selectedOption);
         }else{
-          getData(2021);
+          getData(2022);
         }
       }, [selectedOption]);
 
       return(
+        <div>
+          <h3 className="dashboard">Dashboard</h3>
           <div className="container"> Chọn năm: &nbsp;
               <select value={selectedOption}
            onChange={(e)=> setSelectedOption(e.target.value)}
@@ -105,6 +108,7 @@ function Barchartmonth(){
                 />
             </div>
 
+          </div>
           </div>
       )
 }

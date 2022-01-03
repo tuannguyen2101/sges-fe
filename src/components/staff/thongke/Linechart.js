@@ -1,100 +1,113 @@
 import axios from "axios";
-import { Component } from "react"
-import { Bar, Line } from "react-chartjs-2";
+import {ArrowDownward, ArrowUpward} from '@material-ui/icons';
+import React, { useEffect, useState } from "react";
+import './thongke.css';
 
-// THống kê doanh thu trong từng năm
 
-const namePro = [];
-const quantityPro = [];
-export default class Linechart extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-    componentDidMount = () =>{
-        this.getData();
-    }
+// Thống kê doanh thu theo ngày, tháng, năm
+const days = []; 
+const weeks = [];
+const months = [];
+export default function Linechart() {
+  const [dataDay, setDataDay] = useState([])
+  const [dataWeek, setDataWeek] = useState([])
+  const [dataMonth, setDataMonth] = useState([])
 
-    getData = () =>{
-        axios.get("http://localhost:8080/thongKe/getTotal")
-        .then(res=>{
-            const products = res.data;
-            products.forEach(element => {
-              namePro.push(element[0]);
-              quantityPro.push(element[1]);
-            });
-            
-        })
-        
-        .catch(err =>{
-            console.log(err)
-        })
-        
-      }
+  const getDataDay = () =>{
+      axios.get("http://localhost:8080/thongKe/getSalesByDay")
+      .then(res=>{
+          const datas = res.data;
+          // console.log("aaaaaa",datas)
+          datas.forEach(element => {
+              days.push(element[1])
+              // console.log(element[1])
+          });
+          // console.log("vv",days);
+          setDataDay(res.data[0])
+          // console.log("aa",res.data[0])
+      })
+      .catch(err =>{
+          console.log(err)
+      })
+  }
+  const getDataWeek = () =>{
+      axios.get("http://localhost:8080/thongKe/getSalesByWeek")
+      .then(res=>{
+          const datas = res.data;
+          datas.forEach(element =>{
+              weeks.push(element[1])
+          })
+          setDataWeek(res.data[0])
+          // console.log("bb",res.data)
+      })
+      .catch(err =>{
+          console.log(err)
+      })
+  }
 
-    render(){
-        return(
-            <div className="container">
-                <h3 className="text-center">Thống kê tổng doanh thu từng năm</h3>
-            <Line
-              data={{
-                // labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                labels: namePro,
-                datasets: [
-                //   {
-                //     label: 'Tổng doanh thu ',
-                //     // data: [12, 19, 3, 5, 2, 3],
-                //     data: quantityPro,
-                //     backgroundColor: [
-                //       'rgba(255, 99, 132, 0.2)',
-                //       'rgba(54, 162, 235, 0.2)',
-                //       'rgba(255, 206, 86, 0.2)',
-                //       'rgba(75, 192, 192, 0.2)',
-                //       'rgba(153, 102, 255, 0.2)',
-                //       'rgba(255, 159, 64, 0.2)',
-                //     ],
-                //     borderColor: [
-                //       'rgba(255, 99, 132, 1)',
-                //       'rgba(54, 162, 235, 1)',
-                //       'rgba(255, 206, 86, 1)',
-                //       'rgba(75, 192, 192, 1)',
-                //       'rgba(153, 102, 255, 1)',
-                //       'rgba(255, 159, 64, 1)',
-                //     ],
-                //     borderWidth: 1,
-                //   },
-                  {
-                    label: 'Tổng doanh thu',
-                    data: quantityPro,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 2,
-                  },
-                ],
-              }}
-              height={400}
-              width={600}
-              options={{
-                maintainAspectRatio: false,
-                scales: {
-                  yAxes: [
-                    {
-                      ticks: {
-                        beginAtZero: true,
-                      },
-                    },
-                  ],
-                },
-                legend: {
-                  labels: {
-                    fontSize: 25,
-                  },
-                },
-              }}
-            />
-          </div>
-        )
-    }
+  const getDataMonth = () =>{
+      axios.get("http://localhost:8080/thongKe/getSalesByCurrentMonth")
+      .then(res=>{
+          const datas = res.data;
+          datas.forEach(element =>{
+              months.push(element[1])
+              // console.log(element[1])
+          })
+          setDataMonth(res.data[0])
+          // console.log("cc",res.data[])
+      })
+      .catch(err =>{
+          console.log(err)
+      })
+  }
 
+  useEffect(() => {
+      getDataDay();
+      getDataWeek();
+      getDataMonth();
+  },[])
+
+  return(
+      <div className="thongke">
+          <div className="thongkeItem">
+              <span className="thongkeTitle">Doanh thu ngày</span>     
+              <div className="thongkeMoneyContainer">
+
+                      <span className="thongkeMoney" key={dataDay[0]}>{dataDay[1]} VNĐ</span>
+                      {days[0] < days[1] ?
+                      <span className="thongkeMoneyRate">{ ((days[0]-days[1])/days[1] * 100).toFixed(2)}%<ArrowDownward className="thongkeIcon"/></span> 
+                      : 
+                      <span className="thongkeMoneyRate">+{((days[0]-days[1])/days[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>}
+              </div>
+              <span className="thongkeSub">So với hôm qua</span>
+          </div>    
+          <div className="thongkeItem">
+              <span className="thongkeTitle">Doanh thu tuần</span>     
+              <div className="thongkeMoneyContainer">
+                      <span className="thongkeMoney" key={dataWeek[0]}>{dataWeek[1]} VNĐ</span>
+                          {weeks[0] < weeks[1] ?
+                          <span className="thongkeMoneyRate">{ ((weeks[0]-weeks[1])/weeks[1] * 100).toFixed(2)}%<ArrowDownward className="thongkeIcon"/></span> 
+                          : 
+                      <span className="thongkeMoneyRate">+{((weeks[0]-weeks[1])/weeks[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>}
+              </div>
+              <span className="thongkeSub">So với tuần trước</span>
+          </div>  
+          <div className="thongkeItem">
+              <span className="thongkeTitle">Doanh thu tháng</span>     
+              <div className="thongkeMoneyContainer">
+                      <span className="thongkeMoney" key={dataMonth[0]}>{dataMonth[1]} VNĐ</span>
+                      {months[1] ?
+                        <span className="thongkeMoneyRate">{((months[0]-months[1])/months[1] * 100).toFixed(2)}%<ArrowDownward className="thongkeIcon"/></span> 
+                          : 
+                          <span className="thongkeMoneyRate">{ (months[0]/1 * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span> }
+
+                          {/* {months[0] < months[1] ?
+                           <span className="thongkeMoneyRate">{ ((months[0]-months[1])/months[1] * 100).toFixed(2)}%<ArrowDownward className="thongkeIcon"/></span> 
+                          : 
+                      <span className="thongkeMoneyRate">+{((months[0]-months[1])/months[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>} */}
+              </div>
+              <span className="thongkeSub">So với tháng trước</span>
+          </div>  
+      </div>
+  )
 }
