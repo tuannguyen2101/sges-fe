@@ -1,6 +1,7 @@
 // let base64 = require("base-64");
 export default {
     findAll: (n, s) => {
+        // debugger
         if (n === undefined) {
             n = 0;
         }

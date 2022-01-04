@@ -13,6 +13,7 @@ class ProductIndex extends Component {
             status: 1,
             btn: "View Recycle bin",
             page: 0,
+            screen: 0
         };
     }
 
@@ -27,6 +28,9 @@ class ProductIndex extends Component {
 
     onAdd = () => {
         this.changeAction(0);
+        this.setState({
+            screen: 1
+        })
         this.props.setProductDetail({
             id: -1,
             name: "",
@@ -40,10 +44,16 @@ class ProductIndex extends Component {
 
     onEdit = () => {
         this.changeAction(1);
+        this.setState({
+            screen: 1,
+        })
     };
 
     onCancel = () => {
         this.changeAction(-1);
+        this.setState({
+            screen: 0,
+        })
     };
 
     changeAction = (action) => {
@@ -112,30 +122,55 @@ class ProductIndex extends Component {
             action === -1 ? (
                 ""
             ) : (
-                <div className="col-md-4">
+                <div className="col-md-12">
                     <ProductDetail onCancel={this.onCancel} action={this.state.action} />
                 </div>
             );
         return (
-            <div className="row">
-                <div className={action === -1 ? "" : "col-8"}>
-                    <button className="btn btn-primary mb-3" onClick={this.onAdd}>
-                        Add new product
-                    </button>
-                    <button
-                        className="btn btn-primary mb-3 ms-3"
-                        onClick={this.state.status === 1 ? this.onViewRecycle : this.onViewActive}
-                    >
-                        {this.state.btn}
-                    </button>
-                    <ProductTable
-                        onEdit={this.onEdit}
-                        next={this.next}
-                        prev={this.prev}
-                        page={this.state.page}
-                    />
+            <div className="products" style={{ backgroundColor: '#F0F1F1' }}>
+                <div className="pt-3" style={{ paddingLeft: '35px' }}><h5>Quản lý sản phẩm</h5></div>
+                <div className="row pt-1 pe-5 ps-5">
+                    {/* <div className={action === -1 ? "" : "col-8"}> */}
+                    {
+                        this.state.screen === 1 ? <div className="col-md-12">
+                            <ProductDetail onCancel={this.onCancel} action={this.state.action} />
+                        </div> : <div className="content" style={{ backgroundColor: 'white' }}>
+                            <button className="btn btn-add" onClick={this.onAdd}>
+                                <i class="bi bi-plus"></i>Thêm sản phẩm mới
+                            </button>
+                            {/* <button
+                            className="btn btn-viewstatus"
+                            onClick={this.state.status === 1 ? this.onViewRecycle : this.onViewActive}
+                        >
+                            {this.state.btn}
+                        </button> */}
+                            <div className="search-area">
+                                <div className="row">
+                                    <div className="col-sm-6 input-search">
+                                        <input className="form-control" placeholder="Tìm kiếm theo tên sản phẩm" />
+                                        <i class="bi bi-search"></i>
+                                    </div>
+                                    <div className="col-sm-2">
+                                        <select className="form-control cate-filter">
+                                            <option>Danh mục</option>
+                                        </select>
+                                    </div>
+                                    <div className="col-sm-2">
+                                        <select className="form-control cate-filter">
+                                            <option>Trạng thái</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <ProductTable
+                                onEdit={this.onEdit}
+                                next={this.next}
+                                prev={this.prev}
+                                page={this.state.page}
+                            />
+                        </div>
+                    }
                 </div>
-                {formElement}
             </div>
         );
     }
@@ -155,7 +190,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         setProductDetail: (product) => {
             dispatch(actions.setProductDetail(product));
-        },
+        }
     };
 };
 

@@ -21,40 +21,42 @@ class ProductTable extends Component {
 
         return (
             <div>
-                <table className="table table-bordered">
+                <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Create date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Status</th>
-                            <th scope="col" colSpan="2">
-                                Action
+                            <th scope="col"></th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th className="text-center" scope="col">Ảnh</th>
+                            <th className="text-end" scope="col">Giá</th>
+                            <th className="text-center" scope="col">Ngày tạo</th>
+                            <th className="text-center" scope="col">Loại sản phẩm</th>
+                            <th className="text-center" scope="col">Trạng thái</th>
+                            <th className="text-center" scope="col" colSpan="2">
                             </th>
                         </tr>
                     </thead>
                     <tbody>{element}</tbody>
+                    <tfoot>
+                        <tr>
+                            <th colSpan={9}>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <div className="paginate">
+                                            <button className="btn-paginate" onClick={this.prev}>
+                                                {"<<"}
+                                            </button>
+                                            <button className="btn-paginate-current">{this.props.page + 1}</button>
+                                            <button className="btn-paginate" onClick={this.next}>
+                                                {'>>'}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
-                <nav aria-label="...">
-                    <ul className="pagination">
-                        <li className="page-item">
-                            <span className="page-link" onClick={this.prev}>
-                                Previous
-                            </span>
-                        </li>
-                        <li className="page-item active" aria-current="page">
-                            <span className="page-link">{this.props.page + 1}</span>
-                        </li>
-                        <li className="page-item">
-                            <span className="page-link" onClick={this.next}>
-                                Next
-                            </span>
-                        </li>
-                    </ul>
-                </nav>
+
             </div>
         );
     }
