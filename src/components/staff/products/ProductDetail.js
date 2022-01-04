@@ -1,6 +1,7 @@
 import axios from "axios";
-import { size } from "lodash";
+import { result, size } from "lodash";
 import React, { Component } from "react";
+import { version } from "react-dom";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/index";
 import CategoryService from "../../../services/staffservice/CategoryService";
@@ -13,38 +14,44 @@ class ProductDetail extends Component {
             file: null,
             listSize: [],
             listColor: [],
+            listVersion: []
         };
     }
 
     componentDidMount = () => {
+        const { productDetails } = this.props.productDetail;
         this.getCategories();
         this.getAllVersion()
+        this.setState({
+            listVersion: productDetails ? productDetails : []
+        })
     };
 
     getAllVersion = () => {
         const { productDetails } = this.props.productDetail;
-        const colors = [
-            ...new Set(
-                productDetails.map((val) => {
-                    return val.color;
-                })
-            ),
-        ];
-        const size = [
-            ...new Set(
-                productDetails.map((val) => {
-                    return val.size;
-                })
-            ),
-        ];
-        this.setState({
-            listSize: size,
-            listColor: colors
-        })
+        if (productDetails) {
+            const colors = [
+                ...new Set(
+                    productDetails.map((val) => {
+                        return val.color;
+                    })
+                ),
+            ];
+            const size = [
+                ...new Set(
+                    productDetails.map((val) => {
+                        return val.size;
+                    })
+                ),
+            ];
+            this.setState({
+                listSize: size,
+                listColor: colors
+            })
+        }
     }
 
     getCategories = () => {
-        debugger
         CategoryService.findAll(0, 10)
             .then((response) => response.text())
             .then((result) => {
@@ -105,7 +112,16 @@ class ProductDetail extends Component {
             .then((result) => {
                 this.props.addProduct(JSON.parse(result));
                 this.upload();
-                alert("Complete");
+                var listVersion = this.state.listVersion.map(v => {
+                    return {
+                        ...v,
+                        productId: JSON.parse(result).id
+                    }
+                })
+                ProductService.addVersion(listVersion);
+                alert("Thêm mới thành công");
+                this.props.onCancel();
+                return result
             })
             .catch((error) => console.log("error", error));
     };
@@ -122,7 +138,14 @@ class ProductDetail extends Component {
                 if (this.state.file !== null) {
                     this.upload();
                 }
-                alert("Complete");
+                var listVersion = this.state.listVersion.map(v => {
+                    return {
+                        ...v,
+                        productId: JSON.parse(result).id
+                    }
+                })
+                ProductService.addVersion(listVersion);
+                alert("Cập nhật thành công");
             })
             .catch((error) => console.log("error", error));
     };
@@ -181,15 +204,43 @@ class ProductDetail extends Component {
 
     onAddSize = () => {
         var size = window.prompt("Nhập giá trị")
+        var { productDetail } = this.props;
+        var newListVersion = [];
+        if (this.state.listColor.length > 0) {
+            this.state.listColor.forEach(color => {
+                newListVersion = [...newListVersion, {
+                    id: -1,
+                    color,
+                    size,
+                    qty: 0,
+                    productId: productDetail.id
+                }]
+            });
+        }
         this.setState({
-            listSize: [...this.state.listSize, size]
+            listSize: [...this.state.listSize, size],
+            listVersion: [...this.state.listVersion, ...newListVersion]
         })
     }
 
     onAddColor = () => {
         var color = window.prompt("Nhập giá trị")
+        var { productDetail } = this.props;
+        var newListVersion = [];
+        if (this.state.listSize.length > 0) {
+            this.state.listSize.forEach(size => {
+                newListVersion = [...newListVersion, {
+                    id: -1,
+                    color,
+                    size,
+                    qty: 0,
+                    productId: productDetail.id
+                }]
+            });
+        }
         this.setState({
-            listColor: [...this.state.listColor, color]
+            listColor: [...this.state.listColor, color],
+            listVersion: [...this.state.listVersion, ...newListVersion]
         })
     }
 
@@ -197,6 +248,9 @@ class ProductDetail extends Component {
         this.setState({
             listSize: [...this.state.listSize].filter(s => {
                 return s !== size;
+            }),
+            listVersion: [...this.state.listVersion].filter(s => {
+                return s.size !== size
             })
         })
     }
@@ -205,35 +259,42 @@ class ProductDetail extends Component {
         this.setState({
             listColor: [...this.state.listColor].filter(c => {
                 return c !== color;
+            }),
+            listVersion: [...this.state.listVersion].filter(c => {
+                return c.color !== color
             })
         })
     }
 
-    renderProductVersion = () => {
-        const { listSize, listColor } = this.state;
-        var listVersion = [];
-        listSize.forEach(size => {
-            listColor.forEach(color => {
-                listVersion = [...listVersion, {
-                    size,
-                    color,
-                    // qty: this.getQuantity(size, color)
-                }]
+    onChangeQty = (e, v) => {
+        const { value } = e.target
+        if (value >= 0 && !isNaN(value)) {
+            this.setState({
+                listVersion: [...this.state.listVersion.map(version => {
+                    return version.size === v.size && version.color === v.color ? {
+                        ...version,
+                        qty: value
+                    } : version
+                })]
             })
-        });
-        return listVersion;
+        }
     }
 
-    // getQuantity = (size, color) => {
-    //     const { productDetails } = this.props.productDetail;
-    //     const findProdDetail = productDetails.filter(val => {
-    //         return val.size === size && val.color === color
-    //     })
-    //     if (findProdDetail && findProdDetail.length > 0) {
-    //         return findProdDetail[0].qty
-    //     }
-    //     return 0;
+    // renderProductVersion = () => {
+    //     const { listSize, listColor } = this.state;
+    //     var listVersion = [];
+    //     listSize.forEach(size => {
+    //         listColor.forEach(color => {
+    //             listVersion = [...listVersion, {
+    //                 size,
+    //                 color,
+    //                 // qty: this.getQuantity(size, color)
+    //             }]
+    //         })
+    //     });
+    //     return listVersion;
     // }
+
 
     render() {
         var { productDetail } = this.props;
@@ -249,16 +310,16 @@ class ProductDetail extends Component {
 
         return (
             <div>
-                <div className="row pt-5 pb-3">
+                <div className="row pb-3 title-detail">
                     <div className="col-6">
-                        <h5>{this.props.action === 0 ? "Add product" : "Update product"}</h5>
+                        {/* <h5>{this.props.action === 0 ? "Thêm mới sản phẩm" : "Cập nhật sản phẩm"}</h5> */}
                     </div>
                     <div className="col-6 text-end">
                         <button type="submit" className="btn-save me-2" onClick={this.onSubmit}>
-                            Submit
+                            Lưu
                         </button>
                         <button type="submit" className="btn-cancel" onClick={this.props.onCancel}>
-                            Cancel
+                            Hủy
                         </button>
                     </div>
                 </div>
@@ -271,7 +332,7 @@ class ProductDetail extends Component {
                             </div>
                             <div className="mb-2">
                                 <label htmlFor="name" className="form-label">
-                                    Name
+                                    Tên sản phẩm <span className="text-danger">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -285,7 +346,7 @@ class ProductDetail extends Component {
                             <div className="mb-2 row">
                                 <div className="col">
                                     <label htmlFor="category" className="form-label">
-                                        Category
+                                        Loại sản phẩm <span className="text-danger">*</span>
                                     </label>
                                     <select
                                         className="form-select"
@@ -294,13 +355,13 @@ class ProductDetail extends Component {
                                         onChange={this.onchange}
                                         value={productDetail.categoryId}
                                     >
-                                        <option value="-1">Choose Category</option>
+                                        <option value="-1">Chọn danh mục</option>
                                         {categoriesElement}
                                     </select>
                                 </div>
                                 <div className="col">
                                     <label htmlFor="price" className="form-label">
-                                        Price
+                                        Giá bán <span className="text-danger">*</span>
                                     </label>
                                     <input
                                         className="form-control"
@@ -315,7 +376,7 @@ class ProductDetail extends Component {
                             <div className="mb-2 row">
                                 <div className="col">
                                     <label htmlFor="createdate" className="form-label">
-                                        Create date
+                                        Ngày tạo
                                     </label>
                                     <input
                                         className="form-control"
@@ -327,7 +388,7 @@ class ProductDetail extends Component {
                                 </div>
                                 <div className="col">
                                     <label htmlFor="status" className="form-label">
-                                        Status
+                                        Trạng thái <span className="text-danger">*</span>
                                     </label>
                                     <select
                                         className="form-select"
@@ -336,15 +397,15 @@ class ProductDetail extends Component {
                                         onChange={this.onchange}
                                         value={productDetail.status}
                                     >
-                                        <option value="1">Active</option>
-                                        <option value="0">Unactive</option>
+                                        <option value="1">Kích hoạt</option>
+                                        <option value="0">Ngừng kích hoạt</option>
                                     </select>
                                 </div>
                             </div>
                             <div className="mb-2 row">
                                 <div className="col">
                                     <label htmlFor="image" className="form-label">
-                                        Choose image
+                                        Chọn ảnh sản phẩm <span className="text-danger">*</span>
                                     </label>
                                     <input
                                         id="img"
@@ -440,14 +501,14 @@ class ProductDetail extends Component {
                                     </thead>
                                     <tbody>
                                         {
-                                            this.renderProductVersion().map((v, ind) => {
+                                            this.state.listVersion.map((v, ind) => {
                                                 return (
-                                                    <tr>
+                                                    <tr key={ind}>
                                                         <td className="w-25">{`${v.size} - ${v.color}`}</td>
                                                         <td className="w-25">{v.size}</td>
                                                         <td className="w-25">{v.color}</td>
                                                         <td className="w-25">
-                                                            <input type="number" className="form-control" />
+                                                            <input name="qty" onChange={(e) => this.onChangeQty(e, v)} value={v.qty} type="number" className="form-control" />
                                                         </td>
                                                     </tr>
                                                 );

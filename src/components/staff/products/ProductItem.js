@@ -61,7 +61,8 @@ class ProductItem extends Component {
                 <td className="text-center">{product.createDate}</td>
                 <td className="text-center">{this.state.categoryName}</td>
                 <td className="text-center">
-                <i className="bi bi-circle-fill" style={{color: `${product.status === 1 ? '#00ff44' : 'red'}`}}></i></td>
+                <i className="bi bi-circle-fill" style={{color: `${product.status === 1 ? '#00ff44' : 'red'}`}}></i>
+                {`${product.status === 1 ? 'Kích hoạt' : 'Ngừng kích hoạt'}`}</td>
                 <td className="text-end ps-0 pe-0">
                     <button className="btn" onClick={this.onEdit}>
                         <i className="bi bi-pen"></i>
