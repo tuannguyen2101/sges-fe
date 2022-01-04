@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
 import { setAuth } from "../../../actions";
 import { Navigate } from "react-router-dom";
+import PrivateRoute from "../../staff/PrivateRoute";
 
 const Login = () => {
     const auth = useSelector((state) => state.auth);
@@ -34,7 +35,7 @@ const Login = () => {
             LoginService.login(account.username, account.password)
                 .then((response) => {
                     if (response.status === 200) {
-                        NotiSuccess("Đăng nhập thành công!");
+                        NotiSuccess("Bạn đã đăng nhập vào SGES!");
                     } else {
                         NotiError("Tài khoản hoặc mật khẩu khong chính xác!");
                     }
@@ -67,11 +68,14 @@ const Login = () => {
                             };
                             dispatch(setAuth(auth));
                             console.log("auth", auth);
-                            // this.props.setCart([]);
                         })
-                        .catch((error) => console.log("error", error));
+                        .catch((error) => {
+                            NotiError("Tài khoản hoặc mật khẩu không chính xác!");
+                        });
                 })
-                .catch((error) => console.log("error", error));
+                .catch((error) => {
+                    NotiError("Tài khoản hoặc mật khẩu không chính xác!");
+                });
         }
     };
 
@@ -84,7 +88,9 @@ const Login = () => {
         }
     };
 
-    return (
+    return auth ? (
+        <Navigate to="/" />
+    ) : (
         <div className="login p-5">
             <Noti />
             <div className="container d-flex justify-content-center">
