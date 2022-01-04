@@ -30,7 +30,6 @@ const NavTop = () => {
         SupCateService.findAll()
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 setSupCate(
                     ...new Array(
                         result.map((value, index) => {
@@ -80,20 +79,20 @@ const NavTop = () => {
                                     <span>Kết nối</span>
                                 </div>
                             </Link>
-                            <Link to="https://www.facebook.com/sges.unisex/" target="_blank">
+                            <a href="https://www.facebook.com/sges.unisex" target="_blank">
                                 <div className="btn px-1">
                                     <span>
                                         <FaFacebook />
                                     </span>
                                 </div>
-                            </Link>
-                            <Link to="#">
+                            </a>
+                            <a href="https://www.instagram.com/sges.unisex" target="_blank">
                                 <div className="btn px-1">
                                     <span>
                                         <FaInstagram />
                                     </span>
                                 </div>
-                            </Link>
+                            </a>
                         </div>
                         <div className="col-6 p-0 header-right">
                             {auth && (isStaff(auth.roles) || isAdmin(auth.roles)) && (
@@ -115,15 +114,32 @@ const NavTop = () => {
                                         aria-expanded="false"
                                     >
                                         <div className="btn">
-                                            <FaUserCircle />
-                                            <span style={{ paddingLeft: "10px" }}>
+                                            {auth.photo ? (
+                                                <img
+                                                    src={auth.photo}
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = auth.photo;
+                                                    }}
+                                                />
+                                            ) : (
+                                                <FaUserCircle />
+                                            )}
+                                            <span style={{ paddingLeft: "8px" }}>
                                                 {(auth && auth.fullName) || "username"}
                                             </span>
                                         </div>
                                     </Link>
                                     <ul className="dropdown-menu">
                                         <li>
-                                            <Link className="dropdown-item" to="/myprofile">
+                                            <Link
+                                                className="dropdown-item"
+                                                to={
+                                                    auth
+                                                        ? "/myprofile/" + auth.username
+                                                        : "/myprofile/"
+                                                }
+                                            >
                                                 Tài khoản của tôi
                                             </Link>
                                         </li>
@@ -138,7 +154,7 @@ const NavTop = () => {
                                         <li>
                                             <Link
                                                 className="dropdown-item text-danger"
-                                                to="#"
+                                                to="/"
                                                 onClick={logout}
                                             >
                                                 Đăng xuất
@@ -197,24 +213,28 @@ const NavTop = () => {
                             {supCate.map((value, index) => {
                                 return (
                                     <div className="drop-down" key={index}>
-                                        <Link to={""} className="subtitle-link">
+                                        <Link to="#" className="subtitle-link">
                                             <div className="btn sup-title">
                                                 <span>{value.name}</span>
                                             </div>
                                         </Link>
-                                        <div className="drop-down-content" key={index}>
-                                            {value.categories &&
-                                                value.categories.length &&
-                                                value.categories.map((value, index) => {
+                                        {value.categories && value.categories.length && (
+                                            <div className="drop-down-content">
+                                                {" "}
+                                                {value.categories.map((value, index) => {
                                                     return (
-                                                        <Link to={value.id} key={index}>
+                                                        <Link
+                                                            to={"/shop/category/" + value.id}
+                                                            key={index}
+                                                        >
                                                             <div className="btn sub-title">
                                                                 {value.name}
                                                             </div>
                                                         </Link>
                                                     );
                                                 })}
-                                        </div>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}

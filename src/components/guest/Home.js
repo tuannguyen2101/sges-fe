@@ -20,7 +20,6 @@ const Home = () => {
             .findProductNew()
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 setProductNews(
                     ...new Array(
                         result.map((value, index) => {
@@ -37,7 +36,6 @@ const Home = () => {
             .timSanPhamBanChay()
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 setSanPhamBanChay(
                     ...new Array(
                         result.map((value, index) => {
@@ -140,7 +138,7 @@ const Home = () => {
                     </div>
                     <div className="content d-flex">
                         <div className="row m-0">
-                            <ProductItem product={sanPhamBanChay} width="25%" />
+                            <ProductItem product={sanPhamBanChay} width="25%" minHeight={"300px"} />
                         </div>
                     </div>
                 </div>

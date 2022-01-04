@@ -108,14 +108,16 @@ function Dashboard(props) {
                         <ListItemText primary="Home" />
                     </ListItem>
                 </Link>
-                {["Product", "Category", "Order", "Customer"].map((text, index) => (
-                    <Link key={index} className={classes.links} to={text.toLowerCase()}>
-                        <ListItem button key={text}>
-                            <i className="bi bi-file-earmark-ppt-fill me-2"></i>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    </Link>
-                ))}
+                {["Thongke", "TheoThang", "Product", "Category", "Order", "Customer"].map(
+                    (text, index) => (
+                        <Link key={index} className={classes.links} to={text.toLowerCase()}>
+                            <ListItem button key={text}>
+                                <i className="bi bi-file-earmark-ppt-fill me-2"></i>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        </Link>
+                    )
+                )}
                 {isAdmin(props.auth.roles) ? (
                     <Link className={classes.links} to="Adminstrator">
                         <ListItem button>

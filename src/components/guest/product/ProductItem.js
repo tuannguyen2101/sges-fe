@@ -3,13 +3,17 @@ import { Link } from "react-router-dom";
 import "../../../css/product/product.scss";
 import newIcon from "../../../img/new-corner-label.png";
 
-const ProductItem = ({ product, width }) => {
+const ProductItem = ({ product, width, minHeight }) => {
     return (
         <>
             {product &&
                 product.map((value, index) => {
                     return (
-                        <div className="py-3 product-new-item" key={index} style={{ width: width }}>
+                        <div
+                            className="py-3 product-new-item"
+                            key={index}
+                            style={{ width: width, minWidth: "20%" }}
+                        >
                             <Link to={"/product/" + value.id}>
                                 <div className="card">
                                     <div className="p-img">
@@ -22,6 +26,7 @@ const ProductItem = ({ product, width }) => {
                                                 e.target.src =
                                                     "http://localhost:8080/file/read/no-image-800x600.png";
                                             }}
+                                            style={{ minHeight: minHeight }}
                                         />
                                         {value.status == 2 ? (
                                             <img
