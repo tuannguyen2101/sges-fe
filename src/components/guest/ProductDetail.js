@@ -4,9 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import "../../css/product/productDetail.scss";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import productService from "../../services/guestservice/productService";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../actions";
+import Noti, { NotiError, NotiSuccess } from "../noti/Noti";
 
 const ProductDetail = () => {
     const products = useSelector((state) => state.product);
+    const dispatch = useDispatch();
     let { id } = useParams();
 
     const [item, setItem] = useState({
@@ -15,24 +19,21 @@ const ProductDetail = () => {
         quantity: 1,
     });
 
-    const [category, setCategory] = useState({
-        id: "",
-        name: "",
-        status: "",
-    });
-
     const [productDetail, setProductDetail] = useState([]);
 
+    const [productDetailInit, setProductDetailInit] = useState([]);
+
     const [product, setProduct] = useState({
-        createDate: "",
-        description: "",
         id: "",
-        image: "",
         name: "",
+        image: "",
         price: "",
+        createDate: "",
+        status: "",
+        categoryId: "",
+        description: "",
         sale: "",
         sold: "",
-        status: "",
     });
 
     const [sizes, setSizes] = useState([]);
@@ -41,12 +42,19 @@ const ProductDetail = () => {
 
     const [quantity, setQuantity] = useState();
 
+    const [isFilter, setIsFilter] = useState({
+        color: "",
+        colorFil: false,
+        size: "",
+        sizeFil: false,
+    });
+
     const findProduct = () => {
         productService
             .findById(id)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
+                // console.log(result);
                 setProduct({
                     createDate: result.createDate,
                     description: result.description,
@@ -58,12 +66,8 @@ const ProductDetail = () => {
                     sold: result.sold,
                     status: result.status,
                 });
-                setCategory({
-                    id: result.id,
-                    name: result.name,
-                    status: result.status,
-                });
                 setProductDetail(result.productDetails);
+                setProductDetailInit(result.productDetails);
                 setColors([
                     ...new Set(
                         result.productDetails.map((value) => {
@@ -94,6 +98,11 @@ const ProductDetail = () => {
     const onChange = (event) => {
         if (isNaN(event.target.value) || event.target.value < 1) {
             setItem({ ...item, quantity: 1 });
+        } else if (event.target.value > quantity) {
+            setItem({
+                ...item,
+                quantity: quantity,
+            });
         } else {
             setItem({
                 ...item,
@@ -103,14 +112,18 @@ const ProductDetail = () => {
     };
 
     const tang = () => {
-        setItem({
-            ...item,
-            quantity: item.quantity + 1,
-        });
+        if (item.quantity >= quantity) {
+            setItem({ ...item, quantity: quantity });
+        } else {
+            setItem({
+                ...item,
+                quantity: item.quantity + 1,
+            });
+        }
     };
 
     const giam = () => {
-        if ((item.quantity = 1 || item.quantity < 1)) {
+        if (item.quantity <= 1) {
             setItem({
                 ...item,
                 quantity: 1,
@@ -123,16 +136,164 @@ const ProductDetail = () => {
         }
     };
 
-    const colorOnSelect = (color) => {};
+    const colorOnSelect = (event) => {
+        setQuantity(tinhQty(productDetail));
+        return event.target.textContent !== isFilter.color
+            ? (setIsFilter({
+                  ...isFilter,
+                  colorFil: true,
+                  color: event.target.textContent,
+              }),
+              setProductDetail(
+                  ...new Array(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.size === ""
+                                  ? value.color === event.target.textContent
+                                  : value.color === event.target.textContent &&
+                                        value.size === isFilter.size;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ),
+              setQuantity(
+                  tinhQty(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.size === ""
+                                  ? value.color === event.target.textContent
+                                  : value.color === event.target.textContent &&
+                                        value.size === isFilter.size;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ))
+            : (setIsFilter({
+                  ...isFilter,
+                  colorFil: false,
+                  color: "",
+              }),
+              setProductDetail(
+                  ...new Array(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.size === "" ? value : value.size === isFilter.size;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ),
+              setQuantity(
+                  tinhQty(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.size === "" ? value : value.size === isFilter.size;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ));
+    };
 
-    const sizeOnSelect = (size) => {};
+    const sizeOnSelect = (event) => {
+        return event.target.textContent !== isFilter.size
+            ? (setIsFilter({
+                  ...isFilter,
+                  sizeFil: true,
+                  size: event.target.textContent,
+              }),
+              setProductDetail(
+                  ...new Array(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.color === ""
+                                  ? value.size == event.target.textContent
+                                  : value.size == event.target.textContent &&
+                                        value.color == isFilter.color;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ),
+              setQuantity(
+                  tinhQty(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.color === ""
+                                  ? value.size == event.target.textContent
+                                  : value.size == event.target.textContent &&
+                                        value.color == isFilter.color;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ))
+            : (setIsFilter({
+                  ...isFilter,
+                  sizeFil: false,
+                  size: "",
+              }),
+              setProductDetail(
+                  ...new Array(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.color === "" ? value : value.color == isFilter.color;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ),
+              setQuantity(
+                  tinhQty(
+                      productDetailInit
+                          .filter((value) => {
+                              return isFilter.color === "" ? value : value.color == isFilter.color;
+                          })
+                          .map((value) => {
+                              return value;
+                          })
+                  )
+              ));
+    };
+
+    const addItem = () => {
+        return product &&
+            isFilter.color &&
+            isFilter.size &&
+            item.quantity > 0 &&
+            item.quantity <= productDetail[0].qty
+            ? (dispatch(
+                  addToCart({
+                      prod: product,
+                      size: isFilter.size,
+                      color: isFilter.color,
+                      qty: item.quantity,
+                  })
+              ),
+              NotiSuccess("Đã thêm sản phẩm vào giỏ hàng!"),
+              setIsFilter({}),
+              setItem({ quantity: 1 }),
+              setProductDetail(productDetailInit),
+              setQuantity(tinhQty(productDetailInit)))
+            : NotiError("Vui lòng chọn đầy đủ thông tin sản phẩm!");
+    };
 
     useEffect(() => {
         findProduct();
-    }, [item]);
+    }, []);
 
     return (
         <div className="sges-product-detail">
+            <Noti />
             {product && (
                 <div className="container">
                     <div className="link-product-page py-3">
@@ -203,79 +364,142 @@ const ProductDetail = () => {
                                         </div>
                                         <div className="info-bot">
                                             <div className="info-detail p-3 d-flex flex-column">
-                                                <div className="info-color py-2 d-flex align-items-center">
-                                                    <div className="title">Màu sắc</div>
-                                                    <div className="content">
-                                                        {colors
-                                                            ? colors.map((value, index) => {
-                                                                  return (
-                                                                      <div
-                                                                          className="btn"
-                                                                          key={index}
-                                                                      >
-                                                                          {value}
-                                                                      </div>
-                                                                  );
-                                                              })
-                                                            : null}
+                                                {productDetailInit && productDetailInit.length ? (
+                                                    <div className="info-color py-2 d-flex align-items-center">
+                                                        <div className="title">Màu sắc</div>
+                                                        <div className="content">
+                                                            {colors.map((value, index) => {
+                                                                return (
+                                                                    <div
+                                                                        className={
+                                                                            productDetail
+                                                                                .map((val) => {
+                                                                                    return val.color;
+                                                                                })
+                                                                                .includes(value)
+                                                                                ? "btn"
+                                                                                : "btn disabled"
+                                                                        }
+                                                                        key={index}
+                                                                        onClick={colorOnSelect}
+                                                                        style={{
+                                                                            border:
+                                                                                isFilter.color ===
+                                                                                    value &&
+                                                                                isFilter.colorFil ===
+                                                                                    true
+                                                                                    ? "1px solid #1e96e6"
+                                                                                    : "",
+                                                                            color:
+                                                                                isFilter.color ===
+                                                                                    value &&
+                                                                                isFilter.colorFil ===
+                                                                                    true
+                                                                                    ? "#1e96e6"
+                                                                                    : "",
+                                                                        }}
+                                                                    >
+                                                                        {value}
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="info-size py-2 d-flex align-items-center">
-                                                    <div className="title">Size</div>
-                                                    <div className="content">
-                                                        {sizes
-                                                            ? sizes.map((value, index) => {
-                                                                  return (
-                                                                      <div
-                                                                          className="btn"
-                                                                          key={index}
-                                                                      >
-                                                                          {value}
-                                                                      </div>
-                                                                  );
-                                                              })
-                                                            : null}
+                                                ) : null}
+                                                {sizes && sizes.length ? (
+                                                    <div className="info-size py-2 d-flex align-items-center">
+                                                        <div className="title">Size</div>
+                                                        <div className="content">
+                                                            {sizes.map((value, index) => {
+                                                                return (
+                                                                    <div
+                                                                        className={
+                                                                            productDetail
+                                                                                .map((val) => {
+                                                                                    return val.size;
+                                                                                })
+                                                                                .includes(value)
+                                                                                ? "btn"
+                                                                                : "btn disabled"
+                                                                        }
+                                                                        key={index}
+                                                                        onClick={sizeOnSelect}
+                                                                        style={{
+                                                                            border:
+                                                                                isFilter.size ===
+                                                                                    value &&
+                                                                                isFilter.sizeFil ===
+                                                                                    true
+                                                                                    ? "1px solid #1e96e6"
+                                                                                    : "",
+                                                                            color:
+                                                                                isFilter.size ===
+                                                                                    value &&
+                                                                                isFilter.sizeFil ===
+                                                                                    true
+                                                                                    ? "#1e96e6"
+                                                                                    : "",
+                                                                        }}
+                                                                    >
+                                                                        {value}
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="info-quantity py-2 row">
-                                                    <div className="title col-2">Số lượng</div>
-                                                    <div className="col">
-                                                        <div className="row m-0">
-                                                            <div className="content col-4 p-0">
-                                                                <div className="btn" onClick={giam}>
-                                                                    <AiOutlineMinus />
+                                                ) : null}
+                                                {productDetailInit && productDetailInit.length ? (
+                                                    <div className="info-quantity py-2 row">
+                                                        <div className="title col-2">Số lượng</div>
+                                                        <div className="col">
+                                                            <div className="row m-0">
+                                                                <div className="content col-4 p-0">
+                                                                    <div
+                                                                        className="btn"
+                                                                        onClick={giam}
+                                                                    >
+                                                                        <AiOutlineMinus />
+                                                                    </div>
+                                                                    <input
+                                                                        className="col-4"
+                                                                        type="text"
+                                                                        name="quantity"
+                                                                        value={item.quantity}
+                                                                        onChange={onChange}
+                                                                    />
+                                                                    <div
+                                                                        className="btn"
+                                                                        onClick={tang}
+                                                                    >
+                                                                        <AiOutlinePlus />
+                                                                    </div>
                                                                 </div>
-                                                                <input
-                                                                    className="col-4"
-                                                                    type="text"
-                                                                    name="quantity"
-                                                                    value={item.quantity}
-                                                                    onChange={onChange}
-                                                                />
-                                                                <div className="btn" onClick={tang}>
-                                                                    <AiOutlinePlus />
+                                                                <div className="col-auto px-3 d-flex justify-content-start align-items-center">
+                                                                    <span
+                                                                        style={{
+                                                                            backgroundColor: "#fff",
+                                                                            color: "#757575",
+                                                                        }}
+                                                                    >
+                                                                        {quantity} sản phẩm sẵn có
+                                                                    </span>
                                                                 </div>
-                                                            </div>
-                                                            <div className="col-auto px-3 d-flex justify-content-start align-items-center">
-                                                                <span
-                                                                    style={{
-                                                                        backgroundColor: "#fff",
-                                                                        color: "#757575",
-                                                                    }}
-                                                                >
-                                                                    {quantity} sản phẩm sẵn có
-                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                ) : null}
                                             </div>
                                             <div className="purcharse p-3">
                                                 <div className="row">
-                                                    <div className="btn btn-add">
+                                                    <div
+                                                        className="btn btn-add d-flex justify-content-center align-items-center"
+                                                        onClick={addItem}
+                                                    >
                                                         Thêm vào giỏ hàng
                                                     </div>
-                                                    <div className="btn btn-buy">Mua ngay</div>
+                                                    <div className="btn btn-buy d-flex justify-content-center align-items-center">
+                                                        Mua ngay
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
