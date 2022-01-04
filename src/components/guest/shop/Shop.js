@@ -25,7 +25,7 @@ const Shop = () => {
 
     const [dataFind, setDataFind] = useState({
         n: 0,
-        s: 10,
+        s: 20,
         p: "create_date",
         d: 1,
     });
@@ -149,8 +149,9 @@ const Shop = () => {
                 </div>
             </div>
             <div className="shop-content pb-5">
-                <div className="container">
-                    <div className="filter py-3 mt-5 mb-3">
+                <div className="pt-5" style={{ backgroundColor: "#fff" }}></div>
+                <div className="filter py-3 mb-3">
+                    <div className="container">
                         <div className="filter-content row m-0">
                             <div className="col-left col-6 d-flex justify-content-start align-items-center">
                                 <span className="d-flex align-items-center px-2">Lọc sản phẩm</span>
@@ -241,6 +242,8 @@ const Shop = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="container">
                     <div className="item-content d-flex justify-content-center">
                         <div className="row m-0 w-100">
                             <ProductItem

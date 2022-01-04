@@ -12,9 +12,11 @@ import { FaUserCircle } from "react-icons/fa";
 import ProfileService from "../../services/guestservice/ProfileService";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../actions";
+import { NotiInfo } from "../noti/Noti";
 
 const NavTop = () => {
     const auth = useSelector((state) => state.auth);
+    const cart = useSelector((state) => state.cart);
 
     const dispatch = useDispatch();
 
@@ -56,6 +58,7 @@ const NavTop = () => {
     const logout = () => {
         ProfileService.logout();
         dispatch(setAuth(null));
+        NotiInfo("Bạn đã đăng xuất khỏi hệ thống!");
     };
 
     useEffect(() => {
@@ -115,13 +118,7 @@ const NavTop = () => {
                                     >
                                         <div className="btn">
                                             {auth.photo ? (
-                                                <img
-                                                    src={auth.photo}
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src = auth.photo;
-                                                    }}
-                                                />
+                                                <img src={auth.photo} />
                                             ) : (
                                                 <FaUserCircle />
                                             )}
@@ -195,7 +192,7 @@ const NavTop = () => {
                                             className="logo-text"
                                             src={logoText}
                                             alt="sges"
-                                            height="70px"
+                                            height="45px"
                                         />
                                         <span>&reg;</span>
                                     </div>
@@ -241,7 +238,7 @@ const NavTop = () => {
                             <div className="drop-down">
                                 <Link to="/visit" className="subtitle-link">
                                     <div className="btn sup-title">
-                                        <span>Cửa hàng</span>
+                                        <span>Địa chỉ</span>
                                     </div>
                                 </Link>
                             </div>
@@ -254,20 +251,31 @@ const NavTop = () => {
                             </div>
                         </div>
                         <div className="col-3 text-end col-right p-0">
-                            <Link to="#">
-                                <div className="btn btn-search">
-                                    <span className="search-icon">
-                                        <BsSearch />
-                                    </span>
-                                </div>
-                            </Link>
+                            <div className="drop-down">
+                                <Link to="#" className="search-link">
+                                    <div className="btn btn-search">
+                                        <span className="search-icon">
+                                            <BsSearch />
+                                        </span>
+                                    </div>
+                                </Link>
+                                `
+                                {/* <div className="drop-down-content">
+                                    <Link to={"/shop/category/"}>
+                                        <div className="btn sub-title">sdfsdfsdf</div>
+                                    </Link>
+                                </div> */}
+                                `
+                            </div>
                             <span>|</span>
                             <Link to="/cart">
                                 <div className="btn">
                                     <span className="cart-icon">
                                         <BsCartDash />
                                     </span>
-                                    <span className="cart-qty">1</span>
+                                    <span className="cart-qty">
+                                        {cart && cart.length ? cart.length : 0}
+                                    </span>
                                 </div>
                             </Link>
                         </div>

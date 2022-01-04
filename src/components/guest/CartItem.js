@@ -32,17 +32,17 @@ class CartItem extends Component {
         this.props.updateCart(cartItem);
     };
 
-    getQuantity = () => {
-        var { productDetails } = this.props.cartItem.prod;
-        const qty = productDetails
-            .filter((val) => {
-                return (
-                    val.size === this.props.cartItem.size && val.color === this.props.cartItem.color
-                );
-            })
-            .map((val) => val.qty)[0];
-        return qty;
-    };
+    // getQuantity = () => {
+    //     var { productDetails } = this.props.cartItem.prod;
+    //     const qty = productDetails
+    //         .filter((val) => {
+    //             return (
+    //                 val.size === this.props.cartItem.size && val.color === this.props.cartItem.color
+    //             );
+    //         })
+    //         .map((val) => val.qty)[0];
+    //     return qty;
+    // };
 
     render() {
         var { cartItem } = this.props;
@@ -82,7 +82,7 @@ class CartItem extends Component {
                         value={this.state.qty}
                         onChange={this.onChange}
                     />
-                    <span>&nbsp;{`Kho: ${this.getQuantity()}`}</span>
+                    {/* <span>&nbsp;{`Kho: ${this.getQuantity()}`}</span> */}
                     <div>Total: {cartItem.prod.price * cartItem.qty}$</div>
                 </td>
                 <td>
