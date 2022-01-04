@@ -1,12 +1,22 @@
 .sges-header {
     background-color: #fff;
     height: 40px;
+    .btn {
+        border: none;
+    }
     .col-6 {
         display: flex;
         align-items: center;
     }
     .header-right {
         justify-content: end;
+        .dropdown {
+            img {
+                border-radius: 50%;
+                width: 20%;
+                max-width: 30px;
+            }
+        }
     }
     span {
         color: #08283d;
