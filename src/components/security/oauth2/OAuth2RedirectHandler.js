@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate, Redirect } from "react-router-dom";
 
 class OAuth2RedirectHandler extends Component {
     render() {
@@ -8,7 +8,7 @@ class OAuth2RedirectHandler extends Component {
         if (token) {
             localStorage.setItem("token", token);
         }
-        return <Redirect to="/sges" />;
+        return <Navigate to="/" />;
     }
 }
 

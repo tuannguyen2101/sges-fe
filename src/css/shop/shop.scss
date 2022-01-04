@@ -20,12 +20,18 @@
         }
     }
     .shop-content {
-        .container-fluid {
+        .container {
             .filter {
                 background-color: #fff;
                 box-shadow: rgba(99, 99, 99, 0.2) 0px 0px 2px 0px;
                 margin: 0 12px;
                 .filter-content {
+                    .col-left {
+                        .dropdown {
+                            border: 1px solid #ced4da;
+                            border-radius: 5px;
+                        }
+                    }
                     .col-right {
                         .col-auto {
                             padding-left: 12px;

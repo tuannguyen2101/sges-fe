@@ -11,7 +11,9 @@ import CategoryIndex from "./components/staff/categorys/CategoryIndex";
 import Authorized from "./components/admin/Authorized";
 import OrderList from "./components/staff/orders/OrderList";
 import CustomerIndex from "./components/staff/customer/CustomerIndex";
-import ProductDetail from "./components/guest/ProductDetail";
+import ThongKe from "./components/staff/thongke/ThongKe";
+import Barchartmonth from "./components/staff/thongke/Barchartmonth";
+import OAuth2RedirectHandler from "./components/security/oauth2/OAuth2RedirectHandler";
 
 const App = () => {
     const auth = useSelector((state) => state.auth);
@@ -45,13 +47,13 @@ const App = () => {
             fetch("http://localhost:8080/getProfile", requestOptions)
                 .then((response) => response.text())
                 .then((result) => {
-                    console.log(result);
                     let user = JSON.parse(result);
                     let auth = {
                         id: user.id,
                         username: user.username,
                         fullName: user.fullName,
                         email: user.email,
+                        photo: user.photo,
                         roles: user.roles,
                     };
                     dispatch(setAuth(auth));
@@ -68,8 +70,11 @@ const App = () => {
         <Router>
             <Routes>
                 <Route path="/*" element={<Sges />} />
+                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
                 <Route path="/admin/*" element={<PrivateRoute />}>
                     <Route path="/admin/*" element={<Dashboard />}>
+                        <Route path="thongke" element={<ThongKe />} />
+                        <Route path="theothang" element={<Barchartmonth />} />
                         <Route path="product" element={<ProductIndex />} />
                         <Route path="category" element={<CategoryIndex />} />
                         <Route path="Adminstrator" element={<Authorized />} />

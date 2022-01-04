@@ -1,7 +1,58 @@
-.social-btn {
-    .google img {
-        height: 20px;
-        margin-top: -3px;
-        text-align: center;
+.login {
+    // .google img {
+    //     height: 20px;
+    //     margin-top: -3px;
+    //     text-align: center;
+    // }
+    // background-color: #fff;
+    .container {
+        .card {
+            border: none;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            border-radius: 20px;
+            .p-4 {
+                .login-title {
+                    span {
+                        font-size: xx-large;
+                        font-weight: 600;
+                        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                    }
+                }
+                .login-field {
+                    .form-group {
+                        .form-control {
+                            margin-top: 20px;
+                            font-size: 16px;
+                            padding: 10px 20px;
+                            border-radius: 18px;
+                        }
+                    }
+                }
+                .login-btn {
+                    .btn {
+                        padding: 15px;
+                        margin-top: 20px;
+                        font-size: 16px;
+                        border-radius: 18px;
+                        background-color: #08283d;
+                        span {
+                            color: #eee;
+                        }
+                        &:hover {
+                            background-color: #eee;
+                            span {
+                                color: #08283d;
+                            }
+                        }
+                    }
+                }
+                .login-btn-gloogle {
+                    border: 1px solid #08283d;
+                    margin-top: 20px;
+                    font-size: 16px;
+                    border-radius: 18px;
+                }
+            }
+        }
     }
 }

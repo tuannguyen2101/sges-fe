@@ -133,158 +133,173 @@ const ProductDetail = () => {
 
     return (
         <div className="sges-product-detail">
-            <div className="container">
-                <div className="link-product-page py-3">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb m-0">
-                            <li className="breadcrumb-item">
-                                <Link to="/">Sges</Link>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <Link to="/shop">Shop</Link>
-                            </li>
-                            <li
-                                className="breadcrumb-item active"
-                                aria-current="page"
-                                style={{ color: "#1e96e6" }}
-                            >
-                                {product.name}
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-                <div className="d-flex justify-content-center align-items-center flex-column">
-                    <div className="container p-2 product-detail-content">
-                        <div className="card">
-                            <div className="row m-0">
-                                <div className="col-6 product-image">
-                                    <img
-                                        src={
-                                            product.image
-                                                ? "http://localhost:8080/file/read/" + product.image
-                                                : ""
-                                        }
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="col-6 product-info">
-                                    <div className="info-top p-2">
-                                        <div className="info-name p-2">
-                                            <span>{product.name}</span>
-                                        </div>
-                                        <div className="info-sold text-start p-1">
-                                            <span>
-                                                <b>{product.sold}</b> Đã bán
-                                            </span>
-                                        </div>
-                                        <div className="info-price p-3 d-flex align-items-center justify-content-start">
-                                            <span className="price-price">
-                                                {product.price.toLocaleString("vi-VN", {
-                                                    style: "currency",
-                                                    currency: "VND",
-                                                })}
-                                            </span>
-                                            <span className="price-sale mx-3">
-                                                {product.sale.toLocaleString("vi-VN", {
-                                                    style: "currency",
-                                                    currency: "VND",
-                                                })}
-                                            </span>
-                                            <span className="discount px-1">
-                                                -{Math.round((100 / product.price) * product.sale)}%
-                                            </span>
-                                        </div>
+            {product && (
+                <div className="container">
+                    <div className="link-product-page py-3">
+                        <nav aria-label="breadcrumb">
+                            <ol className="breadcrumb m-0">
+                                <li className="breadcrumb-item">
+                                    <Link to="/">Sges</Link>
+                                </li>
+                                <li className="breadcrumb-item">
+                                    <Link to="/shop">Shop</Link>
+                                </li>
+                                <li
+                                    className="breadcrumb-item active"
+                                    aria-current="page"
+                                    style={{ color: "#1e96e6" }}
+                                >
+                                    {product.name}
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center flex-column">
+                        <div className="container p-2 product-detail-content">
+                            <div className="card">
+                                <div className="row m-0">
+                                    <div className="col-6 product-image">
+                                        <img
+                                            src={
+                                                product.image
+                                                    ? "http://localhost:8080/file/read/" +
+                                                      product.image
+                                                    : ""
+                                            }
+                                            alt=""
+                                        />
                                     </div>
-                                    <div className="info-bot">
-                                        <div className="info-detail p-3 d-flex flex-column">
-                                            <div className="info-color py-2 d-flex align-items-center">
-                                                <div className="title">Màu sắc</div>
-                                                <div className="content">
-                                                    {colors
-                                                        ? colors.map((value, index) => {
-                                                              return (
-                                                                  <div className="btn" key={index}>
-                                                                      {value}
-                                                                  </div>
-                                                              );
-                                                          })
-                                                        : null}
-                                                </div>
+                                    <div className="col-6 product-info">
+                                        <div className="info-top p-2">
+                                            <div className="info-name p-2">
+                                                <span>{product.name}</span>
                                             </div>
-                                            <div className="info-size py-2 d-flex align-items-center">
-                                                <div className="title">Size</div>
-                                                <div className="content">
-                                                    {sizes
-                                                        ? sizes.map((value, index) => {
-                                                              return (
-                                                                  <div className="btn" key={index}>
-                                                                      {value}
-                                                                  </div>
-                                                              );
-                                                          })
-                                                        : null}
-                                                </div>
+                                            <div className="info-sold text-start p-1">
+                                                <span>
+                                                    <b>{product.sold}</b> Đã bán
+                                                </span>
                                             </div>
-                                            <div className="info-quantity py-2 row">
-                                                <div className="title col-2">Số lượng</div>
-                                                <div className="col">
-                                                    <div className="row m-0">
-                                                        <div className="content col-4 p-0">
-                                                            <div className="btn" onClick={giam}>
-                                                                <AiOutlineMinus />
+                                            <div className="info-price p-3 d-flex align-items-center justify-content-start">
+                                                <span className="price-price">
+                                                    {product.price.toLocaleString("vi-VN", {
+                                                        style: "currency",
+                                                        currency: "VND",
+                                                    })}
+                                                </span>
+                                                <span className="price-sale mx-3">
+                                                    {product.sale.toLocaleString("vi-VN", {
+                                                        style: "currency",
+                                                        currency: "VND",
+                                                    })}
+                                                </span>
+                                                <span className="discount px-1">
+                                                    -
+                                                    {Math.round(
+                                                        (100 / product.price) * product.sale
+                                                    )}
+                                                    %
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="info-bot">
+                                            <div className="info-detail p-3 d-flex flex-column">
+                                                <div className="info-color py-2 d-flex align-items-center">
+                                                    <div className="title">Màu sắc</div>
+                                                    <div className="content">
+                                                        {colors
+                                                            ? colors.map((value, index) => {
+                                                                  return (
+                                                                      <div
+                                                                          className="btn"
+                                                                          key={index}
+                                                                      >
+                                                                          {value}
+                                                                      </div>
+                                                                  );
+                                                              })
+                                                            : null}
+                                                    </div>
+                                                </div>
+                                                <div className="info-size py-2 d-flex align-items-center">
+                                                    <div className="title">Size</div>
+                                                    <div className="content">
+                                                        {sizes
+                                                            ? sizes.map((value, index) => {
+                                                                  return (
+                                                                      <div
+                                                                          className="btn"
+                                                                          key={index}
+                                                                      >
+                                                                          {value}
+                                                                      </div>
+                                                                  );
+                                                              })
+                                                            : null}
+                                                    </div>
+                                                </div>
+                                                <div className="info-quantity py-2 row">
+                                                    <div className="title col-2">Số lượng</div>
+                                                    <div className="col">
+                                                        <div className="row m-0">
+                                                            <div className="content col-4 p-0">
+                                                                <div className="btn" onClick={giam}>
+                                                                    <AiOutlineMinus />
+                                                                </div>
+                                                                <input
+                                                                    className="col-4"
+                                                                    type="text"
+                                                                    name="quantity"
+                                                                    value={item.quantity}
+                                                                    onChange={onChange}
+                                                                />
+                                                                <div className="btn" onClick={tang}>
+                                                                    <AiOutlinePlus />
+                                                                </div>
                                                             </div>
-                                                            <input
-                                                                className="col-4"
-                                                                type="text"
-                                                                name="quantity"
-                                                                value={item.quantity}
-                                                                onChange={onChange}
-                                                            />
-                                                            <div className="btn" onClick={tang}>
-                                                                <AiOutlinePlus />
+                                                            <div className="col-auto px-3 d-flex justify-content-start align-items-center">
+                                                                <span
+                                                                    style={{
+                                                                        backgroundColor: "#fff",
+                                                                        color: "#757575",
+                                                                    }}
+                                                                >
+                                                                    {quantity} sản phẩm sẵn có
+                                                                </span>
                                                             </div>
-                                                        </div>
-                                                        <div className="col-auto px-3 d-flex justify-content-start align-items-center">
-                                                            <span
-                                                                style={{
-                                                                    backgroundColor: "#fff",
-                                                                    color: "#757575",
-                                                                }}
-                                                            >
-                                                                {quantity} sản phẩm sẵn có
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="purcharse p-3">
-                                            <div className="row">
-                                                <div className="btn btn-add">Thêm vào giỏ hàng</div>
-                                                <div className="btn btn-buy">Mua ngay</div>
+                                            <div className="purcharse p-3">
+                                                <div className="row">
+                                                    <div className="btn btn-add">
+                                                        Thêm vào giỏ hàng
+                                                    </div>
+                                                    <div className="btn btn-buy">Mua ngay</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="container p-2 product-detail-content mt-3">
-                        <div className="card">
-                            <div className="row m-0">
-                                <span className="p-3">
-                                    <h3>Mô tả sản phẩm</h3>
-                                </span>
-                            </div>
-                            <div className="row m-0">
-                                <div className="discription-content p-3">
-                                    <span className="prprprprp">{product.description}</span>
+                        <div className="container p-2 product-detail-content mt-3">
+                            <div className="card">
+                                <div className="row m-0">
+                                    <span className="p-3">
+                                        <h3>Mô tả sản phẩm</h3>
+                                    </span>
+                                </div>
+                                <div className="row m-0">
+                                    <div className="discription-content p-3">
+                                        <span className="prprprprp">{product.description}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

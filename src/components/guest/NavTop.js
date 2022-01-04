@@ -8,9 +8,15 @@ import "../../css/header/navtop.scss";
 import logo from "../../img/sges.jpg";
 import logoText from "../../img/sgesText.png";
 import SupCateService from "../../services/guestservice/SupCateService";
+import { FaUserCircle } from "react-icons/fa";
+import ProfileService from "../../services/guestservice/ProfileService";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../actions";
 
 const NavTop = () => {
     const auth = useSelector((state) => state.auth);
+
+    const dispatch = useDispatch();
 
     let { cId } = useParams();
 
@@ -18,11 +24,12 @@ const NavTop = () => {
 
     const [supCate, setSupCate] = useState([]);
 
+    const [isLogOut, setIsLogOut] = useState(false);
+
     const findAll = () => {
         SupCateService.findAll()
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 setSupCate(
                     ...new Array(
                         result.map((value, index) => {
@@ -34,9 +41,26 @@ const NavTop = () => {
             .catch((error) => console.log("error", error));
     };
 
+    const isAdmin = (roles) => {
+        if (roles && roles.includes(1)) {
+            return true;
+        } else return false;
+    };
+
+    const isStaff = (roles) => {
+        if (roles && roles.includes(2)) {
+            return true;
+        } else return false;
+    };
+
+    const logout = () => {
+        ProfileService.logout();
+        dispatch(setAuth(null));
+    };
+
     useEffect(() => {
         findAll();
-    }, []);
+    }, [isLogOut]);
 
     return (
         <>
@@ -55,29 +79,92 @@ const NavTop = () => {
                                     <span>Kết nối</span>
                                 </div>
                             </Link>
-                            <Link to="#">
+                            <a href="https://www.facebook.com/sges.unisex" target="_blank">
                                 <div className="btn px-1">
                                     <span>
                                         <FaFacebook />
                                     </span>
                                 </div>
-                            </Link>
-                            <Link to="#">
+                            </a>
+                            <a href="https://www.instagram.com/sges.unisex" target="_blank">
                                 <div className="btn px-1">
                                     <span>
                                         <FaInstagram />
                                     </span>
                                 </div>
-                            </Link>
+                            </a>
                         </div>
                         <div className="col-6 p-0 header-right">
-                            {auth ? (
-                                <Link to="/admin">
-                                    <div className="btn">
-                                        <span>Quản lý cửa hàng</span>
-                                    </div>
-                                </Link>
-                            ) : (
+                            {auth && (isStaff(auth.roles) || isAdmin(auth.roles)) && (
+                                <>
+                                    <Link to="/admin">
+                                        <div className="btn">
+                                            <span>Quản lý cửa hàng</span>
+                                        </div>
+                                    </Link>
+                                    <span>|</span>
+                                </>
+                            )}
+                            {auth && (
+                                <div className="dropdown">
+                                    <Link
+                                        to="#"
+                                        className="d-flex"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        <div className="btn">
+                                            {auth.photo ? (
+                                                <img
+                                                    src={auth.photo}
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = auth.photo;
+                                                    }}
+                                                />
+                                            ) : (
+                                                <FaUserCircle />
+                                            )}
+                                            <span style={{ paddingLeft: "8px" }}>
+                                                {(auth && auth.fullName) || "username"}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                    <ul className="dropdown-menu">
+                                        <li>
+                                            <Link
+                                                className="dropdown-item"
+                                                to={
+                                                    auth
+                                                        ? "/myprofile/" + auth.username
+                                                        : "/myprofile/"
+                                                }
+                                            >
+                                                Tài khoản của tôi
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link className="dropdown-item" to="/myorder">
+                                                Đơn mua
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <dir className="dropdown-divider"></dir>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                className="dropdown-item text-danger"
+                                                to="/"
+                                                onClick={logout}
+                                            >
+                                                Đăng xuất
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </div>
+                            )}
+
+                            {!auth && (
                                 <>
                                     <Link to="/login">
                                         <div className="btn">
@@ -126,24 +213,28 @@ const NavTop = () => {
                             {supCate.map((value, index) => {
                                 return (
                                     <div className="drop-down" key={index}>
-                                        <Link to={""} className="subtitle-link">
+                                        <Link to="#" className="subtitle-link">
                                             <div className="btn sup-title">
                                                 <span>{value.name}</span>
                                             </div>
                                         </Link>
-                                        <div className="drop-down-content" key={index}>
-                                            {value.categories &&
-                                                value.categories.length &&
-                                                value.categories.map((value, index) => {
+                                        {value.categories && value.categories.length && (
+                                            <div className="drop-down-content">
+                                                {" "}
+                                                {value.categories.map((value, index) => {
                                                     return (
-                                                        <Link to={value.id} key={index}>
+                                                        <Link
+                                                            to={"/shop/category/" + value.id}
+                                                            key={index}
+                                                        >
                                                             <div className="btn sub-title">
                                                                 {value.name}
                                                             </div>
                                                         </Link>
                                                     );
                                                 })}
-                                        </div>
+                                            </div>
+                                        )}
                                     </div>
                                 );
                             })}
@@ -188,154 +279,3 @@ const NavTop = () => {
 };
 
 export default NavTop;
-
-// class NavTopOld extends Component {
-//     logout = () => {
-//         ProfileService.logout();
-//         this.props.setAuth(null);
-//     };
-
-//     render() {
-//         return (
-//             <div>
-//                 <div className="p-2" style={{ backgroundColor: "#E3E3E3" }}>
-//                     <div className="row m-0">
-//                         <div className="col-6"></div>
-//                         <div className="col-6 text-center d-flex justify-content-center align-items-center">
-//                             {this.props.auth &&
-//                             (this.props.isStaff(this.props.auth.roles) ||
-//                                 this.props.isStaff(this.props.auth.roles)) ? (
-//                                 <Link to="/staff">
-//                                     <div className="btn">Quản lý cửa hàng</div>
-//                                 </Link>
-//                             ) : null}
-//                             {this.props.auth ? (
-//                                 <div className="dropdown px-3">
-//                                     <Link
-//                                         className="text-dark dropdown-toggle d-flex align-items-center text-decoration-none"
-//                                         to="#"
-//                                         id="dropdownMenuLink"
-//                                         data-bs-toggle="dropdown"
-//                                         aria-expanded="false"
-//                                     >
-//                                         <div className="btn px-0">
-//                                             <FaUserCircle />
-//                                             <span style={{ paddingLeft: "10px" }}>
-//                                                 {this.props.auth.username || "username"}
-//                                             </span>
-//                                         </div>
-//                                     </Link>
-//                                     <ul
-//                                         className="dropdown-menu"
-//                                         aria-labelledby="dropdownMenuLink"
-//                                     >
-//                                         <li>
-//                                             <Link className="dropdown-item" to="/sges/myprofile">
-//                                                 Tài khoản của tôi
-//                                             </Link>
-//                                         </li>
-//                                         <li>
-//                                             <Link className="dropdown-item" to="/sges/myorder">
-//                                                 Đơn mua
-//                                             </Link>
-//                                         </li>
-//                                         <li>
-//                                             <dir className="dropdown-divider"></dir>
-//                                         </li>
-//                                         <li>
-//                                             <Link
-//                                                 className="dropdown-item text-danger"
-//                                                 to="#"
-//                                                 onClick={this.logout}
-//                                             >
-//                                                 Đăng xuất
-//                                             </Link>
-//                                         </li>
-//                                     </ul>
-//                                 </div>
-//                             ) : (
-//                                 <Link to="/sges/login">
-//                                     <div className="btn">
-//                                         <FaUserCircle />
-//                                         <span className="ms-2">Đăng nhập</span>
-//                                     </div>
-//                                 </Link>
-//                             )}
-//                             <span>|</span>
-//                             <Link
-//                                 style={{ textDecoration: "none" }}
-//                                 className="text-dark"
-//                                 to="/sges/cart"
-//                             >
-//                                 <span className="ms-2">
-//                                     <i className="bi bi-cart"></i>
-//                                 </span>
-//                             </Link>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div className="navbar navbar-expand-lg navbar-dark bg-dark p-4">
-//                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
-//                         <ul className="navbar-nav" style={{ margin: "0 auto" }}>
-//                             <li className="nav-item">
-//                                 <Link className="nav-link h5 active mb-0 ms-4 me-4" to="/sges">
-//                                     S G E S
-//                                 </Link>
-//                             </li>
-//                             <li className="nav-item">
-//                                 <Link className="nav-link ms-4 me-4" to="/sges" style={{}}>
-//                                     Trang chủ
-//                                 </Link>
-//                             </li>
-//                             <li className="nav-item">
-//                                 <Link className="nav-link ms-4 me-4" to="/sges/collection">
-//                                     Bộ sưu tập
-//                                 </Link>
-//                             </li>
-//                             {/* <li className="nav-item">
-//                                 <Link className="nav-link ms-4 me-4" to='/sges/store'>LOOKBOOK</Link>
-//                             </li> */}
-//                             <li className="nav-item">
-//                                 <Link className="nav-link ms-4 me-4" to="/sges/aboutus">
-//                                     Giới thiệu
-//                                 </Link>
-//                             </li>
-//                             <li className="nav-item">
-//                                 <Link className="nav-link ms-4 me-4" to="/sges/visit">
-//                                     Địa chỉ
-//                                 </Link>
-//                             </li>
-//                         </ul>
-//                     </div>
-//                     <button
-//                         className="navbar-toggler"
-//                         type="button"
-//                         data-bs-toggle="collapse"
-//                         data-bs-target="#navbarSupportedContent"
-//                         aria-controls="navbarSupportedContent"
-//                         aria-expanded="false"
-//                         aria-label="Toggle navigation"
-//                     >
-//                         <span className="navbar-toggler-icon" />
-//                     </button>
-//                 </div>
-//             </div>
-//         );
-//     }
-// }
-
-// const mapStateToProps = (state) => {
-//     return {
-//         auth: state.auth,
-//     };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         setAuth: (auth) => {
-//             dispatch(action.setAuth(auth));
-//         },
-//     };
-// };
-
-// export  connect(mapStateToProps, mapDispatchToProps)(NavTopOld);
