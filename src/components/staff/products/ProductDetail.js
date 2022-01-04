@@ -14,17 +14,17 @@ class ProductDetail extends Component {
             file: null,
             listSize: [],
             listColor: [],
-            listVersion: []
+            listVersion: [],
         };
     }
 
     componentDidMount = () => {
         const { productDetails } = this.props.productDetail;
         this.getCategories();
-        this.getAllVersion()
+        this.getAllVersion();
         this.setState({
-            listVersion: productDetails ? productDetails : []
-        })
+            listVersion: productDetails ? productDetails : [],
+        });
     };
 
     getAllVersion = () => {
@@ -46,10 +46,10 @@ class ProductDetail extends Component {
             ];
             this.setState({
                 listSize: size,
-                listColor: colors
-            })
+                listColor: colors,
+            });
         }
-    }
+    };
 
     getCategories = () => {
         CategoryService.findAll(0, 10)
@@ -112,16 +112,16 @@ class ProductDetail extends Component {
             .then((result) => {
                 this.props.addProduct(JSON.parse(result));
                 this.upload();
-                var listVersion = this.state.listVersion.map(v => {
+                var listVersion = this.state.listVersion.map((v) => {
                     return {
                         ...v,
-                        productId: JSON.parse(result).id
-                    }
-                })
+                        productId: JSON.parse(result).id,
+                    };
+                });
                 ProductService.addVersion(listVersion);
                 alert("Thêm mới thành công");
                 this.props.onCancel();
-                return result
+                return result;
             })
             .catch((error) => console.log("error", error));
     };
@@ -138,12 +138,12 @@ class ProductDetail extends Component {
                 if (this.state.file !== null) {
                     this.upload();
                 }
-                var listVersion = this.state.listVersion.map(v => {
+                var listVersion = this.state.listVersion.map((v) => {
                     return {
                         ...v,
-                        productId: JSON.parse(result).id
-                    }
-                })
+                        productId: JSON.parse(result).id,
+                    };
+                });
                 ProductService.addVersion(listVersion);
                 alert("Cập nhật thành công");
             })
@@ -203,82 +203,92 @@ class ProductDetail extends Component {
     };
 
     onAddSize = () => {
-        var size = window.prompt("Nhập giá trị")
+        var size = window.prompt("Nhập giá trị");
         var { productDetail } = this.props;
         var newListVersion = [];
         if (this.state.listColor.length > 0) {
-            this.state.listColor.forEach(color => {
-                newListVersion = [...newListVersion, {
-                    id: -1,
-                    color,
-                    size,
-                    qty: 0,
-                    productId: productDetail.id
-                }]
+            this.state.listColor.forEach((color) => {
+                newListVersion = [
+                    ...newListVersion,
+                    {
+                        id: -1,
+                        color,
+                        size,
+                        qty: 0,
+                        productId: productDetail.id,
+                    },
+                ];
             });
         }
         this.setState({
             listSize: [...this.state.listSize, size],
-            listVersion: [...this.state.listVersion, ...newListVersion]
-        })
-    }
+            listVersion: [...this.state.listVersion, ...newListVersion],
+        });
+    };
 
     onAddColor = () => {
-        var color = window.prompt("Nhập giá trị")
+        var color = window.prompt("Nhập giá trị");
         var { productDetail } = this.props;
         var newListVersion = [];
         if (this.state.listSize.length > 0) {
-            this.state.listSize.forEach(size => {
-                newListVersion = [...newListVersion, {
-                    id: -1,
-                    color,
-                    size,
-                    qty: 0,
-                    productId: productDetail.id
-                }]
+            this.state.listSize.forEach((size) => {
+                newListVersion = [
+                    ...newListVersion,
+                    {
+                        id: -1,
+                        color,
+                        size,
+                        qty: 0,
+                        productId: productDetail.id,
+                    },
+                ];
             });
         }
         this.setState({
             listColor: [...this.state.listColor, color],
-            listVersion: [...this.state.listVersion, ...newListVersion]
-        })
-    }
+            listVersion: [...this.state.listVersion, ...newListVersion],
+        });
+    };
 
     deleteSize = (size) => {
         this.setState({
-            listSize: [...this.state.listSize].filter(s => {
+            listSize: [...this.state.listSize].filter((s) => {
                 return s !== size;
             }),
-            listVersion: [...this.state.listVersion].filter(s => {
-                return s.size !== size
-            })
-        })
-    }
+            listVersion: [...this.state.listVersion].filter((s) => {
+                return s.size !== size;
+            }),
+        });
+    };
 
     deleteColor = (color) => {
         this.setState({
-            listColor: [...this.state.listColor].filter(c => {
+            listColor: [...this.state.listColor].filter((c) => {
                 return c !== color;
             }),
-            listVersion: [...this.state.listVersion].filter(c => {
-                return c.color !== color
-            })
-        })
-    }
+            listVersion: [...this.state.listVersion].filter((c) => {
+                return c.color !== color;
+            }),
+        });
+    };
 
     onChangeQty = (e, v) => {
-        const { value } = e.target
+        const { value } = e.target;
         if (value >= 0 && !isNaN(value)) {
             this.setState({
-                listVersion: [...this.state.listVersion.map(version => {
-                    return version.size === v.size && version.color === v.color ? {
-                        ...version,
-                        qty: value
-                    } : version
-                })]
-            })
+                listVersion: [
+                    ...this.state.listVersion.map((version) => {
+                        return version.size === v.size && version.color === v.color
+                            ? {
+                                  ...version,
+                                  qty: value,
+                              }
+                            : version;
+                    }),
+                ],
+            });
         }
-    }
+    };
 
     // renderProductVersion = () => {
     //     const { listSize, listColor } = this.state;
@@ -294,7 +304,6 @@ class ProductDetail extends Component {
     //     });
     //     return listVersion;
     // }
-
 
     render() {
         var { productDetail } = this.props;
@@ -437,7 +446,9 @@ class ProductDetail extends Component {
                     <div className="row">
                         <div className="info col-8">
                             <div className="row">
-                                <div className="col-6"><h6>Thuộc tính</h6></div>
+                                <div className="col-6">
+                                    <h6>Thuộc tính</h6>
+                                </div>
                                 <div className="col-6 text-end">
                                     <button className="btn-version">Lưu thuộc tính</button>
                                 </div>
@@ -449,32 +460,45 @@ class ProductDetail extends Component {
                                     <div className="row mt-3">
                                         <div className="col-2">Size</div>
                                         <div className="col-8">
-                                            {
-                                                this.state.listSize.map((size, index) => {
-                                                    return <span key={index} className="property-item">
+                                            {this.state.listSize.map((size, index) => {
+                                                return (
+                                                    <span key={index} className="property-item">
                                                         {`${size}`}
-                                                        <i onClick={() => this.deleteSize(size)} class="bi bi-x-lg"></i>
+                                                        <i
+                                                            onClick={() => this.deleteSize(size)}
+                                                            className="bi bi-x-lg"
+                                                        ></i>
                                                     </span>
-                                                })
-                                            }
+                                                );
+                                            })}
                                         </div>
-                                        <div className="col-2 btn-add-property" onClick={this.onAddSize}>
-                                            <i class="bi bi-plus-circle"></i> Thêm size
+                                        <div
+                                            className="col-2 btn-add-property"
+                                            onClick={this.onAddSize}
+                                        >
+                                            <i className="bi bi-plus-circle"></i> Thêm size
                                         </div>
                                     </div>
                                     <div className="row mt-3">
                                         <div className="col-2">Màu sắc</div>
                                         <div className="col-8">
-                                            {
-                                                this.state.listColor.map((color, index) => {
-                                                    return <span key={index} className="property-item">
-                                                        {`${color}`}<i onClick={() => this.deleteColor(color)} class="bi bi-x-lg"></i>
+                                            {this.state.listColor.map((color, index) => {
+                                                return (
+                                                    <span key={index} className="property-item">
+                                                        {`${color}`}
+                                                        <i
+                                                            onClick={() => this.deleteColor(color)}
+                                                            className="bi bi-x-lg"
+                                                        ></i>
                                                     </span>
-                                                })
-                                            }
+                                                );
+                                            })}
                                         </div>
-                                        <div className="col-2 btn-add-property" onClick={this.onAddColor}>
-                                            <i class="bi bi-plus-circle"></i> Thêm màu
+                                        <div
+                                            className="col-2 btn-add-property"
+                                            onClick={this.onAddColor}
+                                        >
+                                            <i className="bi bi-plus-circle"></i> Thêm màu
                                         </div>
                                     </div>
                                 </div>
@@ -500,20 +524,24 @@ class ProductDetail extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {
-                                            this.state.listVersion.map((v, ind) => {
-                                                return (
-                                                    <tr key={ind}>
-                                                        <td className="w-25">{`${v.size} - ${v.color}`}</td>
-                                                        <td className="w-25">{v.size}</td>
-                                                        <td className="w-25">{v.color}</td>
-                                                        <td className="w-25">
-                                                            <input name="qty" onChange={(e) => this.onChangeQty(e, v)} value={v.qty} type="number" className="form-control" />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })
-                                        }
+                                        {this.state.listVersion.map((v, ind) => {
+                                            return (
+                                                <tr key={ind}>
+                                                    <td className="w-25">{`${v.size} - ${v.color}`}</td>
+                                                    <td className="w-25">{v.size}</td>
+                                                    <td className="w-25">{v.color}</td>
+                                                    <td className="w-25">
+                                                        <input
+                                                            name="qty"
+                                                            onChange={(e) => this.onChangeQty(e, v)}
+                                                            value={v.qty}
+                                                            type="number"
+                                                            className="form-control"
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

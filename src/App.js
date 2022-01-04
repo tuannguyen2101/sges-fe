@@ -11,6 +11,7 @@ import CustomerIndex from "./components/staff/customer/CustomerIndex";
 import Dashboard from "./components/staff/Dashboard";
 import OrderList from "./components/staff/orders/OrderList";
 import PrivateRoute from "./components/staff/PrivateRoute";
+import ProductDetail from "./components/staff/products/ProductDetail";
 import ProductIndex from "./components/staff/products/ProductIndex";
 import Barchartmonth from "./components/staff/thongke/Barchartmonth";
 import ThongKe from "./components/staff/thongke/ThongKe";
