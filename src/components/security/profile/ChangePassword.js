@@ -124,7 +124,6 @@ const ChangePassword = () => {
             <div className="title pb-3">
                 <h4>Đổi mật khẩu</h4>
                 <small>Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</small>
-                <Noti />
             </div>
             <div className="content-info mt-4">
                 <div className="row m-0">

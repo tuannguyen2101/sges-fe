@@ -1,95 +1,192 @@
 import { Component } from "react";
+import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
+import { IoCloseSharp } from "react-icons/io5";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import * as actions from "../../actions/index";
-
+import "../../css/cart/cartItem.scss";
+import { NotiInfo } from "../noti/Noti";
 class CartItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            qty: 0,
+            qty: Number(0),
         };
     }
 
     componentDidMount = () => {
         this.setState({
-            qty: this.props.cartItem.qty,
+            qty: Number(this.props.cartItem.qty),
         });
+    };
+
+    componentDidUpdate = (prevState) => {
+        if (
+            prevState.qty !== this.state.qty &&
+            this.state.qty !== "" &&
+            this.state.qty !== 0 &&
+            this.state.qty !== null &&
+            this.state.qty !== undefined &&
+            !isNaN(this.state.qty)
+        ) {
+            var q = Number(this.state.qty);
+            var { cartItem } = this.props;
+            cartItem.qty = q;
+            this.props.updateCart(cartItem);
+            console.log(q);
+        }
     };
 
     removeFromCart = () => {
         this.props.removeFromCart(this.props.cartItem);
+        NotiInfo("Đã xóa sản phẩm khỏi giỏ hàng!");
     };
 
     onChange = (event) => {
-        if (this.getQuantity() < Number(event.target.value)) {
-            return;
+        if (isNaN(event.target.value)) {
+            if (event.target.value === "") {
+                // this.setState({ qty: Number(1) });
+            } else {
+                this.setState({ qty: Number(1) });
+            }
+        } else if (!isNaN(event.target.value) && event.target.value > this.props.cartItem.amount) {
+            this.setState({
+                qty: this.props.cartItem.amount,
+            });
+        } else if (event.target.value == "0") {
+            // this.setState({ qty: Number(1) });
+        } else {
+            this.setState({
+                qty: event.target.value,
+            });
         }
-        var { cartItem } = this.props;
-        this.setState({
-            qty: event.target.value,
-        });
-        cartItem.qty = Number(event.target.value);
-        this.props.updateCart(cartItem);
     };
 
-    // getQuantity = () => {
-    //     var { productDetails } = this.props.cartItem.prod;
-    //     const qty = productDetails
-    //         .filter((val) => {
-    //             return (
-    //                 val.size === this.props.cartItem.size && val.color === this.props.cartItem.color
-    //             );
-    //         })
-    //         .map((val) => val.qty)[0];
-    //     return qty;
-    // };
+    tang = () => {
+        if (this.state.qty >= this.props.cartItem.amount) {
+            this.setState({ qty: this.props.cartItem.amount });
+        } else {
+            this.setState({
+                qty: this.state.qty + 1,
+            });
+        }
+    };
+
+    removeConfirm = () => {
+        let text = "Bạn muốn xóa sản phẩm khỏi giỏ hàng?";
+        if (window.confirm(text) == true) {
+            this.removeFromCart();
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    giam = () => {
+        if (this.state.qty <= 1) {
+            if (!this.removeConfirm()) {
+                this.setState({
+                    qty: 1,
+                });
+            }
+        } else {
+            this.setState({
+                qty: this.state.qty - 1,
+            });
+        }
+    };
 
     render() {
         var { cartItem } = this.props;
         return (
-            <tr className="border border-start-0 border-end-0 border-top-1 border-bottom-1">
+            <tr>
                 <td>
-                    <div className="row p-3">
-                        <div className="col-4">
-                            <img
-                                width="70%"
-                                alt="i am a product"
-                                src={"http://localhost:8080/file/read/" + cartItem.prod.image}
-                            />
-                        </div>
-                        <div className="col-8">
-                            <h6>{cartItem.prod.name}</h6>
-                            <div>
-                                {cartItem.prod.sale > 0 ? (
-                                    <del>{cartItem.prod.price}</del>
-                                ) : (
-                                    cartItem.prod.price
-                                )}
-                                $
+                    <div className="row p-2">
+                        <div className="col-3">
+                            <div className="cart-p-img d-flex justify-content-center align-items-center">
+                                <img
+                                    height="150px"
+                                    alt="i am a product"
+                                    src={"http://localhost:8080/file/read/" + cartItem.prod.image}
+                                />
                             </div>
-                            <div>{cartItem.prod.sale > 0 ? cartItem.prod.sale : ""}$</div>
-                            <span>Size: {cartItem.size}</span>
-                            &nbsp; | &nbsp;
-                            <span>Màu: {cartItem.color}</span>
+                        </div>
+                        <div className="col-9 d-flex flex-column justify-content-between">
+                            <div className="d-flex align-items-center justify-content-between">
+                                <b>{cartItem.prod.name}</b>
+                                <Link to="#">
+                                    <div onClick={this.removeFromCart} className="btn p-0">
+                                        <IoCloseSharp fontSize="24px" />
+                                    </div>
+                                </Link>
+                            </div>
+                            <div>
+                                Phiên bản: {cartItem.size} / {cartItem.color}
+                            </div>
+                            <div className="cart-p-quantity d-flex align-items-center justify-content-between pt-3">
+                                {cartItem.prod.sale > 0 ? (
+                                    <div className="d-flex flex-column">
+                                        <del style={{ color: "#888" }}>
+                                            {cartItem !== null &&
+                                                cartItem.prod !== null &&
+                                                cartItem.prod.price !== null &&
+                                                cartItem.prod.price.toLocaleString("vi-VN", {
+                                                    style: "currency",
+                                                    currency: "VND",
+                                                })}
+                                        </del>
+                                        <b>
+                                            {cartItem.prod.sale.toLocaleString("vi-VN", {
+                                                style: "currency",
+                                                currency: "VND",
+                                            })}
+                                        </b>
+                                    </div>
+                                ) : (
+                                    <b>
+                                        {cartItem.prod.price.toLocaleString("vi-VN", {
+                                            style: "currency",
+                                            currency: "VND",
+                                        })}
+                                    </b>
+                                )}
+                                <div className="p-quantity d-flex justify-content-center">
+                                    <div className="btn" onClick={this.giam}>
+                                        <AiOutlineMinus />
+                                    </div>
+                                    <input
+                                        className="p-0"
+                                        type="text"
+                                        name="quantity"
+                                        value={this.state.qty}
+                                        onChange={this.onChange}
+                                    />
+                                    <div className="btn" onClick={this.tang}>
+                                        <AiOutlinePlus />
+                                    </div>
+                                </div>
+                                <b className="total text-end" style={{ width: "100px" }}>
+                                    {cartItem.prod.sale
+                                        ? (cartItem.prod.sale * this.state.qty).toLocaleString(
+                                              "vi-VN",
+                                              {
+                                                  style: "currency",
+                                                  currency: "VND",
+                                              }
+                                          )
+                                        : (cartItem.prod.price * this.state.qty).toLocaleString(
+                                              "vi-VN",
+                                              {
+                                                  style: "currency",
+                                                  currency: "VND",
+                                              }
+                                          )}
+                                </b>
+                            </div>
                         </div>
                     </div>
                 </td>
-                <td className="p-3">
-                    <input
-                        type="number"
-                        className="border border-1 border-dark w-50 mb-3"
-                        min={1}
-                        value={this.state.qty}
-                        onChange={this.onChange}
-                    />
-                    {/* <span>&nbsp;{`Kho: ${this.getQuantity()}`}</span> */}
-                    <div>Total: {cartItem.prod.price * cartItem.qty}$</div>
-                </td>
-                <td>
-                    <button onClick={this.removeFromCart} className="btn">
-                        <i className="bi bi-x-circle"></i>
-                    </button>
-                </td>
+                <td className="p-3"></td>
             </tr>
         );
     }

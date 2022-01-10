@@ -1,32 +1,26 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsCartDash, BsSearch } from "react-icons/bs";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaFacebook, FaInstagram, FaUserCircle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { clearCart, setAuth } from "../../actions";
 import "../../css/header/navtop.scss";
 import logo from "../../img/sges.jpg";
 import logoText from "../../img/sgesText.png";
-import SupCateService from "../../services/guestservice/SupCateService";
-import { FaUserCircle } from "react-icons/fa";
 import ProfileService from "../../services/guestservice/ProfileService";
-import { useDispatch } from "react-redux";
-import { setAuth } from "../../actions";
+import SupCateService from "../../services/guestservice/SupCateService";
 import { NotiInfo } from "../noti/Noti";
 
 const NavTop = () => {
     const auth = useSelector((state) => state.auth);
     const cart = useSelector((state) => state.cart);
-
     const dispatch = useDispatch();
+    const searched = useRef();
 
     let { cId } = useParams();
-
-    // const [categories, setCategories] = useState([]);
-
     const [supCate, setSupCate] = useState([]);
-
-    const [isLogOut, setIsLogOut] = useState(false);
+    const [productName, setProductName] = useState("");
+    const [isShow, setIsShow] = useState(false);
 
     const findAll = () => {
         SupCateService.findAll()
@@ -58,12 +52,46 @@ const NavTop = () => {
     const logout = () => {
         ProfileService.logout();
         dispatch(setAuth(null));
+        dispatch(clearCart());
         NotiInfo("Bạn đã đăng xuất khỏi hệ thống!");
     };
 
+    const [quantity, setQuantity] = useState(0);
+
+    const countItem = (arr) => {
+        var q = 0;
+        arr.map((value) => {
+            q += value.qty;
+        });
+        return q;
+    };
+
+    const searchOnChange = (event) => {
+        setProductName(event.target.value);
+    };
+
+    const onsearch = () => {
+        setIsShow(false);
+        setProductName("");
+    };
+
+    const resetOnClick = (event) => {
+        if (searched.current.contains(event.target)) {
+            setIsShow(true);
+            return;
+        }
+        setProductName("");
+        setIsShow(false);
+    };
+
     useEffect(() => {
+        setQuantity(countItem(cart));
         findAll();
-    }, [isLogOut]);
+        document.addEventListener("mousedown", resetOnClick);
+        return () => {
+            document.removeEventListener("mousedown", resetOnClick);
+        };
+    }, [cart]);
 
     return (
         <>
@@ -118,7 +146,12 @@ const NavTop = () => {
                                     >
                                         <div className="btn">
                                             {auth.photo ? (
-                                                <img src={auth.photo} />
+                                                <img
+                                                    src={
+                                                        "http://localhost:8080/file/read/" +
+                                                        auth.photo
+                                                    }
+                                                />
                                             ) : (
                                                 <FaUserCircle />
                                             )}
@@ -151,7 +184,7 @@ const NavTop = () => {
                                         <li>
                                             <Link
                                                 className="dropdown-item text-danger"
-                                                to="/"
+                                                to="/login"
                                                 onClick={logout}
                                             >
                                                 Đăng xuất
@@ -251,31 +284,53 @@ const NavTop = () => {
                             </div>
                         </div>
                         <div className="col-3 text-end col-right p-0">
-                            <div className="drop-down">
-                                <Link to="#" className="search-link">
-                                    <div className="btn btn-search">
-                                        <span className="search-icon">
-                                            <BsSearch />
-                                        </span>
-                                    </div>
-                                </Link>
-                                `
-                                {/* <div className="drop-down-content">
-                                    <Link to={"/shop/category/"}>
-                                        <div className="btn sub-title">sdfsdfsdf</div>
+                            <div className="search-ft" ref={searched}>
+                                <div className="drop-down">
+                                    <Link to="#" className="subtitle-link" onClick={resetOnClick}>
+                                        <div className="btn btn-search">
+                                            <span className="search-icon">
+                                                <BsSearch />
+                                            </span>
+                                        </div>
                                     </Link>
-                                </div> */}
-                                `
+                                    <div
+                                        className="drop-down-content p-4"
+                                        style={{
+                                            backgroundColor: "white",
+                                            height: "100px",
+                                            display: isShow ? "" : "none",
+                                        }}
+                                    >
+                                        <div className="search-input h-100">
+                                            <input
+                                                type="text"
+                                                placeholder="Nhập tên sản phẩm"
+                                                onChange={searchOnChange}
+                                                value={productName}
+                                            />
+                                            <form>
+                                                <Link
+                                                    to={"/shop/product-search/" + productName}
+                                                    onClick={onsearch}
+                                                >
+                                                    <div className="btn btn-search-2 p-0 d-flex justify-content-center align-items-center">
+                                                        <span className="search-icon">
+                                                            Tìm kiếm
+                                                        </span>
+                                                    </div>
+                                                </Link>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <span>|</span>
-                            <Link to="/cart">
+                            {/* <span>|</span> */}
+                            <Link to={auth ? "/cart" : "/login"} className="cart">
                                 <div className="btn">
                                     <span className="cart-icon">
                                         <BsCartDash />
                                     </span>
-                                    <span className="cart-qty">
-                                        {cart && cart.length ? cart.length : 0}
-                                    </span>
+                                    <span className="cart-qty">{quantity}</span>
                                 </div>
                             </Link>
                         </div>

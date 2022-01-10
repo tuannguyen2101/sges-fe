@@ -19,9 +19,9 @@ const Noti = () => {
     );
 };
 
-export const NotiSuccess = (message) => {
+export const NotiSuccess = (message, position) => {
     return toast.success(message, {
-        position: "top-right",
+        position: position ? position : "top-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -31,9 +31,9 @@ export const NotiSuccess = (message) => {
     });
 };
 
-export const NotiError = (message) => {
+export const NotiError = (message, position) => {
     return toast.error(message, {
-        position: "top-right",
+        position: position ? position : "top-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -43,9 +43,21 @@ export const NotiError = (message) => {
     });
 };
 
-export const NotiInfo = (message) => {
+export const NotiInfo = (message, position) => {
     toast.info(message, {
-        position: "top-right",
+        position: position ? position : "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+};
+
+export const NotiWarring = (message, position) => {
+    toast.warn(message, {
+        position: position ? position : "top-left",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

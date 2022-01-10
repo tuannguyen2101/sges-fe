@@ -58,7 +58,6 @@ const CustomerIndex = () => {
                     <div className="p-4 row" />
                     <div className="dropdown-divider"></div>
                     <CustomerItem />
-                    <Noti />
                     <Paginate
                         thisPageProps={thisPage}
                         prevOnClickProps={prevOnClick}

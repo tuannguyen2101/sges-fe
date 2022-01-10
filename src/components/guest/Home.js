@@ -129,17 +129,31 @@ const Home = () => {
                             <ProductItem product={productNews} width="25%" />
                         </div>
                     </div>
+                    <div className="p-3 text-center">
+                        <Link to="/shop">
+                            <div className="btn">
+                                <span>Xem thêm</span>
+                            </div>
+                        </Link>
+                    </div>
                 </div>
                 <div className="sges-product-new container py-2">
-                    <div className="py-5 d-flex justify-content-center">
+                    <div className="pb-5 d-flex justify-content-center">
                         <div className="title d-flex justify-content-center align-item-center py-2 w-100">
                             <img src={sanphambanchayTitle} alt="" />
                         </div>
                     </div>
                     <div className="content d-flex">
                         <div className="row m-0">
-                            <ProductItem product={sanPhamBanChay} width="25%" minHeight={"300px"} />
+                            <ProductItem product={sanPhamBanChay} width="25%" />
                         </div>
+                    </div>
+                    <div className="p-3 text-center">
+                        <Link to="/shop">
+                            <div className="btn">
+                                <span>Xem thêm</span>
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>
