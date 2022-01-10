@@ -1,6 +1,6 @@
 // let base64 = require("base-64");
-export default {
-    findAll: (n, s) => {
+class CategoryService {
+    findAll = (n, s) => {
         // debugger
         if (n === undefined) {
             n = 0;
@@ -19,9 +19,9 @@ export default {
             redirect: "follow",
         };
         return fetch("http://localhost:8080/staff/category?n=" + n + "&s=" + s, requestOptions);
-    },
+    };
 
-    findById: (id, auth) => {
+    findById = (id, auth) => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
@@ -32,9 +32,9 @@ export default {
             redirect: "follow",
         };
         return fetch("http://localhost:8080/staff/category/" + id, requestOptions);
-    },
+    };
 
-    create: (newCategory) => {
+    create = (newCategory) => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
@@ -53,9 +53,9 @@ export default {
         };
 
         return fetch("http://localhost:8080/staff/category", requestOptions);
-    },
+    };
 
-    update: (newData) => {
+    update = (newData) => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
@@ -76,9 +76,9 @@ export default {
         };
 
         return fetch("http://localhost:8080/staff/category", requestOptions);
-    },
+    };
 
-    delete: (id) => {
+    delete = (id) => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
@@ -91,5 +91,7 @@ export default {
             redirect: "follow",
         };
         return fetch(`http://localhost:8080/staff/category/${id}`, requestOptions);
-    },
-};
+    };
+}
+
+export default new CategoryService();

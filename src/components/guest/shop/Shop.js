@@ -19,7 +19,7 @@ const Shop = () => {
 
     const dispatch = useDispatch();
 
-    let { id } = useParams();
+    let { id, name } = useParams();
 
     const [page, setPage] = useState({});
 
@@ -36,22 +36,34 @@ const Shop = () => {
         let { n, s, p, d } = dataFind;
         if (id !== undefined && id !== null && id !== "") {
             productService
-                .findProduct(id, n, s, p, d)
+                .findProduct(id, "", n, s, p, d)
                 .then((response) => response.json())
                 .then((result) => {
                     setPage(result);
+
                     dispatch(findAll(result));
                 })
                 .catch((error) => console.log("error", error));
         } else {
-            productService
-                .findProduct("", n, s, p, d)
-                .then((response) => response.json())
-                .then((result) => {
-                    setPage({ result });
-                    dispatch(findAll(result));
-                })
-                .catch((error) => console.log("error", error));
+            if (name !== undefined && name !== null && name !== "") {
+                productService
+                    .findProduct("", name, n, s, p, d)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        setPage({ result });
+                        dispatch(findAll(result));
+                    })
+                    .catch((error) => console.log("error", error));
+            } else {
+                productService
+                    .findProduct("", "", n, s, p, d)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        setPage({ result });
+                        dispatch(findAll(result));
+                    })
+                    .catch((error) => console.log("error", error));
+            }
         }
     };
 
@@ -122,7 +134,7 @@ const Shop = () => {
     useEffect(() => {
         getAll();
         findAllCategory();
-    }, [id, dataFind]);
+    }, [id, name, dataFind]);
 
     return (
         <div className="sges-shop">

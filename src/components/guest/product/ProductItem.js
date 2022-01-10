@@ -14,13 +14,13 @@ const ProductItem = ({ product, width, minHeight }) => {
                             key={index}
                             style={{ width: width, minWidth: "20%" }}
                         >
-                            <Link to={"/product/" + value.id}>
+                            <Link to={value.id ? "/product/" + value.id : "#"}>
                                 <div className="card">
                                     <div className="p-img">
                                         <img
                                             src={"http://localhost:8080/file/read/" + value.image}
                                             className="card-img-top"
-                                            alt={value.name}
+                                            alt={value.name ? value.name : ""}
                                             onError={(e) => {
                                                 e.target.onerror = null;
                                                 e.target.src =
@@ -28,31 +28,37 @@ const ProductItem = ({ product, width, minHeight }) => {
                                             }}
                                             style={{ minHeight: minHeight }}
                                         />
-                                        {value.status == 2 ? (
-                                            <img
-                                                src={newIcon}
-                                                className="new-icon"
-                                                alt=""
-                                                height="58px"
-                                            />
+                                        {value.status ? (
+                                            value.status == 2 ? (
+                                                <img
+                                                    src={newIcon}
+                                                    className="new-icon"
+                                                    alt=""
+                                                    height="58px"
+                                                />
+                                            ) : null
                                         ) : null}
                                     </div>
                                     <div className="card-body d-grid">
                                         <p className="card-text p-title" style={{ width: "100%" }}>
-                                            {value.name}
+                                            {value.name ? value.name : ""}
                                         </p>
                                         <p className="card-text p-price">
                                             <span className="price-price">
-                                                {value.price.toLocaleString("vi-VN", {
-                                                    style: "currency",
-                                                    currency: "VND",
-                                                })}
+                                                {value.price
+                                                    ? value.price.toLocaleString("vi-VN", {
+                                                          style: "currency",
+                                                          currency: "VND",
+                                                      })
+                                                    : null}
                                             </span>
                                             <span className="price-sale">
-                                                {value.sale.toLocaleString("vi-VN", {
-                                                    style: "currency",
-                                                    currency: "VND",
-                                                })}
+                                                {value.sale
+                                                    ? value.sale.toLocaleString("vi-VN", {
+                                                          style: "currency",
+                                                          currency: "VND",
+                                                      })
+                                                    : null}
                                             </span>
                                         </p>
                                     </div>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { setAuth } from "./actions";
+import { addToCart, setAuth } from "./actions";
 import Authorized from "./components/admin/Authorized";
 import Sges from "./components/guest/Sges";
 import Noti from "./components/noti/Noti";
@@ -18,6 +18,7 @@ import ThongKe from "./components/staff/thongke/ThongKe";
 
 const App = () => {
     const auth = useSelector((state) => state.auth);
+    const cartv2 = useSelector((state) => state.cartv2);
 
     const dispatch = useDispatch();
 
@@ -49,6 +50,7 @@ const App = () => {
                 .then((response) => response.text())
                 .then((result) => {
                     let user = JSON.parse(result);
+                    console.log(user);
                     let auth = {
                         id: user.id,
                         username: user.username,
@@ -58,6 +60,22 @@ const App = () => {
                         roles: user.roles,
                     };
                     dispatch(setAuth(auth));
+                    var cartString = localStorage.getItem(auth.username);
+                    var gioHang = [];
+                    if (cartString && cartString !== "undefined") {
+                        gioHang = JSON.parse(cartString);
+                    }
+                    gioHang.map((value) => {
+                        dispatch(
+                            addToCart({
+                                prod: value.prod,
+                                size: value.size,
+                                color: value.color,
+                                amount: value.amount,
+                                qty: value.qty,
+                            })
+                        );
+                    });
                 })
                 .catch((error) => console.log("error", error));
         }

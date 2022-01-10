@@ -10,105 +10,107 @@ import {
     SET_PROD_DETAIL,
     UPDATE_CART,
     UPDATE_PRODUCT,
-    SET_MYORDERS, SET_AUTH, REMOVE_ORDER
-} from "../constants/constants"
+    SET_MYORDERS,
+    SET_AUTH,
+    REMOVE_ORDER,
+    CLEAR_CART,
+} from "../constants/constants";
 
 export const setProds = (prods) => {
     return {
         type: SET_PRODS,
-        prods
-    }
-}
+        prods,
+    };
+};
 
 export const setProdDetail = (prod) => {
     return {
         type: SET_PROD_DETAIL,
-        prod
-    }
-}
-
-export const setCart = (cart) => {
-    return {
-        type: SET_CART,
-        cart
-    }
-}
+        prod,
+    };
+};
 
 export const addToCart = (cartItem) => {
     return {
         type: ADD_TO_CART,
-        cartItem
-    }
-}
+        cartItem,
+    };
+};
 
 export const updateCart = (cartItem) => {
     return {
         type: UPDATE_CART,
-        cartItem
-    }
-}
+        cartItem,
+    };
+};
 
 export const removeFromCart = (cartItem) => {
     return {
         type: REMOVE_FROM_CART,
-        cartItem
-    }
-}
+        cartItem,
+    };
+};
+
+export const clearCart = () => {
+    return {
+        type: CLEAR_CART,
+    };
+};
 
 export const setMyOrders = (orders) => {
     return {
         type: SET_MYORDERS,
-        orders
-    }
-}
+        orders,
+    };
+};
 
 export const setAuth = (auth) => {
     return {
         type: SET_AUTH,
-        auth
-    }
-}
+        auth,
+    };
+};
 
 export const removeOrder = (order) => {
     return {
         type: REMOVE_ORDER,
-        order
-    }
-}
+        order,
+    };
+};
 
 /// staff/products
 
 export const setProducts = (products) => {
     return {
         type: SET_PRODUCTS,
-        products
-    }
-}
+        products,
+    };
+};
 
 export const changeStatusProduct = (product) => {
     return {
         type: CHANGE_STATUS_PRODUCT,
-        product
-    }
-}
+        product,
+    };
+};
 
 export const setProductDetail = (product) => {
     return {
         type: SET_PRODUCT_DETAIL,
-        product
-    }
-}
+        product,
+    };
+};
 
 export const addProduct = (product) => {
     return {
         type: ADD_PRODUCT,
-        product
-    }
-}
+        product,
+    };
+};
 
 export const updateProduct = (product) => {
     return {
         type: UPDATE_PRODUCT,
-        product
-    }
-}
+        product,
+    };
+};

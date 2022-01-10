@@ -27,3 +27,10 @@ export const UPDATE_CUSTOMER = "UPDATE_CUSTOMER";
 export const DELETE_CUSTOMER = "DELETE_CUSTOMER";
 
 export const GET_PAGE_PRODUCT = "GET_PAGE_PRODUCT";
+
+export const GET_CART_ITEM = "GET_CART_ITEM";
+export const ADD_CART_ITEM = "ADD_CART_ITEM";
+export const UPDATE_CART_ITEM = "UPDATE_CART_ITEM";
+export const DELETE_CART_ITEM = "DELETE_CART_ITEM";
+
+export const CLEAR_CART = "CLEAR_CART";

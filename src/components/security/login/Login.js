@@ -1,17 +1,11 @@
-import { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { addToCart, setAuth } from "../../../actions";
 import googleLogo from "../../../img/google.png";
 import LoginService from "../../../services/loginservice/LoginService";
+import { NotiError, NotiSuccess } from "../../noti/Noti";
 import "./../../../css/login.scss";
-
-import React from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
-import { setAuth } from "../../../actions";
-import { Navigate } from "react-router-dom";
-import PrivateRoute from "../../staff/PrivateRoute";
 
 const Login = () => {
     const auth = useSelector((state) => state.auth);
@@ -68,6 +62,23 @@ const Login = () => {
                             };
                             dispatch(setAuth(auth));
                             console.log("auth", auth);
+                            dispatch(setAuth(auth));
+                            var cartString = localStorage.getItem(auth.username);
+                            var gioHang = [];
+                            if (cartString && cartString !== "undefined") {
+                                gioHang = JSON.parse(cartString);
+                            }
+                            gioHang.map((value) => {
+                                dispatch(
+                                    addToCart({
+                                        prod: value.prod,
+                                        size: value.size,
+                                        color: value.color,
+                                        amount: value.amount,
+                                        qty: value.qty,
+                                    })
+                                );
+                            });
                         })
                         .catch((error) => {
                             NotiError("Tài khoản hoặc mật khẩu không chính xác!");
@@ -83,7 +94,7 @@ const Login = () => {
         if (username !== "" && password !== "") {
             return true;
         } else {
-            NotiError("Username và Pasword không được để trống ");
+            NotiError("Username và Pasword không được để trống!");
             return false;
         }
     };
@@ -92,7 +103,6 @@ const Login = () => {
         <Navigate to="/" />
     ) : (
         <div className="login p-5">
-            <Noti />
             <div className="container d-flex justify-content-center">
                 <div className="card col-5">
                     <div className="p-4">

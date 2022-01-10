@@ -1,5 +1,5 @@
 export default {
-    findProduct: (cId, n, s, p, d) => {
+    findProduct: (cId, name, n, s, p, d) => {
         var requestOptions = {
             method: "GET",
             redirect: "follow",
@@ -8,6 +8,8 @@ export default {
         return fetch(
             "http://localhost:8080/guest/product?cId=" +
                 cId +
+                "&name=" +
+                name +
                 "&n=" +
                 n +
                 "&s=" +

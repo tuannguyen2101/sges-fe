@@ -1,4 +1,6 @@
 import React from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "../../css/sges/sges.scss";
 import NotFound from "../notfound/NotFound";
@@ -15,11 +17,22 @@ import Footer from "./Footer";
 import Home from "./Home";
 import MyOrders from "./MyOrders";
 import NavTop from "./NavTop";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "./product/ProductDetail";
 import Shop from "./shop/Shop";
 import Visit from "./Visit";
 
 const Sges = () => {
+    const cart = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
+
+    const setStorage = (asod) => {
+        return auth ? localStorage.setItem(auth.username, JSON.stringify(asod)) : null;
+    };
+
+    useEffect(() => {
+        setStorage(cart);
+    }, [cart, auth]);
+
     return (
         <>
             <NavTop />
@@ -29,6 +42,7 @@ const Sges = () => {
                     <Route path="login" element={<Login />} />
                     <Route path="/shop/*" element={<Shop />}>
                         <Route path="category/:id" element={<Shop />} />
+                        <Route path="product-search/:name" element={<Shop />} />
                     </Route>
                     <Route path="product/:id" element={<ProductDetail />} />
                     <Route path="cart" element={<Cart />} />
