@@ -4,7 +4,7 @@ import Linechart from "./Linechart";
 import Piechart from "./Piechart";
 import "./thongke.css";
 
-export default function ThongKe() {
+export default function Thongke() {
     return (
         <div>
             <h3 className="dashboard">Dashboard</h3>
