@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ExportReactCSV } from "./ExportReactCSV";
 import OrderItem from "./OrderItem";
 let base64 = require("base-64");
 export default class OrderList extends Component {
@@ -6,6 +7,7 @@ export default class OrderList extends Component {
         super(props);
         this.state = {
             orderList: [],
+            fileName: 'Order List'
         };
     }
 
@@ -64,6 +66,7 @@ export default class OrderList extends Component {
                     </thead>
                     <tbody>{element}</tbody>
                 </table>
+                <ExportReactCSV csvData={this.state.orderList} fileName={this.state.fileName} />
             </div>
         );
     }
