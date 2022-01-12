@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import "../../css/sges/sges.scss";
 import NotFound from "../notfound/NotFound";
 import Login from "../security/login/Login";
+import Signup from "../security/login/Signup";
+import ForgotPassword from "../security/login/ForgotPassword";
 import ChangePassword from "../security/profile/ChangePassword";
 import Profile from "../security/profile/Profile";
 import ProfileRead from "../security/profile/ProfileRead";
@@ -27,6 +29,8 @@ const Sges = () => {
                 <Routes>
                     <Route path="" element={<Home />} />
                     <Route path="login" element={<Login />} />
+                    <Route path="Signup" element={<Signup />} />
+                    <Route path="ForgotPassword" element={<ForgotPassword />} />
                     <Route path="/shop/*" element={<Shop />}>
                         <Route path="category/:id" element={<Shop />} />
                     </Route>
