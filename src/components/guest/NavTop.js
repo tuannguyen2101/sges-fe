@@ -164,17 +164,13 @@ const NavTop = () => {
                                         <li>
                                             <Link
                                                 className="dropdown-item"
-                                                to={
-                                                    auth
-                                                        ? "/myprofile/" + auth.username
-                                                        : "/myprofile/"
-                                                }
+                                                to={auth ? "/user/" + auth.username : "/user/"}
                                             >
                                                 Tài khoản của tôi
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link className="dropdown-item" to="/myorder">
+                                            <Link className="dropdown-item" to="/user/purchase">
                                                 Đơn mua
                                             </Link>
                                         </li>

@@ -85,6 +85,7 @@ const Shop = () => {
     const findByDate = () => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "create_date",
         });
     };
@@ -92,6 +93,7 @@ const Shop = () => {
     const findBySold = () => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "sold",
         });
     };
@@ -99,6 +101,7 @@ const Shop = () => {
     const sortBySale = (event) => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "sale",
             d: event.target.value,
         });
@@ -199,6 +202,12 @@ const Shop = () => {
                                                         <Link
                                                             className="dropdown-item"
                                                             to={"/shop/category/" + value.id}
+                                                            onClick={() =>
+                                                                setDataFind({
+                                                                    ...dataFind,
+                                                                    n: 0,
+                                                                })
+                                                            }
                                                         >
                                                             {value.name}
                                                         </Link>
@@ -256,7 +265,7 @@ const Shop = () => {
                     </div>
                 </div>
                 <div className="container">
-                    <div className="item-content d-flex justify-content-center">
+                    <div className="item-content d-flex justify-content-center mb-5">
                         <div className="row m-0 w-100">
                             <ProductItem
                                 product={product.content}

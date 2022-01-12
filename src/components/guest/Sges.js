@@ -6,6 +6,7 @@ import "../../css/sges/sges.scss";
 import NotFound from "../notfound/NotFound";
 import Login from "../security/login/Login";
 import ChangePassword from "../security/profile/ChangePassword";
+import Purchase from "../security/profile/order/Purchase";
 import Profile from "../security/profile/Profile";
 import ProfileRead from "../security/profile/ProfileRead";
 import UpdateProfile from "../security/profile/UpdateProfile";
@@ -51,8 +52,9 @@ const Sges = () => {
                     <Route path="about" element={<AboutUs />} />
 
                     <Route path="myorder" element={<MyOrders />} />
-                    <Route path="/myprofile/*" element={<Profile />}>
-                        <Route path="/myprofile/*" element={<PrivateRoute />}>
+                    <Route path="/user/*" element={<Profile />}>
+                        <Route path="/user/*" element={<PrivateRoute />}>
+                            <Route path="purchase" element={<Purchase />} />
                             <Route path=":username" element={<ProfileRead />} />
                             <Route path=":username/update" element={<UpdateProfile />} />
                             <Route path=":username/change-password" element={<ChangePassword />} />

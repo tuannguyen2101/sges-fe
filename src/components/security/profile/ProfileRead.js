@@ -72,7 +72,7 @@ const ProfileRead = () => {
                             <div className="col-4 label"></div>
                             <div className="col-8" style={{ paddingRight: "0" }}>
                                 <Link
-                                    to={"/myprofile/" + auth.username + "/update"}
+                                    to={"/user/" + auth.username + "/update"}
                                     className="save-btn"
                                 >
                                     <div className="btn">Chỉnh sửa</div>

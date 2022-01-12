@@ -1,0 +1,51 @@
+.sges-purchase {
+    margin: -17px -2px;
+    .container {
+        .purchase-main {
+            .nav-purchase {
+                position: sticky;
+                top: 84px;
+                z-index: 200;
+                .nav-tabs {
+                    display: flex;
+                    justify-content: space-evenly;
+                    .nav-link {
+                        height: 64px;
+                        line-height: 64px;
+                        padding: 0;
+                        width: calc(100% / 6);
+                        text-align: center;
+                        color: #333333;
+                        border: 2px solid;
+                        border-right: 0;
+                        border-left: 0;
+                        border-top: 0;
+                        font-weight: 600;
+                        &:hover {
+                            color: #1e96e6;
+                            border-color: #fff;
+                        }
+                    }
+                }
+            }
+            .tab-content {
+                .tab-pane {
+                    .purchase-body {
+                        background-color: #f5f5f5;
+                        .purchase-item {
+                            background-color: #fff;
+                            &:hover {
+                                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                            }
+                            .item-content {
+                                img {
+                                    object-fit: cover;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

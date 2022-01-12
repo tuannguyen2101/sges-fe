@@ -34,3 +34,5 @@ export const UPDATE_CART_ITEM = "UPDATE_CART_ITEM";
 export const DELETE_CART_ITEM = "DELETE_CART_ITEM";
 
 export const CLEAR_CART = "CLEAR_CART";
+
+export const GET_ALL_PURCHASE = "GET_ALL_PURCHASE";

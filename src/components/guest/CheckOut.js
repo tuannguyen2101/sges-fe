@@ -13,6 +13,7 @@ import { BsPaypal } from "react-icons/bs";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import MyOrdersService from "../../services/guestservice/MyOrdersService";
 import { clearCart } from "../../actions";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 const CheckOut = () => {
     const auth = useSelector((state) => state.auth);
@@ -303,16 +304,20 @@ const CheckOut = () => {
     };
 
     // Đặt hàng ===========================================================================================
-    const order = (status) => {
+    const order = (payment) => {
         let order = {
             id: -1,
             accountId: auth ? auth.id : info.id,
             createDate: new Date(),
-            address: info.address,
+            address: info.address + ", " + wardKey + ", " + districtKey + ", " + provinceKey,
             name: info.fullName,
             phone: info.phone,
             email: info.email,
-            status: status,
+            transportFee: feeOfOrder ? feeOfOrder.data.total : 0,
+            tienHang: total.tth,
+            tongThanhToan: total.ttt,
+            status: 0,
+            payment: payment,
         };
         console.log(order);
         MyOrdersService.addOrder(order)
@@ -325,7 +330,7 @@ const CheckOut = () => {
                         id: -1,
                         orderId: order.id,
                         productId: val.prod.id,
-                        price: val.prod.price,
+                        price: val.prod.sale > 0 ? val.prod.sale : val.prod.price,
                         size: val.size,
                         color: val.color,
                         quantity: val.qty,
@@ -337,13 +342,14 @@ const CheckOut = () => {
                         .then((result) => {
                             console.log(result);
                             dispatch(clearCart());
+                            localStorage.removeItem(auth.username);
                         })
                         .catch((error) => {
                             console.log("error", error);
                         });
                 }
-                NotiSuccess("Bạn đã đặt hàng thành công!");
-                navigate("/cart");
+                NotiSuccess("Đặt hàng thành công!");
+                navigate("/user/purchase");
             })
             .catch((error) => {
                 console.log("error", error);
@@ -352,8 +358,8 @@ const CheckOut = () => {
             });
     };
 
-    const callBackFunction = (sts) => {
-        order(sts);
+    const callBackFunction = (isPay) => {
+        order(isPay);
     };
 
     const checkInfo = () => {
@@ -362,7 +368,9 @@ const CheckOut = () => {
             info.email !== "" &&
             info.phone !== "" &&
             info.address !== "" &&
-            feeOfOrder !== null
+            feeOfOrder !== null &&
+            total.tth > 0 &&
+            total.ttt > 0
         ) {
             return true;
         }
@@ -382,11 +390,10 @@ const CheckOut = () => {
     const onPay = () => {
         if (checkInfo()) {
             setPaym(true);
-            setShowPayPal(false);
+            setShowPayPal(true);
         } else {
             NotiWarring("Bạn hãy điền đầy đủ thông tin trước khi thanh toán!");
             setShowPayPal(false);
-            setPaym(false);
         }
     };
 
@@ -496,7 +503,7 @@ const CheckOut = () => {
                                                 onChange={changeInfo}
                                                 value={info.address}
                                                 variant="standard"
-                                                label="Địa chỉ"
+                                                label="Địa chỉ chi tiết"
                                             />
                                         </div>
                                     </div>
@@ -787,7 +794,7 @@ const CheckOut = () => {
                                                             ? "2px solid #1e96e6"
                                                             : "2px solid #d5d5d5",
                                                 }}
-                                                onClick={onPay}
+                                                onClick={() => setPaym(true)}
                                             >
                                                 <div
                                                     className="btn"
@@ -959,7 +966,7 @@ const CheckOut = () => {
                                                         backgroundColor: "#1e96e6",
                                                         borderRadius: "2px",
                                                     }}
-                                                    onClick={() => setShowPayPal(true)}
+                                                    onClick={onPay}
                                                 >
                                                     <div className="btn" style={{ color: "#fff" }}>
                                                         <span>{"Đặt hàng và thanh toán"}</span>
@@ -1093,6 +1100,19 @@ const CheckOut = () => {
                                                     </h5>
                                                 </span>
                                             </div>
+                                        </div>
+                                        <div className="py-2 text-end w-100">
+                                            <Link to="/cart">
+                                                <div
+                                                    className="btn p-0"
+                                                    style={{ color: "#1774b3" }}
+                                                >
+                                                    <IoArrowBackSharp />
+                                                    <small style={{ marginLeft: "8px" }}>
+                                                        Quay lại giỏ hàng
+                                                    </small>
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

@@ -171,7 +171,7 @@ const UpdateProfile = () => {
                                     auth.email !== currentProfile.email ||
                                     auth.photo !== currentProfile.photo ? (
                                         <Link
-                                            to={"/myprofile/" + currentProfile.username}
+                                            to={"/user/" + currentProfile.username}
                                             className="save-btn"
                                             onClick={update}
                                         >
@@ -191,7 +191,7 @@ const UpdateProfile = () => {
                                     )
                                 ) : null}
                                 {currentProfile ? (
-                                    <Link className="mx-3" to={"/myprofile/" + auth.username}>
+                                    <Link className="mx-3" to={"/user/" + auth.username}>
                                         <div className="btn">Hủy</div>
                                     </Link>
                                 ) : null}

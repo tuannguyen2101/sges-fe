@@ -1,13 +1,14 @@
-import { SET_PRODS } from "../../constants/constants"
+import { SET_PRODS } from "../../constants/constants";
 
-const prods = []
+const prods = [];
 
 const myReducer = (state = prods, action) => {
-    switch(action.type) {
-        case SET_PRODS : {
+    switch (action.type) {
+        case SET_PRODS: {
             return action.prods;
         }
-        default: return state;
+        default:
+            return state;
     }
-}
+};
 export default myReducer;

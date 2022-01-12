@@ -1,6 +1,7 @@
 .sges-header {
     background-color: #fff;
     height: 40px;
+    z-index: 1100;
     .btn {
         border: none;
     }
@@ -41,7 +42,7 @@
     background-color: #08283d;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 500;
     .navbar {
         display: flex;
         align-items: center;

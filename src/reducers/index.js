@@ -12,6 +12,8 @@ import customer from "./staffreducer/customer";
 import product from "./guestreducer/product";
 import actionProduc from "./staffreducer/actionProduct";
 import cartv2 from "./guestreducer/cartv2";
+import purchase from "./guestreducer/purchase";
+
 const myReducer = combineReducers({
     prods,
     prodDetail,
@@ -26,6 +28,7 @@ const myReducer = combineReducers({
     product,
     actionProduc,
     cartv2,
+    purchase,
 });
 
 export default myReducer;
