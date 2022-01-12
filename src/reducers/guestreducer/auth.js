@@ -1,15 +1,15 @@
-import {SET_AUTH} from "../../constants/constants";
+import { SET_AUTH } from "../../constants/constants";
 
 const auth = null;
 
 let myReducer = (state = auth, action) => {
     switch (action.type) {
-        case SET_AUTH : {
+        case SET_AUTH: {
             return action.auth;
         }
-        default: return state;
+        default:
+            return state;
     }
 };
 
 export default myReducer;
-

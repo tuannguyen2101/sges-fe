@@ -162,7 +162,7 @@ const Profile = ({ isUpdate, changepass }) => {
                             </div>
                         </div>
                         <div className="row m-0 sub-menu mt-4">
-                            <Link to="/myprofile">
+                            <Link to="/user">
                                 <div className="h-100 btn d-flex justify-content-center align-items-center">
                                     <div className="col-3 icon-submenu">
                                         <RiUserLine />

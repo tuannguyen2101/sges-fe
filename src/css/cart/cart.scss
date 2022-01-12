@@ -1,0 +1,27 @@
+.cart-sges {
+    .my-cart {
+        background-color: #fff;
+        .my-cart-title {
+            border-bottom: 1px solid #dfdfdf;
+        }
+    }
+    .cart-content {
+        background-color: #fff;
+    }
+    .order-info {
+        display: block;
+        position: sticky;
+        top: 84px;
+        z-index: 200;
+        height: 100%;
+        .order-title {
+            border-bottom: 1px solid #dfdfdf;
+        }
+        .total-order {
+            border-bottom: 1px solid #dfdfdf;
+        }
+        .order-btn {
+            background-color: #1e96e6;
+        }
+    }
+}

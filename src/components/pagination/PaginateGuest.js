@@ -5,14 +5,12 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const PaginateGuest = ({ page, prev, next, select }) => {
-    const p = useSelector((state) => state.product);
-
     const onSelect = (event) => {
         select(event.target.textContent - 1);
     };
 
     return (
-        <div className="paginate-guest py-3 mt-5">
+        <div className="paginate-guest py-3">
             <div className="paginate-content d-flex justify-content-center align-items-center">
                 <div className="row m-0">
                     <div className="col-auto">
@@ -24,15 +22,15 @@ const PaginateGuest = ({ page, prev, next, select }) => {
                                     </span>
                                 </div>
                             </div>
-                            {p.first !== true && (
+                            {page.first !== true && (
                                 <>
-                                    {p.last === true && (
+                                    {page.last === true && (
                                         <div className="page-number-btn" onClick={onSelect}>
-                                            <div className="btn">{p.number - 1}</div>
+                                            <div className="btn">{page.number - 1}</div>
                                         </div>
                                     )}
                                     <div className="page-number-btn" onClick={onSelect}>
-                                        <div className="btn">{p.number}</div>
+                                        <div className="btn">{page.number}</div>
                                     </div>
                                 </>
                             )}
@@ -41,17 +39,17 @@ const PaginateGuest = ({ page, prev, next, select }) => {
                                 style={{ border: "2px solid #1e96e6" }}
                             >
                                 <div className="btn" style={{ color: "#1e96e6" }}>
-                                    {p.number + 1}
+                                    {page.number + 1}
                                 </div>
                             </div>
-                            {p.last !== true && (
+                            {page.last !== true && (
                                 <>
                                     <div className="page-number-btn" onClick={onSelect}>
-                                        <div className="btn">{p.number + 2}</div>
+                                        <div className="btn">{page.number + 2}</div>
                                     </div>
-                                    {p.first == true && (
+                                    {page.first == true && (
                                         <div className="page-number-btn" onClick={onSelect}>
-                                            <div className="btn">{p.number + 3}</div>
+                                            <div className="btn">{page.number + 3}</div>
                                         </div>
                                     )}
                                 </>

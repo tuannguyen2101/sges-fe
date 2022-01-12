@@ -228,7 +228,6 @@ const CategoryIndex = () => {
                     <div className="p-4 row" />
                     <div className="dropdown-divider"></div>
                     <CategoryItem />
-                    <Noti />
                     <Paginate
                         thisPageProps={thisPage}
                         prevOnClickProps={prevOnClick}

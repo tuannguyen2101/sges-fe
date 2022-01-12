@@ -2,6 +2,9 @@ import axios from "axios";
 import {ArrowDownward, ArrowUpward} from '@material-ui/icons';
 import React, { useEffect, useState } from "react";
 import './thongke.css';
+import Modal from "./modal/Modal";
+import Modal1 from "./modal/Modal1";
+import Modal2 from "./modal/Modal2";
 
 
 // Thống kê doanh thu theo ngày, tháng, năm
@@ -17,7 +20,7 @@ export default function Linechart() {
       axios.get("http://localhost:8080/thongKe/getSalesByDay")
       .then(res=>{
           const datas = res.data;
-          // console.log("aaaaaa",datas)
+          console.log("aaaaaa",datas)
           datas.forEach(element => {
               days.push(element[1])
               // console.log(element[1])
@@ -67,8 +70,14 @@ export default function Linechart() {
       getDataMonth();
   },[])
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen1, setModalOpen1] = useState(false);
+  const [modalOpen2, setModalOpen2] = useState(false);
   return(
       <div className="thongke">
+          {modalOpen && <Modal setOpenModal={setModalOpen} days={days} />}
+          {modalOpen1 && <Modal1 setOpenModal1={setModalOpen1} weeks={weeks}/>}
+          {modalOpen2 && <Modal2 setOpenModal2={setModalOpen2} months={months}/>}
           <div className="thongkeItem">
               <span className="thongkeTitle">Doanh thu ngày</span>     
               <div className="thongkeMoneyContainer">
@@ -80,6 +89,11 @@ export default function Linechart() {
                       <span className="thongkeMoneyRate">+{((days[0]-days[1])/days[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>}
               </div>
               <span className="thongkeSub">So với hôm qua</span>
+              <div className="right openModalBtn"
+                onClick={() => {
+                setModalOpen(true);
+                }}>Chi tiết</div>
+                
           </div>    
           <div className="thongkeItem">
               <span className="thongkeTitle">Doanh thu tuần</span>     
@@ -91,6 +105,11 @@ export default function Linechart() {
                       <span className="thongkeMoneyRate">+{((weeks[0]-weeks[1])/weeks[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>}
               </div>
               <span className="thongkeSub">So với tuần trước</span>
+              <div className="right openModalBtn"
+                onClick={() => {
+                setModalOpen1(true);
+                }}>Chi tiết</div>
+                
           </div>  
           <div className="thongkeItem">
               <span className="thongkeTitle">Doanh thu tháng</span>     
@@ -107,7 +126,12 @@ export default function Linechart() {
                       <span className="thongkeMoneyRate">+{((months[0]-months[1])/months[1] * 100).toFixed(2)}%<ArrowUpward className="thongkeIconUp"/></span>} */}
               </div>
               <span className="thongkeSub">So với tháng trước</span>
-          </div>  
+              <div className="right openModalBtn"
+                onClick={() => {
+                setModalOpen2(true);
+                }}>Chi tiết</div>
+                
+          </div>                 
       </div>
   )
 }

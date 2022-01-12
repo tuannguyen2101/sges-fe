@@ -19,7 +19,7 @@ const Shop = () => {
 
     const dispatch = useDispatch();
 
-    let { id } = useParams();
+    let { id, name } = useParams();
 
     const [page, setPage] = useState({});
 
@@ -36,22 +36,34 @@ const Shop = () => {
         let { n, s, p, d } = dataFind;
         if (id !== undefined && id !== null && id !== "") {
             productService
-                .findProduct(id, n, s, p, d)
+                .findProduct(id, "", n, s, p, d)
                 .then((response) => response.json())
                 .then((result) => {
                     setPage(result);
+
                     dispatch(findAll(result));
                 })
                 .catch((error) => console.log("error", error));
         } else {
-            productService
-                .findProduct("", n, s, p, d)
-                .then((response) => response.json())
-                .then((result) => {
-                    setPage({ result });
-                    dispatch(findAll(result));
-                })
-                .catch((error) => console.log("error", error));
+            if (name !== undefined && name !== null && name !== "") {
+                productService
+                    .findProduct("", name, n, s, p, d)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        setPage({ result });
+                        dispatch(findAll(result));
+                    })
+                    .catch((error) => console.log("error", error));
+            } else {
+                productService
+                    .findProduct("", "", n, s, p, d)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        setPage({ result });
+                        dispatch(findAll(result));
+                    })
+                    .catch((error) => console.log("error", error));
+            }
         }
     };
 
@@ -73,6 +85,7 @@ const Shop = () => {
     const findByDate = () => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "create_date",
         });
     };
@@ -80,6 +93,7 @@ const Shop = () => {
     const findBySold = () => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "sold",
         });
     };
@@ -87,6 +101,7 @@ const Shop = () => {
     const sortBySale = (event) => {
         setDataFind({
             ...dataFind,
+            n: 0,
             p: "sale",
             d: event.target.value,
         });
@@ -122,7 +137,7 @@ const Shop = () => {
     useEffect(() => {
         getAll();
         findAllCategory();
-    }, [id, dataFind]);
+    }, [id, name, dataFind]);
 
     return (
         <div className="sges-shop">
@@ -187,6 +202,12 @@ const Shop = () => {
                                                         <Link
                                                             className="dropdown-item"
                                                             to={"/shop/category/" + value.id}
+                                                            onClick={() =>
+                                                                setDataFind({
+                                                                    ...dataFind,
+                                                                    n: 0,
+                                                                })
+                                                            }
                                                         >
                                                             {value.name}
                                                         </Link>
@@ -244,7 +265,7 @@ const Shop = () => {
                     </div>
                 </div>
                 <div className="container">
-                    <div className="item-content d-flex justify-content-center">
+                    <div className="item-content d-flex justify-content-center mb-5">
                         <div className="row m-0 w-100">
                             <ProductItem
                                 product={product.content}

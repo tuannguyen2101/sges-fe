@@ -1,12 +1,16 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, SET_CART, UPDATE_CART } from "../../constants/constants";
+import {
+    ADD_TO_CART,
+    CLEAR_CART,
+    REMOVE_FROM_CART,
+    SET_CART,
+    UPDATE_CART,
+} from "../../constants/constants";
 import _ from "lodash";
+
 const cart = [];
 
 const myReducer = (state = cart, action) => {
     switch (action.type) {
-        case SET_CART: {
-            return action.cart;
-        }
         case ADD_TO_CART: {
             var check = false;
             _.forEach(state, (val) => {
@@ -23,10 +27,13 @@ const myReducer = (state = cart, action) => {
                 return [...state].map((val) => {
                     return val.prod.id === action.cartItem.prod.id &&
                         val.size === action.cartItem.size &&
-                        val.color === action.cartItem.color
+                        val.color === action.cartItem.color &&
+                        val.amount === action.cartItem.amount
                         ? {
                               prod: val.prod,
                               size: val.size,
+                              color: val.color,
+                              amount: val.amount,
                               qty: Number(val.qty) + action.cartItem.qty,
                           }
                         : val;
@@ -35,7 +42,10 @@ const myReducer = (state = cart, action) => {
         }
         case UPDATE_CART: {
             return [...state].map((val) => {
-                return val.prod.id === action.cartItem.prod.id && val.size === action.cartItem.size
+                return val.prod.id === action.cartItem.prod.id &&
+                    val.size === action.cartItem.size &&
+                    val.color === action.cartItem.color &&
+                    val.amount >= action.cartItem.qty
                     ? action.cartItem
                     : val;
             });
@@ -49,6 +59,9 @@ const myReducer = (state = cart, action) => {
                     val.color !== action.cartItem.color
                 );
             });
+        }
+        case CLEAR_CART: {
+            return [];
         }
         default:
             return state;

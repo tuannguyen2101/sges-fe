@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import "../../css/product/productDetail.scss";
+import "../../../css/product/productDetail.scss";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
-import productService from "../../services/guestservice/productService";
+import productService from "../../../services/guestservice/productService";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../actions";
-import Noti, { NotiError, NotiSuccess } from "../noti/Noti";
+import { addToCart } from "../../../actions";
+import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
+import _ from "lodash";
+import ProductItem from "./ProductItem";
 
 const ProductDetail = () => {
-    const products = useSelector((state) => state.product);
+    const auth = useSelector((state) => state.auth);
+    const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     let { id } = useParams();
 
@@ -49,12 +52,24 @@ const ProductDetail = () => {
         sizeFil: false,
     });
 
+    const [ps, setPs] = useState([]);
+
+    const getProducts = (cId) => {
+        productService
+            .findProduct(cId, "", 0, 10, "sold", 1)
+            .then((response) => response.json())
+            .then((result) => {
+                setPs(result.content);
+            })
+            .catch((error) => console.log("error", error));
+    };
+
     const findProduct = () => {
         productService
             .findById(id)
             .then((response) => response.json())
             .then((result) => {
-                // console.log(result);
+                console.log(result);
                 setProduct({
                     createDate: result.createDate,
                     description: result.description,
@@ -83,6 +98,7 @@ const ProductDetail = () => {
                     ),
                 ]);
                 setQuantity(tinhQty(result.productDetails));
+                getProducts(result.category.id);
             })
             .catch((error) => console.log("error", error));
     };
@@ -266,9 +282,11 @@ const ProductDetail = () => {
     };
 
     const addItem = () => {
-        return product &&
-            isFilter.color &&
-            isFilter.size &&
+        return product !== null &&
+            productDetail.length !== 0 &&
+            isFilter.color !== "" &&
+            isFilter.size !== "" &&
+            quantity > 0 &&
             item.quantity > 0 &&
             item.quantity <= productDetail[0].qty
             ? (dispatch(
@@ -276,24 +294,30 @@ const ProductDetail = () => {
                       prod: product,
                       size: isFilter.size,
                       color: isFilter.color,
+                      amount: productDetail[0].qty,
                       qty: item.quantity,
                   })
               ),
-              NotiSuccess("Đã thêm sản phẩm vào giỏ hàng!"),
+              NotiSuccess("Đã thêm sản phẩm vào giỏ hàng!", "top-center"),
               setIsFilter({}),
-              setItem({ quantity: 1 }),
+              setItem({ ...item, quantity: 1 }),
+              setIsFilter({
+                  color: "",
+                  colorFil: false,
+                  size: "",
+                  sizeFil: false,
+              }),
               setProductDetail(productDetailInit),
               setQuantity(tinhQty(productDetailInit)))
-            : NotiError("Vui lòng chọn đầy đủ thông tin sản phẩm!");
+            : NotiError("Vui lòng chọn phiên bản sản phẩm!", "top-center");
     };
 
     useEffect(() => {
         findProduct();
-    }, []);
+    }, [cart, id]);
 
     return (
         <div className="sges-product-detail">
-            <Noti />
             {product && (
                 <div className="container">
                     <div className="link-product-page py-3">
@@ -342,16 +366,22 @@ const ProductDetail = () => {
                                             </div>
                                             <div className="info-price p-3 d-flex align-items-center justify-content-start">
                                                 <span className="price-price">
-                                                    {product.price.toLocaleString("vi-VN", {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    })}
+                                                    {product &&
+                                                        product.price &&
+                                                        product.price.toLocaleString("vi-VN", {
+                                                            style: "currency",
+                                                            currency: "VND",
+                                                        })}
                                                 </span>
                                                 <span className="price-sale mx-3">
-                                                    {product.sale.toLocaleString("vi-VN", {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    })}
+                                                    {product
+                                                        ? product.sale
+                                                            ? product.sale.toLocaleString("vi-VN", {
+                                                                  style: "currency",
+                                                                  currency: "VND",
+                                                              })
+                                                            : null
+                                                        : null}
                                                 </span>
                                                 <span className="discount px-1">
                                                     -
@@ -491,15 +521,20 @@ const ProductDetail = () => {
                                             </div>
                                             <div className="purcharse p-3">
                                                 <div className="row">
-                                                    <div
-                                                        className="btn btn-add d-flex justify-content-center align-items-center"
-                                                        onClick={addItem}
+                                                    <Link
+                                                        to={auth ? "#" : "/login"}
+                                                        className="btn-add d-flex justify-content-center align-items-center"
+                                                        onClick={auth ? addItem : null}
                                                     >
-                                                        Thêm vào giỏ hàng
-                                                    </div>
-                                                    <div className="btn btn-buy d-flex justify-content-center align-items-center">
-                                                        Mua ngay
-                                                    </div>
+                                                        <div className="btn">Thêm vào giỏ hàng</div>
+                                                    </Link>
+                                                    <Link
+                                                        to={auth ? "#" : "/login"}
+                                                        className="btn-buy d-flex justify-content-center align-items-center"
+                                                        onClick={auth ? addItem : null}
+                                                    >
+                                                        <div className="btn">Mua ngay</div>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -510,14 +545,31 @@ const ProductDetail = () => {
                         <div className="container p-2 product-detail-content mt-3">
                             <div className="card">
                                 <div className="row m-0">
-                                    <span className="p-3">
+                                    <span className="p-3" style={{ backgroundColor: "#fff" }}>
                                         <h3>Mô tả sản phẩm</h3>
                                     </span>
                                 </div>
                                 <div className="row m-0">
                                     <div className="discription-content p-3">
-                                        <span className="prprprprp">{product.description}</span>
+                                        <span
+                                            className="prprprprp"
+                                            style={{ backgroundColor: "#fff" }}
+                                        >
+                                            {product.description}
+                                        </span>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="container mb-5">
+                            <div className="row">
+                                <div className="san-pham-khac-title pt-5 pb-3 d-flex justify-content-center">
+                                    <h1>Sản phẩm cùng loại</h1>
+                                </div>
+                            </div>
+                            <div className="item-content d-flex justify-content-center">
+                                <div className="row m-0 w-100">
+                                    <ProductItem product={ps} width="20%" minHeight={"235.19px"} />
                                 </div>
                             </div>
                         </div>

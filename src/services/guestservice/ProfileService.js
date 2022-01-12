@@ -1,5 +1,5 @@
-export default {
-    updateProfile: (profile) => {
+class ProfileService {
+    updateProfile = (profile) => {
         var myHeaders = new Headers();
         if (localStorage.getItem("token")) {
             myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
@@ -12,7 +12,6 @@ export default {
             fullname: profile.fullName,
             email: profile.email,
             photo: profile.photo,
-            status: profile.status,
         });
 
         var requestOptions = {
@@ -23,20 +22,13 @@ export default {
         };
 
         return fetch("http://localhost:8080/changeProfile", requestOptions);
-    },
-    logout: () => {
-        localStorage.clear();
-        var cookies = document.cookie.split(";");
+    };
 
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i];
-            var eqPos = cookie.indexOf("=");
-            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        }
-    },
+    logout = () => {
+        localStorage.removeItem("token");
+    };
 
-    changePassword: (currentPassword, newPassword) => {
+    changePassword = (currentPassword, newPassword) => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/json");
@@ -55,5 +47,7 @@ export default {
         };
 
         return fetch("http://localhost:8080/changePassword", requestOptions);
-    },
-};
+    };
+}
+
+export default new ProfileService();

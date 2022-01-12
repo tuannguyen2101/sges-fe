@@ -13,7 +13,7 @@ class ProductIndex extends Component {
             status: 1,
             btn: "View Recycle bin",
             page: 0,
-            screen: 0
+            screen: 0,
         };
     }
 
@@ -29,8 +29,8 @@ class ProductIndex extends Component {
     onAdd = () => {
         this.changeAction(0);
         this.setState({
-            screen: 1
-        })
+            screen: 1,
+        });
         this.props.setProductDetail({
             id: -1,
             name: "",
@@ -46,14 +46,14 @@ class ProductIndex extends Component {
         this.changeAction(1);
         this.setState({
             screen: 1,
-        })
+        });
     };
 
     onCancel = () => {
         this.changeAction(-1);
         this.setState({
             screen: 0,
-        })
+        });
     };
 
     changeAction = (action) => {
@@ -127,16 +127,20 @@ class ProductIndex extends Component {
                 </div>
             );
         return (
-            <div className="products" style={{ backgroundColor: '#F0F1F1' }}>
-                <div className="pt-3" style={{ paddingLeft: '35px' }}><h5>Quản lý sản phẩm</h5></div>
+            <div className="products" style={{ backgroundColor: "#F0F1F1" }}>
+                <div className="pt-3" style={{ paddingLeft: "35px" }}>
+                    <h5>Quản lý sản phẩm</h5>
+                </div>
                 <div className="row pt-1 pe-5 ps-5">
                     {/* <div className={action === -1 ? "" : "col-8"}> */}
-                    {
-                        this.state.screen === 1 ? <div className="col-md-12">
+                    {this.state.screen === 1 ? (
+                        <div className="col-md-12">
                             <ProductDetail onCancel={this.onCancel} action={this.state.action} />
-                        </div> : <div className="content" style={{ backgroundColor: 'white' }}>
+                        </div>
+                    ) : (
+                        <div className="content" style={{ backgroundColor: "white" }}>
                             <button className="btn btn-add" onClick={this.onAdd}>
-                                <i class="bi bi-plus"></i>Thêm sản phẩm mới
+                                <i className="bi bi-plus"></i>Thêm sản phẩm mới
                             </button>
                             {/* <button
                             className="btn btn-viewstatus"
@@ -147,8 +151,11 @@ class ProductIndex extends Component {
                             <div className="search-area">
                                 <div className="row">
                                     <div className="col-sm-6 input-search">
-                                        <input className="form-control" placeholder="Tìm kiếm theo tên sản phẩm" />
-                                        <i class="bi bi-search"></i>
+                                        <input
+                                            className="form-control"
+                                            placeholder="Tìm kiếm theo tên sản phẩm"
+                                        />
+                                        <i className="bi bi-search"></i>
                                     </div>
                                     <div className="col-sm-2">
                                         <select className="form-control cate-filter">
@@ -169,7 +176,7 @@ class ProductIndex extends Component {
                                 page={this.state.page}
                             />
                         </div>
-                    }
+                    )}
                 </div>
             </div>
         );
@@ -190,7 +197,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         setProductDetail: (product) => {
             dispatch(actions.setProductDetail(product));
-        }
+        },
     };
 };
 

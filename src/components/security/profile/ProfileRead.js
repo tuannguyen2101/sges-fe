@@ -2,11 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import avatar from "../../../img/avatar.png";
+import Login from "../login/Login";
 
 const ProfileRead = () => {
     const auth = useSelector((state) => state.auth);
 
-    return (
+    const [currentProfile, setCurrentProfile] = useState({
+        username: auth ? auth.username : "",
+        fullName: auth ? auth.fullName : "",
+        email: auth ? auth.email : "",
+        // Tên file
+        photo: auth ? auth.photo : "",
+    });
+
+    return !auth ? (
+        <Login />
+    ) : (
         <div className="px-4">
             <div className="title pb-3">
                 <h4>Hồ sơ của tôi</h4>
@@ -61,7 +72,7 @@ const ProfileRead = () => {
                             <div className="col-4 label"></div>
                             <div className="col-8" style={{ paddingRight: "0" }}>
                                 <Link
-                                    to={"/myprofile/" + auth.username + "/update"}
+                                    to={"/user/" + auth.username + "/update"}
                                     className="save-btn"
                                 >
                                     <div className="btn">Chỉnh sửa</div>
@@ -72,7 +83,7 @@ const ProfileRead = () => {
                     <div className="col-4 right-content d-grid justify-content-center align-items-center">
                         <div className="text-center d-flex align-items-center justify-content-center avatar">
                             <img
-                                src={auth.photo ? auth.photo : avatar}
+                                src={"http://localhost:8080/file/read/" + auth.photo}
                                 className="img-fluid"
                                 alt="avatar"
                             />
