@@ -203,10 +203,12 @@ const UpdateProfile = () => {
                             <label htmlFor="file" className="btn border-0 p-0">
                                 <img
                                     src={
-                                        file === null
-                                            ? "http://localhost:8080/file/read/" +
+                                        file !== null
+                                            ? currentImage
+                                            : auth.photo.includes("http")
+                                            ? auth.photo
+                                            : "http://localhost:8080/file/read/" +
                                               currentProfile.photo
-                                            : currentImage
                                     }
                                     className="img-fluid"
                                     alt="avatar"

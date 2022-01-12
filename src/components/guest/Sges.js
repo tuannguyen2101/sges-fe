@@ -22,6 +22,7 @@ import MyOrders from "./MyOrders";
 import NavTop from "./NavTop";
 import ProductDetail from "./product/ProductDetail";
 import Shop from "./shop/Shop";
+import Size from "./size/Size";
 import Visit from "./Visit";
 
 const Sges = () => {
@@ -54,7 +55,7 @@ const Sges = () => {
                     <Route path="checkout" element={<CheckOut />} />
                     <Route path="visit" element={<Visit />} />
                     <Route path="about" element={<AboutUs />} />
-
+                    <Route path="size-chart" element={<Size />} />
                     <Route path="myorder" element={<MyOrders />} />
                     <Route path="/user/*" element={<Profile />}>
                         <Route path="/user/*" element={<PrivateRoute />}>

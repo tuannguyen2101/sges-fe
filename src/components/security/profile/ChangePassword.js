@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileService from "../../../services/guestservice/ProfileService";
 import LoginService from "../../../services/loginservice/LoginService";
-import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
+import Noti, { NotiError, NotiInfo, NotiSuccess } from "../../noti/Noti";
 
 const ChangePassword = () => {
     const auth = useSelector((state) => state.auth);
@@ -66,53 +66,59 @@ const ChangePassword = () => {
     };
 
     const change = () => {
-        if (checkValidate) {
-            if (checkConfirm) {
-                LoginService.login(currentProfile.username, currentProfile.currentPassword).then(
-                    (response) => {
-                        if (response.status === 500) {
-                            setCurrentProfile({
-                                ...currentProfile,
-                                currentPassword: "",
-                                newPassword: "",
-                                confirmPassword: "",
-                            });
-                            NotiError("Lỗi xác nhận tài khoản!");
-                        } else if (response.status === 200) {
-                            ProfileService.changePassword(
-                                currentProfile.currentPassword,
-                                currentProfile.newPassword
-                            );
-                            setCurrentProfile({
-                                ...currentProfile,
-                                currentPassword: "",
-                                newPassword: "",
-                                confirmPassword: "",
-                            });
-                            NotiSuccess("Thay đổi mật khẩu thành công!");
-                        }
-                    }
-                );
+        if (
+            checkValidate(
+                currentProfile.currentPassword,
+                currentProfile.newPassword,
+                currentProfile.confirmPassword
+            )
+        ) {
+            if (checkConfirm(currentProfile.newPassword, currentProfile.confirmPassword)) {
+                return NotiInfo("Tính năng đang được cập nhật!", "top-center");
+                // return LoginService.login(
+                //     currentProfile.username,
+                //     currentProfile.currentPassword
+                // ).then((response) => {
+                //     console.log(response);
+                //     if (response.status === 500) {
+                //         setCurrentProfile({
+                //             ...currentProfile,
+                //             currentPassword: "",
+                //             newPassword: "",
+                //             confirmPassword: "",
+                //         });
+                //         NotiError("Lỗi xác nhận tài khoản!");
+                //     } else if (response.status === 200) {
+                //         ProfileService.changePassword(
+                //             currentProfile.currentPassword,
+                //             currentProfile.newPassword
+                //         );
+                //         setCurrentProfile({
+                //             ...currentProfile,
+                //             currentPassword: "",
+                //             newPassword: "",
+                //             confirmPassword: "",
+                //         });
+                //         NotiSuccess("Thay đổi mật khẩu thành công!");
+                //     }
+                // });
             }
-            if (!checkConfirm) {
-                NotiError("Xác nhận mật khẩu không chính xác!");
-            }
+            // if (!checkConfirm(currentProfile.newPassword, currentProfile.confirmPassword)) {
+            return NotiError("Xác nhận mật khẩu không chính xác!");
+
+            // }
         }
-        if (!checkValidate) {
-            NotiError("Yêu cầu nhập đủ dữ liệu!");
-        }
+        // if (!checkValidate) {
+        return NotiError("Yêu cầu nhập đủ dữ liệu!");
+        // }
     };
 
-    const checkValidate = () => {
-        return (
-            currentProfile.newPassword !== "" &&
-            currentProfile.newPassword !== "" &&
-            currentProfile.confirmPassword !== ""
-        );
+    const checkValidate = (o, n, c) => {
+        return o !== "" && n !== "" && c !== "";
     };
 
-    const checkConfirm = () => {
-        return currentProfile.newPassword === currentProfile.confirmPassword;
+    const checkConfirm = (n, c) => {
+        return n === c;
     };
 
     useEffect(() => {
