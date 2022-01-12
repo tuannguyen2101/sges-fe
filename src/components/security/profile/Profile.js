@@ -19,12 +19,25 @@ const Profile = () => {
                         <div style={{ position: "sticky", top: "120px" }}>
                             <div className="row m-0 d-flex pb-3 account">
                                 <div className="col-4 p-0 d-flex justify-content-center align-items-center">
-                                    <img
-                                        src={"http://localhost:8080/file/read/" + auth.photo}
-                                        className="img-fluid"
-                                        width="100%"
-                                        alt="avatar"
-                                    />
+                                    {auth.photo ? (
+                                        auth.photo.includes("http") ? (
+                                            <img
+                                                className="img-fluid"
+                                                width="100%"
+                                                alt="avatar"
+                                                src={auth.photo}
+                                            />
+                                        ) : (
+                                            <img
+                                                className="img-fluid"
+                                                width="100%"
+                                                alt="avatar"
+                                                src={
+                                                    "http://localhost:8080/file/read/" + auth.photo
+                                                }
+                                            />
+                                        )
+                                    ) : null}
                                 </div>
                                 <div className="col-8 p-0">
                                     <div className="d-grid">
@@ -69,16 +82,6 @@ const Profile = () => {
                                         </div>
                                         <div className="col-9 text-start">
                                             <span>Đơn mua</span>
-                                        </div>
-                                    </div>
-                                </Link>
-                                <Link to="/myorder">
-                                    <div className="h-100 btn d-flex justify-content-center align-items-center">
-                                        <div className="col-3 icon-submenu">
-                                            <RiFileList3Line />
-                                        </div>
-                                        <div className="col-9 text-start">
-                                            <span>Đơn mua {"(old)"}</span>
                                         </div>
                                     </div>
                                 </Link>

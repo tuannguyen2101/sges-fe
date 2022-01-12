@@ -1,0 +1,39 @@
+.input-range__label-container {
+    font-size: 14px;
+    color: #08283d;
+}
+.sges-size {
+    background-color: #fff;
+    min-height: 80vh;
+    .size-title {
+        .d-flex {
+            .count {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+                .p-2 {
+                    z-index: 10;
+                    background-color: #65b5eb;
+                    color: #fff;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+    .size-content {
+        .col-4 {
+            span {
+                font-weight: 500;
+            }
+            .size-select {
+                background-color: #65b5eb;
+                height: 150px;
+                width: 150px;
+                line-height: 150px;
+                color: #08283d;
+            }
+        }
+    }
+}

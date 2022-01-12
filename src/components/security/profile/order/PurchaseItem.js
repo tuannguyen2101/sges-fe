@@ -160,10 +160,12 @@ const PurchaseItem = ({ order, huy }) => {
                         </span>
                         <span>
                             <b>
-                                {order.transportFee.toLocaleString("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                })}
+                                {order.transportFee &&
+                                    !isNaN(order.transportFee) &&
+                                    order.transportFee.toLocaleString("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                    })}
                             </b>
                         </span>
                     </div>
@@ -173,10 +175,12 @@ const PurchaseItem = ({ order, huy }) => {
                         </span>
                         <span>
                             <b>
-                                {order.tienHang.toLocaleString("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                })}
+                                {order.tienHang &&
+                                    !isNaN(order.tienHang) &&
+                                    order.tienHang.toLocaleString("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                    })}
                             </b>
                         </span>
                     </div>
@@ -186,10 +190,12 @@ const PurchaseItem = ({ order, huy }) => {
                         </span>
                         <span>
                             <b style={{ color: "#1e96e6", fontSize: "24px" }}>
-                                {order.tongThanhToan.toLocaleString("vi-VN", {
-                                    style: "currency",
-                                    currency: "VND",
-                                })}
+                                {order.tongThanhToan &&
+                                    !isNaN(order.tongThanhToan) &&
+                                    order.tongThanhToan.toLocaleString("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                    })}
                             </b>
                         </span>
                     </div>

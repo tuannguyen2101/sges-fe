@@ -396,8 +396,8 @@ const ProductDetail = () => {
                                             <div className="info-detail p-3 d-flex flex-column">
                                                 {productDetailInit && productDetailInit.length ? (
                                                     <div className="info-color py-2 d-flex align-items-center">
-                                                        <div className="title">Màu sắc</div>
-                                                        <div className="content">
+                                                        <div className="title col-2">Màu sắc</div>
+                                                        <div className="content flex-wrap wrap">
                                                             {colors.map((value, index) => {
                                                                 return (
                                                                     <div
@@ -438,7 +438,7 @@ const ProductDetail = () => {
                                                 ) : null}
                                                 {sizes && sizes.length ? (
                                                     <div className="info-size py-2 d-flex align-items-center">
-                                                        <div className="title">Size</div>
+                                                        <div className="title col-2">Size</div>
                                                         <div className="content">
                                                             {sizes.map((value, index) => {
                                                                 return (
