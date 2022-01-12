@@ -141,7 +141,7 @@ export default function Piechart() {
                     options={{
                         title: {
                             display: true,
-                            text: "Thống kê số lượng theo từng sản phẩm",
+                            text: "Thống kê top 5 sản phẩm bán chạy nhất",
                             fontSize: 20,
                         },
                         legend: {
