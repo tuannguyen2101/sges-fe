@@ -402,3 +402,27 @@ code {
   }
   height: 100%;
 }
+
+.ship-now {
+  padding: 20px 20px;
+  margin-top: 20px;
+  background-color: white;
+  position: relative;
+  .text-start {
+    font-weight: 500;
+  }
+  .btn-ship-now {
+    position: absolute;
+    right: 20px;
+    background-color: #33A0FF;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 5px 10px;
+    &:hover {
+      background-color: white;
+      border: 1px solid #33A0FF;
+      color: #33A0FF;
+    }
+  }
+}

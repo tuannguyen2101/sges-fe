@@ -9,11 +9,13 @@ export default class OrderDetail extends Component {
                         <div className="col-12 pb-2">
                             {'< Đơn hàng'}
                         </div>
-                        <div className="col-5">
+                        <div className="col-12">
                             <span className="sku pe-2">SON2081</span>
                             <span>20/11/2021 16:30</span> <br></br>
                             <button className="btn-print-order"><i class="bi bi-printer-fill"></i> In đơn hàng</button>
-                            <button className="btn-print-order ms-2"><i class="bi bi-save-fill"></i> Lưu thông tin đơn hàng</button>
+                            <button className="btn-print-order ms-2"><i class="bi bi-check-circle-fill"></i> Duyệt đơn</button>
+                            <button className="btn-print-order ms-2"><i class="bi bi-credit-card-2-back-fill"></i> Xác nhận thanh toán</button>
+                            <button className="btn-print-order ms-2"><i class="bi bi-archive-fill"></i> Hủy đơn hàng</button>
                         </div>
                         <div className="col-7"></div>
                     </div>
@@ -48,21 +50,21 @@ export default class OrderDetail extends Component {
                                 <div className="body">
                                     <div className="row title">
                                         <div className="col">Mã sản phẩm</div>
-                                        <div className="col-2">Sản phẩm</div>
+                                        <div className="col">Sản phẩm</div>
                                         <div className="col">Số lượng</div>
                                         <div className="col text-end">Đơn giá</div>
                                         <div className="col text-end">Thành tiền</div>
                                     </div>
                                     <div className="row">
                                         <div className="col">SP012</div>
-                                        <div className="col-2">Áo khoác</div>
+                                        <div className="col">Áo khoác</div>
                                         <div className="col">1</div>
                                         <div className="col text-end">300.000</div>
                                         <div className="col text-end">300.000</div>
                                     </div>
                                     <div className="row">
                                         <div className="col">SP092</div>
-                                        <div className="col-2">Quần kaki</div>
+                                        <div className="col">Quần kaki</div>
                                         <div className="col">2</div>
                                         <div className="col text-end">250.000</div>
                                         <div className="col text-end">500.000</div>
@@ -92,6 +94,13 @@ export default class OrderDetail extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div className="ship-now">
+                                <div className="col-12 text-start">
+                                    <i class="bi bi-truck me-2"></i> 
+                                    Đóng gói và giao hàng
+                                    <button className="btn-ship-now">Giao hàng</button>
                                 </div>
                             </div>
                         </div>
