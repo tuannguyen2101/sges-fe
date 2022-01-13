@@ -20,18 +20,24 @@ export default class OrderList extends Component {
     };
 
 
+
+    // chuyển danh sách các hóa đơn theo trạng thái
     changeScreen = (screen) => {
         this.setState({
             screen
         })
     }
 
+
+    // đổi từ màn danh sách sang chi tiết hoặc ngược lại
     setCurrenWindow = (value) => {
         this.setState({
             currentWindow: value
         })
     }
 
+
+    // lấy danh sách order => chỉ cần thay các trường thông tin trên be thì tại component này sẽ có đầy đủ => sử dụng cho các chức năng order
     getAllOrder = () => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
@@ -54,6 +60,8 @@ export default class OrderList extends Component {
             .catch((error) => console.log("error", error));
     };
 
+
+    // xác nhận hóa đơn : status = 1
     confirm = (order) => {
         this.setState({
             orderList: [...this.state.orderList].map((val) => {
@@ -140,7 +148,9 @@ export default class OrderList extends Component {
                                         <div className="col-2 text-center">Thanh toán</div>
                                         <div className="col-2 text-end">Khách phải trả</div>
                                     </div>
-                                    <OrderRow />
+                                    <OrderRow setCurrenWindow={this.setCurrenWindow}/>
+                                    {/* Mấy div bên dưới cũng là OrderRow nhưng đùng xóa vội */}
+                                    {/*  */}
                                     <div className="table-item row m-0">
                                         <div className="col-2"><i class="bi bi-three-dots-vertical" onClick={() => this.setCurrenWindow(1)}></i></div>
                                         <div className="col-2">02/10/2001 12:03</div>
