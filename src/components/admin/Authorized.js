@@ -156,8 +156,8 @@ export default class Authorized extends Component {
         })
 
         return (
-            <div>
-                <h3>Security</h3>
+            <div className='security'>
+                <h5>PHÂN QUYỀN SỬ DỤNG</h5>
                 <table className="table table-bordered">
                     <thead>
                         <tr>
