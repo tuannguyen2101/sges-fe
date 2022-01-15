@@ -485,3 +485,13 @@ code {
   width: 25%;
   text-align: center;
 }
+
+.link-admin {
+  &:hover {
+    color: white;
+  }
+}
+
+.security {
+  padding: 50px;
+}

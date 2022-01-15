@@ -11,12 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Outlet, Route, Routes } from "react-router-dom";
-import Authorized from "../admin/Authorized";
-import CategoryIndex from "./categorys/CategoryIndex";
-import CustomerIndex from "./customer/CustomerIndex";
-import OrderList from "./orders/OrderList";
-import ProductIndex from "./products/ProductIndex";
+import { Link, Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -102,13 +97,43 @@ function Dashboard(props) {
             </div>
             <hr></hr>
             <List>
-                <Link className={classes.links} to="/">
+                <Link className={`${classes.links} link-admin`} to="/">
                     <ListItem button>
                         <i className="bi bi-house-door-fill me-2"></i>
-                        <ListItemText primary="Home" />
+                        <ListItemText className="link-admin" primary="Trang mua hàng" />
                     </ListItem>
                 </Link>
-                {["Thongke", "TheoThang", "Product", "Category", "Order", "Customer"].map(
+                <Link className={`${classes.links} link-admin`} to="Thongke">
+                    <ListItem button>
+                        <i class="bi bi-clipboard-data me-2"></i>
+                        <ListItemText className="link-admin" primary="Thống kê" />
+                    </ListItem>
+                </Link>
+                <Link className={`${classes.links} link-admin`} to="TheoThang">
+                    <ListItem button>
+                        {/* <i className="bi bi-house-door-fill me-2"></i> */}
+                        <ListItemText className="link-admin ps-4" primary="Theo tháng" />
+                    </ListItem>
+                </Link>
+                <Link className={`${classes.links} link-admin`} to="Product">
+                    <ListItem button>
+                        <i className="bi bi-box-seam me-2"></i>
+                        <ListItemText className="link-admin" primary="Sản phẩm" />
+                    </ListItem>
+                </Link>
+                <Link className={`${classes.links} link-admin`} to="Category">
+                    <ListItem button>
+                        <i class="bi bi-tags me-2"></i>
+                        <ListItemText className="link-admin" primary="Danh mục" />
+                    </ListItem>
+                </Link>
+                <Link className={`${classes.links} link-admin`} to="Order">
+                    <ListItem button>
+                        <i class="bi bi-receipt-cutoff me-2"></i>
+                        <ListItemText className="link-admin" primary="Hóa đơn" />
+                    </ListItem>
+                </Link>
+                {/* {["Thongke", "TheoThang", "Product", "Category", "Order", "Customer"].map(
                     (text, index) => (
                         <Link key={index} className={classes.links} to={text.toLowerCase()}>
                             <ListItem button key={text}>
@@ -117,12 +142,12 @@ function Dashboard(props) {
                             </ListItem>
                         </Link>
                     )
-                )}
+                )} */}
                 {isAdmin(props.auth.roles) ? (
-                    <Link className={classes.links} to="Adminstrator">
+                    <Link className={`${classes.links} link-admin`}  to="Adminstrator">
                         <ListItem button>
-                            <i className="bi bi-house-door-fill me-2"></i>
-                            <ListItemText primary="Adminstrator" />
+                            <i class="bi bi-shield-exclamation me-2"></i>
+                            <ListItemText primary="Phân quyền" />
                         </ListItem>
                     </Link>
                 ) : (
