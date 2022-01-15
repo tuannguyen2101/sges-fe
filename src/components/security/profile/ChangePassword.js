@@ -139,7 +139,7 @@ const ChangePassword = () => {
                                 <label htmlFor="currentP">Mật khẩu hiện tại</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -174,7 +174,7 @@ const ChangePassword = () => {
                                 <label htmlFor="newP">Mật khẩu mới</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -209,7 +209,7 @@ const ChangePassword = () => {
                                 <label htmlFor="confirmP">Nhập lại mật khẩu mới</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
