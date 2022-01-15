@@ -178,7 +178,7 @@ const Purchase = () => {
                                 }
                                 to="#"
                             >
-                                <span>Đã giao</span>
+                                <span>Đã nhận</span>
                             </Link>
                             <Link
                                 className="nav-link active"

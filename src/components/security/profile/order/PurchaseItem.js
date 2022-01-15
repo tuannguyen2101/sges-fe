@@ -11,7 +11,7 @@ const PurchaseItem = ({ order, huy }) => {
         "Chờ xác nhận",
         "Chờ lấy hàng",
         "Đang giao",
-        "Đã giao",
+        "Đã nhận hàng",
         "Đơn hủy",
     ]);
 

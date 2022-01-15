@@ -452,7 +452,7 @@ const CheckOut = () => {
                     <div className="checkout-content p-0">
                         <div className="row m-0">
                             <div className="col-8 p-0">
-                                <div className="order-info d-flex justify-content-start flex-column p-5">
+                                <div className="checkout-order-info d-flex justify-content-start flex-column p-5">
                                     <div className="mb-3 text-start">
                                         <h5>Thông tin giao hàng</h5>
                                     </div>

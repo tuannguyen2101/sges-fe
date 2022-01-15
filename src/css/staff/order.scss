@@ -1,45 +1,76 @@
-.sges-purchase {
-    margin: -17px -2px;
-    .container {
-        .purchase-main {
-            .nav-purchase {
-                position: sticky;
-                top: 64px;
-                z-index: 200;
-                .nav-tabs {
-                    display: flex;
-                    justify-content: space-evenly;
-                    .nav-link {
-                        height: 64px;
-                        line-height: 64px;
-                        padding: 0;
-                        width: calc(100% / 6);
-                        text-align: center;
-                        color: #333333;
-                        border: 2px solid;
-                        border-right: 0;
-                        border-left: 0;
-                        border-top: 0;
-                        font-weight: 600;
-                        &:hover {
-                            color: #1e96e6;
-                            border-color: #fff;
-                        }
-                    }
-                }
-            }
-            .tab-content {
-                .tab-pane {
-                    .purchase-body {
-                        background-color: #f5f5f5;
-                        .purchase-item {
-                            background-color: #fff;
-                            &:hover {
-                                box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+.sges-order {
+    * {
+        font-size: 14px;
+        .filter-item {
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 0px 10px 0px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+    }
+    .detail-order-0 {
+        background: #e6f8ff;
+    }
+    .detail-order-1 {
+        background: #fcfde7;
+    }
+    .detail-order-2 {
+        background: #ecffea;
+    }
+    .detail-order-3 {
+        background: #daffee;
+    }
+    .detail-order-4 {
+        background: #fde6e6;
+    }
+    .detail-order-5 {
+        background: #e3e3ff;
+    }
+    .container-fluid {
+        .sges-order-content {
+            display: flex;
+        }
+        .order-main {
+            padding-right: 16px;
+            .order-item-content {
+                .table {
+                    tbody {
+                        tr {
+                            .staff-order-detail {
+                                .chon {
+                                    background-color: #fff;
+                                }
                             }
-                            .item-content {
-                                img {
-                                    object-fit: cover;
+                        }
+                        .tr-order {
+                            height: 50px;
+                            line-height: 50px;
+                            td {
+                                .pay1 {
+                                    color: #00a023;
+                                }
+                                .status-order0 {
+                                    background: #bbecff;
+                                    color: #2ab0e6;
+                                }
+                                .status-order1 {
+                                    background: #fcffd1;
+                                    color: #a5b800;
+                                }
+                                .status-order2 {
+                                    background: #d0ffcc;
+                                    color: #21c700;
+                                }
+                                .status-order3 {
+                                    background: #33ffa02d;
+                                    color: #33ffc2;
+                                }
+                                .status-order4 {
+                                    background: #ff33332d;
+                                    color: #ff3333;
+                                }
+                                .status-order5 {
+                                    background: #3633ff2d;
+                                    color: #3358ff;
                                 }
                             }
                         }
