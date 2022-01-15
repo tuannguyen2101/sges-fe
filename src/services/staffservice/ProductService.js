@@ -2,7 +2,7 @@ import { PRODUCT_API } from "../../constants/api";
 
 // let base64 = require("base-64")
 class ProductService {
-    findAll = (page, status, auth) => {
+    findAll = (page, cateId, status, nameQuery) => {
         var myHeaders = new Headers();
         var token = localStorage.getItem("token");
         myHeaders.append("Authorization", "Bearer " + token);
@@ -11,7 +11,7 @@ class ProductService {
             headers: myHeaders,
             redirect: "follow",
         };
-        return fetch(PRODUCT_API + "?page=" + page + "&status=" + status, requestOptions);
+        return fetch(PRODUCT_API + "?page=" + page + "&cateId=" + cateId + "&status=" + status + "&nameQuery=" + nameQuery, requestOptions);
     };
 
     changeStatus = (product, auth) => {
@@ -62,7 +62,8 @@ class ProductService {
 
     addVersion = (listversion) => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0MTExMDI4MywiZXhwIjoxNjQxNzE1MDgzLCJ1c2VyIjoie1wiaWRcIjoxLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJwYXNzd29yZFwiOlwiJDJhJDEwJExuNTREcWV1dm1kN04wcVN6U3BrWHU3ZHQueG1NYnNLNWMzdTU1SHlkbHE4RTM2OVA2cXQ2XCIsXCJmdWxsbmFtZVwiOlwiRG9uIFF1aWpvdGVcIixcImVtYWlsXCI6XCJkb25xdWlqb3RlQGdtYWlsLmNvbVwiLFwicGhvdG9cIjpudWxsLFwic3RhdHVzXCI6MX0ifQ.UV7YtaJAkhFZ2di4GunckLcfksDtzKAAeOCHeR2flaJ6dqFR9obM4yWoy4qFSPfYLjmvrqVsAt9KtB6cwiVS1w");
+        var token = localStorage.getItem("token"); 
+        myHeaders.append("Authorization", "Bearer " + token);
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Cookie", "JSESSIONID=63D3A96529B5074EB38602B414380964");
 

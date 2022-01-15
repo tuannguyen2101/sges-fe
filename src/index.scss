@@ -14,13 +14,13 @@ code {
 
 .content {
   padding: 0px;
-
+  // background-color: white;
+  margin-bottom: 30px;
   .btn-add {
     background-color: #33A0FF;
     color: white;
     border-radius: 2px;
     margin-top: 10px;
-    margin-left: 35px;
     margin-bottom: 10px;
   }
 
@@ -29,7 +29,7 @@ code {
     color: white;
     border-radius: 2px;
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: px;
     margin-bottom: 10px;
   }
 }
@@ -37,10 +37,10 @@ code {
 .search-area {
   border-top: 1px solid #DEE2E6;
   border-bottom: 1px solid #DEE2E6;
-  padding-top: 10px;
-  padding-left: 35px;
-  padding-bottom: 10px;
-
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-bottom: 15px;
+  background-color: white;
   input {
     border-radius: 2px;
   }
@@ -154,9 +154,14 @@ code {
   .image {
     background-color: white;
     padding: 30px;
-
+    position: relative;
     img {
       width: 100%;
+    }
+    button {
+      position: absolute;
+      right: 10px;
+      top: 80px;
     }
   }
 }
@@ -436,4 +441,47 @@ code {
       color: #33A0FF;
     }
   }
+}
+
+.pro-tt {
+  margin: 0px;
+  background-color: white;
+  border-bottom: 1px solid #DEE2E6;
+  font-weight: 500;
+  background-color: #F4F6F8;
+}
+
+.pt-hi {
+  border-bottom: 1px solid #DEE2E6;
+  margin: 0px;
+  background-color: white;
+  &:hover {
+    background-color: #E6F4FF;
+  }
+}
+
+.pt-img {
+  padding: 0px;
+  margin: 0px;
+}
+
+.pt-hihihi {
+  margin: 0px;
+  background-color: white;
+}
+
+.btn-search-admin {
+  border: 1px solid #DEE2E6;
+  border-radius: 2px;
+}
+
+.hihi {
+  color: #33A0FF;
+}
+
+.sold-admin {
+  background-color: #E6F4FF;
+  padding: 10px;
+  width: 25%;
+  text-align: center;
 }
