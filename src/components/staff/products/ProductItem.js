@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/index";
 import ProductService from "../../../services/staffservice/ProductService";
+import { NotiSuccess } from "../../noti/Noti";
 
 class ProductItem extends Component {
 
     onChangeStatus = () => {
-        if (window.confirm("Are you sure?")) {
+        if (window.confirm("Bạn chắc chắn muốn xóa?")) {
             ProductService.changeStatus(this.props.product, this.props.auth)
                 .then((response) => response.text())
                 .then((result) => {
                     this.props.changeStatusProduct(this.props.product);
+                    NotiSuccess("Xóa thành công!")
                 })
                 .catch((error) => console.log("error", error));
         }
@@ -46,17 +48,16 @@ class ProductItem extends Component {
                 <div className="col text-center">{product.categoryName}</div>
                 <div className="col-1 text-end">
                     <div className="row">
-                
-                    <button className="btn col" onClick={this.onEdit}>
-                        <i className="bi bi-pen"></i>
-                    </button>
-                    <button className="btn col" onClick={this.onChangeStatus}>
-                        {product.status === 1 ? (
-                            <i className="bi bi-trash"></i>
-                        ) : (
-                            <i className="bi bi-arrow-counterclockwise"></i>
-                        )}
-                    </button>
+                        <button className="btn col" onClick={this.onEdit}>
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button className="btn col" onClick={this.onChangeStatus}>
+                            {product.status === 1 || product.status === 2 ? (
+                                <i className="bi bi-trash"></i>
+                            ) : (
+                                <i className="bi bi-arrow-counterclockwise"></i>
+                            )}
+                        </button>
                     </div>
                 </div>
             </div>

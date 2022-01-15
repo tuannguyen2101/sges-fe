@@ -217,9 +217,9 @@ class ProductIndex extends Component {
                                         <button className="btn btn-search-admin" onClick={this.onSearch}>
                                             Tìm kiếm
                                         </button>
-                                        <button className="btn btn-search-admin ms-2" onClick={this.onSearch}>
+                                        {/* <button className="btn btn-search-admin ms-2" onClick={this.onSearch}>
                                             Xóa lọc
-                                        </button>
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>
