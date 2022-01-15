@@ -78,7 +78,7 @@ function Barchartmonth() {
 
     return (
         <div>
-            <h3 className="dashboard">Dashboard</h3>
+            <h3 className="dashboard">Thống kê</h3>
             <div className="container">
                 {" "}
                 Chọn năm: &nbsp;
