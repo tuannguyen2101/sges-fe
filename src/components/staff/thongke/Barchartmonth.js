@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
+import { ExportReactsCSV } from "./ExportReactsCSV";
+import './thongke.css'
 
+const exportDatas = [];
 function Barchartmonth() {
     const [getdatas, setGetData] = useState([]);
     const [getYear, setGetYear] = useState([]);
     const [selectedOption, setSelectedOption] = useState(getYear[0]);
 
+    const states = {
+        data: exportDatas,
+        fileName: "Doanh thu trong năm"
+    }
     const getYears = () => {
         axios
             .get("http://localhost:8080/thongKe/getAllYears")
@@ -35,6 +42,9 @@ function Barchartmonth() {
                 products.forEach((element) => {
                     name.push("Tháng " + element[0]);
                     datas.push(element[2]);
+                    exportDatas.push({
+                        Năm: `${element[1]}` , Tháng: `${element[0]}`, Doanh_Thu: `${element[2]}`
+                    })
                 });
                 // console.log("a",name,datas)
                 setGetData({
@@ -92,6 +102,9 @@ function Barchartmonth() {
                 <br />
                 <span>Selected option: {selectedOption}</span>
                 <br />
+                <div className="col-md-9 center">
+                        <ExportReactsCSV csvData={states.data} fileName={states.fileName}></ExportReactsCSV>
+                </div>
                 <div className="col-sm-9">
                     <Bar
                         data={getdatas}
@@ -103,7 +116,7 @@ function Barchartmonth() {
                             },
                             legend: {
                                 display: true,
-                                position: "right",
+                                position: "bottom",
                             },
                         }}
                     />
