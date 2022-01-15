@@ -20,8 +20,9 @@ function Modal1({ setOpenModal1,weeks }) {
         <div className="body">
           {weeks[1]} VNĐ
         </div>
-        <p>{weeks[1]<weeks[0] ? "Doanh thu tuần trước kém hơn " +(weeks[0] -weeks[1])+ " so với tuần này" 
-        : "Doanh thu tuần trước lớn hơn "+(weeks[1] -weeks[0])+ "VNĐ so với tuần này"}</p>
+        {weeks[1] ==null ? <p>{"Doanh thu tuần trước kém hơn " +weeks[0]+ "VNĐ so với tuần này"}</p>
+        : <p>{weeks[1]<weeks[0] ? "Doanh thu tuần trước kém hơn " +(weeks[0] -weeks[1])+ " so với tuần này" 
+        : "Doanh thu tuần trước lớn hơn "+(weeks[1] -weeks[0])+ "VNĐ so với tuần này"}</p> }
         <div className="footer">
           <button
             onClick={() => {
