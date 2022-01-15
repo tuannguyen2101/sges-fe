@@ -7,7 +7,7 @@ import "./thongke.css";
 export default function ThongKe() {
     return (
         <div>
-            <h3 className="dashboard">Dashboard</h3>
+            <h3 className="dashboard">Thống kê</h3>
             <Linechart></Linechart>
             <Link to="/admin/theothang">
                 <h4 className="chi">Chi tiết doanh thu theo tháng</h4>
