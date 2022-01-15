@@ -114,7 +114,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="username">Tên đăng nhập</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -128,7 +128,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="fullName">Họ và tên</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -148,7 +148,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="email">Email</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",

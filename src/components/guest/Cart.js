@@ -92,7 +92,7 @@ class Cart extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="order-info col-md-4">
+                                <div className="cart-order-info col-md-4">
                                     <div className="card my-5 p-3">
                                         <div className="order-title pb-2 mb-2">
                                             <span style={{ fontWeight: "500", fontSize: "24px" }}>
