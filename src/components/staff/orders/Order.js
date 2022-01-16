@@ -5,6 +5,7 @@ import "../../../css/staff/order.scss";
 import OrderService from "../../../services/staffservice/OrderService";
 import ItemOrder from "./ItemOrder";
 import emptyBill from "../../../img/empty-bill.svg";
+import PaginateGuest from "../../pagination/PaginateGuest";
 
 export const trangThaiOrder = [
     {
@@ -44,7 +45,7 @@ const Order = () => {
         from: "",
         to: "",
         number: 0,
-        size: 20,
+        size: 10,
         direction: 1,
     });
 
@@ -135,7 +136,7 @@ const Order = () => {
                         </div>
                     </div>
                 </div>
-                <div className="d-flex sges-order-content">
+                <div className="d-flex sges-order-content mb-5">
                     <div className="order-filter col-2 px-3 order-nav">
                         <div className="filter-item status-order py-2 pb-4 mb-3">
                             <div className="p-2 px-3">
@@ -355,6 +356,21 @@ const Order = () => {
                                     </tbody>
                                 )}
                             </table>
+                            {page && page.totalPages > 1 && (
+                                <div className="paginate">
+                                    <div
+                                        className="d-flex justify-content-start"
+                                        style={{ backgroundColor: "#fff" }}
+                                    >
+                                        <PaginateGuest
+                                            page={page}
+                                            prev={prev}
+                                            select={select}
+                                            next={next}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
