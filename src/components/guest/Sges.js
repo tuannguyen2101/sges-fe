@@ -44,8 +44,6 @@ const Sges = () => {
                 <Routes>
                     <Route path="" element={<Home />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="Signup" element={<Signup />} />
-                    <Route path="ForgotPassword" element={<ForgotPassword />} />
                     <Route path="/shop/*" element={<Shop />}>
                         <Route path="category/:id" element={<Shop />} />
                         <Route path="product-search/:name" element={<Shop />} />

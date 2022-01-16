@@ -41,7 +41,6 @@ const Order = () => {
     const [dataFind, setDataFind] = useState({
         status: 9,
         payment: "",
-        name: "",
         from: "",
         to: "",
         number: 0,
@@ -49,13 +48,15 @@ const Order = () => {
         direction: 1,
     });
 
+    const [khachHang, setKhachHang] = useState("");
+
     const getAllOrder = () => {
-        var { status, payment, name, from, to, number, size, direction } = dataFind;
+        var { status, payment, from, to, number, size, direction } = dataFind;
         auth !== null &&
             OrderService.getAll(
                 status === 9 || status === null ? "" : status,
                 payment === undefined || payment === null ? "" : payment,
-                name === undefined || name === null ? "" : name,
+                khachHang === undefined || khachHang === null ? "" : khachHang,
                 from === undefined || from === null ? "" : from,
                 to === undefined || to === null ? "" : to,
                 number === undefined || number === null ? "" : number,
@@ -67,12 +68,28 @@ const Order = () => {
                     var rs = JSON.parse(result);
                     console.log(rs);
                     setPage(rs);
+                    setKhachHang("");
                 })
                 .catch((err) => console.log(err));
     };
 
     const capNhat = () => {
         getAllOrder();
+    };
+
+    const timKhachHang = () => {
+        khachHang !== "" && khachHang !== null && khachHang !== undefined && getAllOrder();
+    };
+
+    const inPutName = (event) => {
+        setKhachHang(event.target.value);
+    };
+
+    const sapXep = (event) => {
+        setDataFind({
+            ...dataFind,
+            direction: event.target.value,
+        });
     };
 
     const prev = () => {
@@ -171,20 +188,18 @@ const Order = () => {
                                 </h6>
                             </div>
                             <div className="d-flex flex-column p-4 pt-0">
-                                <div className="from-date d-flex flex-column mb-3">
-                                    <label>Từ ngày</label>
-                                    <input className="form-control" type="date" name="" id="" />
-                                </div>
-                                <div className="to-date d-flex flex-column mb-3">
-                                    <label>Đến ngày</label>
-                                    <input className="form-control" type="date" name="" id="" />
-                                </div>
-                                <select className="form-select" name="" id="">
+                                <select
+                                    className="form-select"
+                                    name="sapXep"
+                                    id=""
+                                    onChange={sapXep}
+                                    value={dataFind.direction}
+                                >
                                     <option value="" hidden>
                                         Sắp xếp
                                     </option>
-                                    <option value="">Mới nhất</option>
-                                    <option value="">Cũ nhất</option>
+                                    <option value="1">Mới nhất</option>
+                                    <option value="0">Cũ nhất</option>
                                 </select>
                             </div>
                         </div>
@@ -201,9 +216,12 @@ const Order = () => {
                                             style={{
                                                 width: "300px",
                                             }}
+                                            name="khachHang"
+                                            value={khachHang}
+                                            onChange={inPutName}
                                         />
                                         <div className="input-group-append">
-                                            <Link to="#">
+                                            <Link to="#" onClick={timKhachHang}>
                                                 <div
                                                     className="btn border"
                                                     style={{ borderRadius: "0", zIndex: "0" }}
