@@ -7,12 +7,12 @@ import { NotiSuccess } from "../../noti/Noti";
 class ProductItem extends Component {
 
     onChangeStatus = () => {
-        if (window.confirm("Bạn chắc chắn muốn xóa?")) {
+        if (window.confirm(this.props.product.status === 1 ? "Bạn chắc chắn muốn xóa?" : "Kích hoạt sản phẩm ?")) {
             ProductService.changeStatus(this.props.product, this.props.auth)
                 .then((response) => response.text())
                 .then((result) => {
+                    NotiSuccess(this.props.product.status === 0 ? "Xóa thành công!" : "Đã kích hoạt!")
                     this.props.changeStatusProduct(this.props.product);
-                    NotiSuccess("Xóa thành công!")
                 })
                 .catch((error) => console.log("error", error));
         }
@@ -43,7 +43,14 @@ class ProductItem extends Component {
                         alt="hi"
                     ></img>
                 </div>
-                <div className="col-1 text-end">{product.price}</div>
+                <div className="col-1 text-end price-admin">
+                    {
+                        product.price.toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        })
+                    }
+                </div>
                 <div className="col text-center">{product.createDate}</div>
                 <div className="col text-center">{product.categoryName}</div>
                 <div className="col-1 text-end">

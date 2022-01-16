@@ -29,55 +29,20 @@ class ProductTable extends Component {
                     <div className="col text-center">Loại sản phẩm</div>
                     <div className="col-1 text-end">Thao tác</div>
                 </div>
-                {/* <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Tên sản phẩm</th>
-                            <th className="text-center" scope="col">Ảnh</th>
-                            <th className="text-end" scope="col">Giá</th>
-                            <th className="text-center" scope="col">Ngày tạo</th>
-                            <th className="text-center" scope="col">Loại sản phẩm</th>
-                            <th className="text-center" scope="col">Trạng thái</th>
-                            <th className="text-center" scope="col" colSpan="2">
-                            </th>
-                        </tr>
-                    </thead> */}
                 {element}
                 <div className="row pt-3 pb-3 pt-hihihi">
                     <div className="col-6">
                         <div className="paginate">
-                            <button className="btn-paginate" onClick={this.prev}>
+                            <button className="btn-paginate btn-paginate-admin" onClick={this.prev}>
                                 {"<<"}
                             </button>
                             <button className="btn-paginate-current">{this.props.page + 1}</button>
-                            <button className="btn-paginate" onClick={this.next}>
+                            <button className="btn-paginate btn-paginate-admin" onClick={this.next}>
                                 {'>>'}
                             </button>
                         </div>
                     </div>
                 </div>
-                {/* <tbody>{element}</tbody> */}
-                {/* <tfoot>
-                        <tr>
-                            <th colSpan={9}>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <div className="paginate">
-                                            <button className="btn-paginate" onClick={this.prev}>
-                                                {"<<"}
-                                            </button>
-                                            <button className="btn-paginate-current">{this.props.page + 1}</button>
-                                            <button className="btn-paginate" onClick={this.next}>
-                                                {'>>'}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th>
-                        </tr>
-                    </tfoot> */}
-                {/* </table> */}
 
             </div>
         );
