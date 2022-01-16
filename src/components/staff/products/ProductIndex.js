@@ -161,9 +161,9 @@ class ProductIndex extends Component {
         })
 
         return (
-            <div className="products" style={{ backgroundColor: "#F0F1F1" }}>
+            <div className="products roboto-font" style={{ backgroundColor: "#F0F1F1" }}>
                 <div className="pt-3" style={{ paddingLeft: "35px" }}>
-                    <h5>Quản lý sản phẩm</h5>
+                    <h6>QUẢN LÝ SẢN PHẨM</h6>
                 </div>
                 <div className="row pt-1 pe-5 ps-5">
                     {/* <div className={action === -1 ? "" : "col-8"}> */}

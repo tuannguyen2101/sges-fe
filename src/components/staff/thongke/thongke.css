@@ -86,3 +86,9 @@ box-shadow: 6px 5px 5px 0px #000000;
   .right:hover{
     color: rgb(255, 0, 179);
 }
+
+.center {
+    text-align: right;
+    margin-right: 0px;
+  }
+  

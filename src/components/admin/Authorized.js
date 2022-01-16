@@ -156,9 +156,12 @@ export default class Authorized extends Component {
         })
 
         return (
-            <div className='security'>
-                <h5>PHÂN QUYỀN SỬ DỤNG</h5>
-                <table className="table table-bordered">
+            <div className='security roboto-font'>
+                <h6>PHÂN QUYỀN SỬ DỤNG</h6>
+                <div className='list-phanquen'>
+                    {bod}
+                </div>
+                {/* <table className="table table-bordered">
                     <thead>
                         <tr>
                             <th></th>
@@ -168,7 +171,7 @@ export default class Authorized extends Component {
                     <tbody>
                         {bod}
                     </tbody>
-                </table>
+                </table> */}
             </div>
         )
     }

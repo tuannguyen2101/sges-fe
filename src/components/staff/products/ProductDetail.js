@@ -84,28 +84,16 @@ class ProductDetail extends Component {
             NotiError("Chưa chọn loại sản phẩm!");
             return false;
         }
+        if (Number(product.sale) <= 0) {
+            NotiError("Giá sale không hợp lệ");
+            return false;
+        }
 
         return true;
     };
 
     onchange = (event) => {
         this.props.setProductDetail({
-            // id: this.props.productDetail.id,
-            // name: event.target.name === "name" ? event.target.value : this.props.productDetail.name,
-            // image: this.props.productDetail.image,
-            // price:
-            //     event.target.name === "price" && Number(event.target.value) > 0
-            //         ? event.target.value
-            //         : this.props.productDetail.price,
-            // createDate: this.props.productDetail.createDate,
-            // status:
-            //     event.target.name === "status"
-            //         ? event.target.value
-            //         : this.props.productDetail.status,
-            // categoryId:
-            //     event.target.name === "categoryId"
-            //         ? event.target.value
-            //         : this.props.productDetail.categoryId,
             ...this.props.productDetail,
             [event.target.name]: event.target.value
         });
@@ -415,7 +403,7 @@ class ProductDetail extends Component {
                             <div className="row">
                                 <div className="col">
                                     <label htmlFor="sale" className="form-label">
-                                        Giảm giá: %
+                                        Giảm sale
                                     </label>
                                     <input
                                         className="form-control"

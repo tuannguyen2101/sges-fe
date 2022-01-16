@@ -107,7 +107,7 @@ const Order = () => {
     }, [auth, dataFind]);
 
     return (
-        <div className="sges-order" style={{ minHeight: "100vh" }}>
+        <div className="sges-order roboto-font" style={{ minHeight: "100vh" }}>
             <div className="container-fluid m-0 p-0">
                 <div className="order-title">
                     <div className="d-flex p-3 justify-center-center">

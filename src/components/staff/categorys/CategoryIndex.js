@@ -123,7 +123,7 @@ const CategoryIndex = () => {
     };
 
     return (
-        <div className="admin-category pb-5">
+        <div className="admin-category pb-5 roboto-font">
             <div className="container col-7">
                 <div className="py-5">
                     <div className="row g-4 align-items-center">
