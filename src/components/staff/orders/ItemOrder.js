@@ -23,7 +23,6 @@ const ItemOrder = ({ itemOrder, capNhat }) => {
                 .then((response) => response.text())
                 .then((result) => {
                     var rs = JSON.parse(result);
-                    console.log(rs);
                     setListDetail(rs);
                 })
                 .catch((err) => console.log(err));
@@ -50,6 +49,7 @@ const ItemOrder = ({ itemOrder, capNhat }) => {
                 .then((result) => {
                     console.log(result);
                     capNhat();
+                    // trừ 1 sp
                     getAlDetail();
                     if (donCapNhat.status === 4) {
                         NotiInfo("Đơn hàng của bạn đã được hủy!", "top-center");
@@ -91,7 +91,7 @@ const ItemOrder = ({ itemOrder, capNhat }) => {
                 onClick={() =>
                     setOrderDetail({
                         id: itemOrder.id === orderDetail.id ? 0 : itemOrder.id,
-                        on: itemOrder.id === orderDetail.id ? !false : true,
+                        on: itemOrder.id === orderDetail.id ? false : true,
                     })
                 }
             >
@@ -155,9 +155,11 @@ const ItemOrder = ({ itemOrder, capNhat }) => {
                                     }}
                                 >
                                     <div className="control col-9 p-0 d-flex align-items-center flex-column justify-content-start">
-                                        <span className="w-100 p-2">
-                                            <b>Thao tác</b>
-                                        </span>
+                                        {itemOrder.status < 2 && (
+                                            <span className="w-100 p-2">
+                                                <b>Thao tác</b>
+                                            </span>
+                                        )}
                                         <div className="control-btn w-100">
                                             {itemOrder.status === 0 && (
                                                 <Link to="#">

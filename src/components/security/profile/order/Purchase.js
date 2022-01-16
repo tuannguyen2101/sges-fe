@@ -6,6 +6,7 @@ import "../../../../css/purchase/purchase.scss";
 import MyOrdersService from "../../../../services/guestservice/MyOrdersService";
 import PaginateGuest from "../../../pagination/PaginateGuest";
 import PurchaseItem from "./PurchaseItem";
+import emptyBill from "../../../../img/empty-bill.svg";
 
 const Purchase = () => {
     const auth = useSelector((state) => state.auth);
@@ -31,10 +32,10 @@ const Purchase = () => {
                 .catch((err) => console.log(err));
     };
 
-    const huyDon = () => {
+    const capNhatDonH = () => {
         setStsAndNum({
             ...stsAndNum,
-            status: 4,
+            status: stsAndNum.status,
         });
     };
 
@@ -206,12 +207,31 @@ const Purchase = () => {
                     <div className="tab-content" id="nav-tabContent">
                         <div className="tab-pane fade show active">
                             <div className="purchase-body d-flex flex-column p-0 m-0">
-                                {page !== null &&
+                                {page !== null && page.content.length > 0 ? (
                                     page.content.map((value, index) => {
                                         return (
-                                            <PurchaseItem order={value} key={index} huy={huyDon} />
+                                            <PurchaseItem
+                                                order={value}
+                                                key={index}
+                                                upd={capNhatDonH}
+                                            />
                                         );
-                                    })}
+                                    })
+                                ) : (
+                                    <div
+                                        className="d-flex flex-column justify-content-center align-items-center"
+                                        style={{
+                                            height: "50vh",
+                                            backgroundColor: "#fff",
+                                        }}
+                                    >
+                                        <img src={emptyBill} alt="" />
+
+                                        <span style={{ fontSize: "24px" }}>
+                                            Chưa có hóa đơn nào
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

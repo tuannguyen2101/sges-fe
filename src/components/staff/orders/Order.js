@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import "../../../css/staff/order.scss";
 import OrderService from "../../../services/staffservice/OrderService";
 import ItemOrder from "./ItemOrder";
+import emptyBill from "../../../img/empty-bill.svg";
 
 export const trangThaiOrder = [
     {
@@ -23,7 +24,7 @@ export const trangThaiOrder = [
         title: "Đang giao hàng",
     },
     {
-        id: 5,
+        id: 3,
         title: "Đã nhận hàng",
     },
     {
@@ -205,7 +206,7 @@ const Order = () => {
                                             <Link to="#">
                                                 <div
                                                     className="btn border"
-                                                    style={{ borderRadius: "0" }}
+                                                    style={{ borderRadius: "0", zIndex: "0" }}
                                                 >
                                                     Tìm kiếm
                                                 </div>
@@ -304,9 +305,7 @@ const Order = () => {
                                         </th>
                                     </tr>
                                 </thead>
-                                {page !== null &&
-                                    page.content &&
-                                    page.content.length &&
+                                {page !== null && page.content && page.content.length ? (
                                     page.content.map((value, index) => {
                                         return (
                                             <ItemOrder
@@ -315,7 +314,28 @@ const Order = () => {
                                                 key={index}
                                             />
                                         );
-                                    })}
+                                    })
+                                ) : (
+                                    <tbody>
+                                        <tr>
+                                            <td colSpan="7" className="p-0">
+                                                <div
+                                                    className="d-flex flex-column justify-content-center align-items-center"
+                                                    style={{
+                                                        height: "50vh",
+                                                        backgroundColor: "#fff",
+                                                    }}
+                                                >
+                                                    <img src={emptyBill} alt="" />
+
+                                                    <span style={{ fontSize: "24px" }}>
+                                                        Chưa có hóa đơn nào
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                )}
                             </table>
                         </div>
                     </div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MyOrdersService from "../../../../services/guestservice/MyOrdersService";
-import { NotiInfo } from "../../../noti/Noti";
+import { NotiInfo, NotiSuccess } from "../../../noti/Noti";
 import ItemDetail from "./ItemDetail";
 import { FcCheckmark } from "react-icons/fc";
 import { AiOutlineWarning } from "react-icons/ai";
 
-const PurchaseItem = ({ order, huy }) => {
+const PurchaseItem = ({ order, upd }) => {
     const [stsOrder, setStsOrder] = useState([
         "Chờ xác nhận",
         "Chờ lấy hàng",
@@ -30,9 +30,9 @@ const PurchaseItem = ({ order, huy }) => {
                 .catch((err) => console.log(err));
     };
 
-    const huyDon = () => {
+    const capNhat = (status, payment) => {
         if (order !== null) {
-            let donHuy = {
+            let donCapNhat = {
                 id: order.id,
                 accountId: order.account.id,
                 createDate: order.createDate,
@@ -43,27 +43,30 @@ const PurchaseItem = ({ order, huy }) => {
                 transportFee: order.transportFee,
                 tienHang: order.tienHang,
                 tongThanhToan: order.tongThanhToan,
-                status: 4,
-                payment: order.payment,
+                status: status,
+                payment: payment !== 1 ? 0 : 1,
             };
-            MyOrdersService.huyDatHang(donHuy)
+            MyOrdersService.huyDatHang(donCapNhat)
                 .then((response) => response.json())
                 .then((result) => {
                     console.log(result);
-                    huy();
+                    upd();
                     findAllByOrderId();
-                    NotiInfo("Đơn hàng của bạn đã được hủy!");
+                    if (status === 4) {
+                        NotiInfo("Đơn hàng của bạn đã được hủy!");
+                    } else if (status === 3) {
+                        NotiSuccess("Đã nhận hàng và thanh toán!", "top-center");
+                    }
                 })
                 .catch((error) => console.log("error", error));
         }
     };
 
-    const huyConfirm = () => {
-        let text = "Bạn có chắc muốn hủy đơn hàng?";
-        if (window.confirm(text) == true) {
-            huyDon();
-        } else {
-            return false;
+    const capNhatDonHang = (status) => {
+        if (status === 4 && window.confirm("Bạn có chắc muốn hủy đơn hàng?") == true) {
+            capNhat(4);
+        } else if (status === 3) {
+            capNhat(3, 1);
         }
     };
 
@@ -97,18 +100,30 @@ const PurchaseItem = ({ order, huy }) => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-between align-items-center h-100">
-                            {order.payment !== 1 ? (
-                                order.status <= 1 ? (
-                                    <Link to="#" style={{ height: "38px" }} onClick={huyConfirm}>
+                            {order.status <= 1 && order.payment !== 1 ? (
+                                <Link
+                                    to="#"
+                                    style={{ height: "38px" }}
+                                    onClick={() => capNhatDonHang(4)}
+                                >
+                                    <div className="btn px-0">
+                                        <span style={{ color: "red" }}>Hủy đặt hàng</span>
+                                    </div>
+                                </Link>
+                            ) : (
+                                order.status === 2 && (
+                                    <Link
+                                        to="#"
+                                        style={{ height: "38px" }}
+                                        onClick={() => capNhatDonHang(3)}
+                                    >
                                         <div className="btn px-0">
-                                            <span style={{ color: "red" }}>Hủy đặt hàng</span>
+                                            <span style={{ color: "blue" }}>
+                                                Đã nhận và thanh toán
+                                            </span>
                                         </div>
                                     </Link>
-                                ) : (
-                                    <div className=""></div>
                                 )
-                            ) : (
-                                <div className=""></div>
                             )}
                             <span className="mx-2">|</span>
                             <span style={{ minHeight: "38px", lineHeight: "38px" }}>
