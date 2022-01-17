@@ -84,7 +84,7 @@ class ProductDetail extends Component {
             NotiError("Chưa chọn loại sản phẩm!");
             return false;
         }
-        if (isNaN(product.sale)) {
+        if (Number(product.sale) < 0) {
             NotiError("Giá sale không hợp lệ");
             return false;
         }
