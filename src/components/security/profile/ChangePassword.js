@@ -68,6 +68,7 @@ const ChangePassword = () => {
     const change = () => {
         if (checkValidate) {
             if (checkConfirm) {
+               
                 LoginService.login(currentProfile.username, currentProfile.currentPassword).then(
                     (response) => {
                         if (response.status === 500) {

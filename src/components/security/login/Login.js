@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { addToCart, setAuth } from "../../../actions";
+import { Link, useParams } from "react-router-dom";
 import googleLogo from "../../../img/google.png";
 import LoginService from "../../../services/loginservice/LoginService";
 import { NotiError, NotiSuccess } from "../../noti/Noti";
@@ -149,6 +150,14 @@ const Login = () => {
                                         </div>
                                     </a>
                                 </div>
+                                <br></br>
+                                <Link to="/ForgotPassword">
+                                    <div className="btn-forgot">
+                                        <a className="link" href="">Quên mật khẩu?</a>
+                                    </div>
+                                </Link>
+
+
                             </form>
                         </div>
                     </div>
