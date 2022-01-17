@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProfileService from "../../../services/guestservice/ProfileService";
 import LoginService from "../../../services/loginservice/LoginService";
-import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
+import Noti, { NotiError, NotiInfo, NotiSuccess } from "../../noti/Noti";
 
 const ChangePassword = () => {
     const auth = useSelector((state) => state.auth);
@@ -66,6 +66,7 @@ const ChangePassword = () => {
     };
 
     const change = () => {
+
         if (checkValidate) {
             if (checkConfirm) {
                
@@ -94,26 +95,24 @@ const ChangePassword = () => {
                         }
                     }
                 );
+
             }
-            if (!checkConfirm) {
-                NotiError("Xác nhận mật khẩu không chính xác!");
-            }
+            // if (!checkConfirm(currentProfile.newPassword, currentProfile.confirmPassword)) {
+            return NotiError("Xác nhận mật khẩu không chính xác!");
+
+            // }
         }
-        if (!checkValidate) {
-            NotiError("Yêu cầu nhập đủ dữ liệu!");
-        }
+        // if (!checkValidate) {
+        return NotiError("Yêu cầu nhập đủ dữ liệu!");
+        // }
     };
 
-    const checkValidate = () => {
-        return (
-            currentProfile.newPassword !== "" &&
-            currentProfile.newPassword !== "" &&
-            currentProfile.confirmPassword !== ""
-        );
+    const checkValidate = (o, n, c) => {
+        return o !== "" && n !== "" && c !== "";
     };
 
-    const checkConfirm = () => {
-        return currentProfile.newPassword === currentProfile.confirmPassword;
+    const checkConfirm = (n, c) => {
+        return n === c;
     };
 
     useEffect(() => {
@@ -134,7 +133,7 @@ const ChangePassword = () => {
                                 <label htmlFor="currentP">Mật khẩu hiện tại</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -169,7 +168,7 @@ const ChangePassword = () => {
                                 <label htmlFor="newP">Mật khẩu mới</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -204,7 +203,7 @@ const ChangePassword = () => {
                                 <label htmlFor="confirmP">Nhập lại mật khẩu mới</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",

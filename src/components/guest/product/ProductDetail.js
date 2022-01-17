@@ -396,8 +396,8 @@ const ProductDetail = () => {
                                             <div className="info-detail p-3 d-flex flex-column">
                                                 {productDetailInit && productDetailInit.length ? (
                                                     <div className="info-color py-2 d-flex align-items-center">
-                                                        <div className="title">Màu sắc</div>
-                                                        <div className="content">
+                                                        <div className="title col-2">Màu sắc</div>
+                                                        <div className="content-pd flex-wrap wrap">
                                                             {colors.map((value, index) => {
                                                                 return (
                                                                     <div
@@ -438,8 +438,8 @@ const ProductDetail = () => {
                                                 ) : null}
                                                 {sizes && sizes.length ? (
                                                     <div className="info-size py-2 d-flex align-items-center">
-                                                        <div className="title">Size</div>
-                                                        <div className="content">
+                                                        <div className="title col-2">Size</div>
+                                                        <div className="content-pd">
                                                             {sizes.map((value, index) => {
                                                                 return (
                                                                     <div
@@ -483,7 +483,7 @@ const ProductDetail = () => {
                                                         <div className="title col-2">Số lượng</div>
                                                         <div className="col">
                                                             <div className="row m-0">
-                                                                <div className="content col-4 p-0">
+                                                                <div className="content-pd col-4 p-0">
                                                                     <div
                                                                         className="btn"
                                                                         onClick={giam}

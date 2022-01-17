@@ -31,7 +31,7 @@ const ProfileRead = () => {
                                 <label htmlFor="username">Tên đăng nhập</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -45,7 +45,7 @@ const ProfileRead = () => {
                                 <label htmlFor="fullname">Họ và tên</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -59,7 +59,7 @@ const ProfileRead = () => {
                                 <label htmlFor="email">Email</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -82,11 +82,18 @@ const ProfileRead = () => {
                     </div>
                     <div className="col-4 right-content d-grid justify-content-center align-items-center">
                         <div className="text-center d-flex align-items-center justify-content-center avatar">
-                            <img
-                                src={"http://localhost:8080/file/read/" + auth.photo}
-                                className="img-fluid"
-                                alt="avatar"
-                            />
+                            {auth.photo ? (
+                                auth.photo.includes("http") ? (
+                                    <img className="img-fluid" alt="avatar" src={auth.photo} />
+                                ) : (
+                                    <img
+                                        className="img-fluid"
+                                        width="100%"
+                                        alt="avatar"
+                                        src={"http://localhost:8080/file/read/" + auth.photo}
+                                    />
+                                )
+                            ) : null}
                         </div>
                         <div className="text-center">
                             <span>Hình ảnh đại diện</span>

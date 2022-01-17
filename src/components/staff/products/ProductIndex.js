@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/index";
+import CategoryService from "../../../services/staffservice/CategoryService";
 import ProductService from "../../../services/staffservice/ProductService";
 import ProductDetail from "./ProductDetail";
 import ProductTable from "./ProductTable";
@@ -10,18 +11,33 @@ class ProductIndex extends Component {
         super(props);
         this.state = {
             action: -1,
-            status: 1,
+            status: -1,
             btn: "View Recycle bin",
             page: 0,
             screen: 0,
+            filterCateId: -1,
+            nameQuery: "",
+            categories: []
         };
     }
 
     componentDidMount = () => {
-        ProductService.findAll(0, 1, this.props.auth)
+        ProductService.findAll(0, 1, 1, "")
             .then((response) => response.text())
             .then((result) => {
                 this.props.setProducts(JSON.parse(result));
+            })
+            .catch((error) => console.log("error", error));
+        this.getCategories();
+    };
+
+    getCategories = () => {
+        CategoryService.findAll(0, 10)
+            .then((response) => response.text())
+            .then((result) => {
+                this.setState({
+                    categories: JSON.parse(result).content,
+                });
             })
             .catch((error) => console.log("error", error));
     };
@@ -39,6 +55,9 @@ class ProductIndex extends Component {
             createDate: new Date(),
             status: 1,
             categoryId: -1,
+            sale: 0,
+            sold: 0,
+            description: ""
         });
     };
 
@@ -63,7 +82,8 @@ class ProductIndex extends Component {
     };
 
     next = () => {
-        ProductService.findAll(this.state.page + 1, this.state.status, this.props.auth)
+        const { status, filterCateId, nameQuery, page } = this.state;
+        ProductService.findAll(page + 1, filterCateId, status, nameQuery)
             .then((response) => response.text())
             .then((result) => {
                 this.props.setProducts(JSON.parse(result));
@@ -76,7 +96,8 @@ class ProductIndex extends Component {
 
     prev = () => {
         if (this.state.page > 0) {
-            ProductService.findAll(this.state.page - 1, this.state.status, this.props.auth)
+            const { status, filterCateId, nameQuery, page } = this.state;
+            ProductService.findAll(page - 1, filterCateId, status, nameQuery)
                 .then((response) => response.text())
                 .then((result) => {
                     this.props.setProducts(JSON.parse(result));
@@ -116,20 +137,33 @@ class ProductIndex extends Component {
         });
     };
 
+    onChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+            [name]: value
+        })
+    }
+
+    onSearch = () => {
+        const { status, filterCateId, nameQuery, page } = this.state;
+        ProductService.findAll(page, filterCateId, status, nameQuery)
+            .then((response) => response.text())
+            .then((result) => {
+                this.props.setProducts(JSON.parse(result));
+            })
+            .catch((error) => console.log("error", error));
+    }
+
     render() {
-        var { action } = this.state;
-        var formElement =
-            action === -1 ? (
-                ""
-            ) : (
-                <div className="col-md-12">
-                    <ProductDetail onCancel={this.onCancel} action={this.state.action} />
-                </div>
-            );
+
+        const cboCategory = this.state.categories.map((val, ind) => {
+            return <option key={ind} value={val.id}>{val.name}</option>;
+        })
+
         return (
-            <div className="products" style={{ backgroundColor: "#F0F1F1" }}>
+            <div className="products roboto-font" style={{ backgroundColor: "#F0F1F1" }}>
                 <div className="pt-3" style={{ paddingLeft: "35px" }}>
-                    <h5>Quản lý sản phẩm</h5>
+                    <h6>QUẢN LÝ SẢN PHẨM</h6>
                 </div>
                 <div className="row pt-1 pe-5 ps-5">
                     {/* <div className={action === -1 ? "" : "col-8"}> */}
@@ -138,7 +172,7 @@ class ProductIndex extends Component {
                             <ProductDetail onCancel={this.onCancel} action={this.state.action} />
                         </div>
                     ) : (
-                        <div className="content" style={{ backgroundColor: "white" }}>
+                        <div className="content">
                             <button className="btn btn-add" onClick={this.onAdd}>
                                 <i className="bi bi-plus"></i>Thêm sản phẩm mới
                             </button>
@@ -150,22 +184,42 @@ class ProductIndex extends Component {
                         </button> */}
                             <div className="search-area">
                                 <div className="row">
-                                    <div className="col-sm-6 input-search">
+                                    <div className="col-sm-5 input-search">
                                         <input
+                                            onChange={this.onChange}
+                                            name="nameQuery"
+                                            value={this.state.nameQuery}
                                             className="form-control"
                                             placeholder="Tìm kiếm theo tên sản phẩm"
                                         />
                                         <i className="bi bi-search"></i>
                                     </div>
                                     <div className="col-sm-2">
-                                        <select className="form-control cate-filter">
-                                            <option>Danh mục</option>
+                                        <select
+                                            name="filterCateId"
+                                            onChange={this.onChange} className="form-control cate-filter">
+                                            <option value={-1}>Danh mục</option>
+                                            {cboCategory}
                                         </select>
                                     </div>
                                     <div className="col-sm-2">
-                                        <select className="form-control cate-filter">
-                                            <option>Trạng thái</option>
+                                        <select
+                                            name="status"
+                                            value={this.state.status}
+                                            onChange={this.onChange} className="form-control cate-filter">
+                                            <option value={-1}>Trạng thái</option>
+                                            <option value={1}>Kích hoạt</option>
+                                            <option value={0}>Ngừng kích hoạt</option>
+                                            <option value={2}>Mới</option>
                                         </select>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <button className="btn btn-search-admin" onClick={this.onSearch}>
+                                            Tìm kiếm
+                                        </button>
+                                        {/* <button className="btn btn-search-admin ms-2" onClick={this.onSearch}>
+                                            Xóa lọc
+                                        </button> */}
                                     </div>
                                 </div>
                             </div>

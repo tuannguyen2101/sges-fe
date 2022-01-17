@@ -114,7 +114,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="username">Tên đăng nhập</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -128,7 +128,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="fullName">Họ và tên</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -148,7 +148,7 @@ const UpdateProfile = () => {
                                 <label htmlFor="email">Email</label>
                             </div>
                             <div
-                                className="col-8 content d-flex align-items-center"
+                                className="col-8 info-content d-flex align-items-center"
                                 style={{
                                     position: "relative",
                                     paddingRight: "0",
@@ -203,10 +203,12 @@ const UpdateProfile = () => {
                             <label htmlFor="file" className="btn border-0 p-0">
                                 <img
                                     src={
-                                        file === null
-                                            ? "http://localhost:8080/file/read/" +
+                                        file !== null
+                                            ? currentImage
+                                            : auth.photo.includes("http")
+                                            ? auth.photo
+                                            : "http://localhost:8080/file/read/" +
                                               currentProfile.photo
-                                            : currentImage
                                     }
                                     className="img-fluid"
                                     alt="avatar"

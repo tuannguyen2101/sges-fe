@@ -146,12 +146,16 @@ const NavTop = () => {
                                     >
                                         <div className="btn">
                                             {auth.photo ? (
-                                                <img
-                                                    src={
-                                                        "http://localhost:8080/file/read/" +
-                                                        auth.photo
-                                                    }
-                                                />
+                                                auth.photo.includes("http") ? (
+                                                    <img src={auth.photo} />
+                                                ) : (
+                                                    <img
+                                                        src={
+                                                            "http://localhost:8080/file/read/" +
+                                                            auth.photo
+                                                        }
+                                                    />
+                                                )
                                             ) : (
                                                 <FaUserCircle />
                                             )}
@@ -275,6 +279,13 @@ const NavTop = () => {
                                 <Link to="/about" className="subtitle-link">
                                     <div className="btn sup-title">
                                         <span>Giới thiệu</span>
+                                    </div>
+                                </Link>
+                            </div>
+                            <div className="drop-down">
+                                <Link to={"/size-chart"} className="subtitle-link">
+                                    <div className="btn sup-title">
+                                        <span>Chọn size</span>
                                     </div>
                                 </Link>
                             </div>

@@ -9,6 +9,7 @@ import OAuth2RedirectHandler from "./components/security/oauth2/OAuth2RedirectHa
 import CategoryIndex from "./components/staff/categorys/CategoryIndex";
 import CustomerIndex from "./components/staff/customer/CustomerIndex";
 import Dashboard from "./components/staff/Dashboard";
+import Order from "./components/staff/orders/Order";
 import OrderList from "./components/staff/orders/OrderList";
 import PrivateRoute from "./components/staff/PrivateRoute";
 import ProductDetail from "./components/staff/products/ProductDetail";
@@ -99,7 +100,7 @@ const App = () => {
                             <Route path="product" element={<ProductIndex />} />
                             <Route path="category" element={<CategoryIndex />} />
                             <Route path="Adminstrator" element={<Authorized />} />
-                            <Route path="Order" element={<OrderList />} />
+                            <Route path="Order" element={<Order />} />
                             <Route path="customer" element={<CustomerIndex />} />
                             <Route path="ProductDetail" element={<ProductDetail />} />
                         </Route>

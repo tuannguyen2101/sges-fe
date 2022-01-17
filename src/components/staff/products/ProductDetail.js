@@ -1,11 +1,18 @@
 import axios from "axios";
-import { result, size } from "lodash";
 import React, { Component } from "react";
-import { version } from "react-dom";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/index";
 import CategoryService from "../../../services/staffservice/CategoryService";
 import ProductService from "../../../services/staffservice/ProductService";
+import { NotiError, NotiSuccess } from "../../noti/Noti";
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { styled } from '@mui/material/styles';
+
+const Input = styled('input')({
+    display: 'none',
+});
+
 class ProductDetail extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +22,7 @@ class ProductDetail extends Component {
             listSize: [],
             listColor: [],
             listVersion: [],
+            preImg: undefined
         };
     }
 
@@ -24,6 +32,7 @@ class ProductDetail extends Component {
         this.getAllVersion();
         this.setState({
             listVersion: productDetails ? productDetails : [],
+            preImg: this.props.productDetail.image !== "" ? `http://localhost:8080/file/read/` + this.props.productDetail.image : "https://www.chanchao.com.tw/vietnamwood/images/default.jpg"
         });
     };
 
@@ -64,15 +73,19 @@ class ProductDetail extends Component {
 
     validate = (product) => {
         if (product.name === "") {
-            alert("name is requierd!");
+            NotiError("Tên không được để trống!");
             return false;
         }
-        if (Number(product.price) <= 0 || product.price === "") {
-            alert("price is not valid!");
+        if (Number(product.price) <= 0 || product.price === "" || isNaN(product.price)) {
+            NotiError("Giá không hợp lệ");
             return false;
         }
         if (Number(product.categoryId) === -1) {
-            alert("category is requierd!");
+            NotiError("Chưa chọn loại sản phẩm!");
+            return false;
+        }
+        if (Number(product.sale) < 0 || isNaN(product.sale)) {
+            NotiError("Giá sale không hợp lệ");
             return false;
         }
 
@@ -81,28 +94,14 @@ class ProductDetail extends Component {
 
     onchange = (event) => {
         this.props.setProductDetail({
-            id: this.props.productDetail.id,
-            name: event.target.name === "name" ? event.target.value : this.props.productDetail.name,
-            image: this.props.productDetail.image,
-            price:
-                event.target.name === "price" && Number(event.target.value) > 0
-                    ? event.target.value
-                    : this.props.productDetail.price,
-            createDate: this.props.productDetail.createDate,
-            status:
-                event.target.name === "status"
-                    ? event.target.value
-                    : this.props.productDetail.status,
-            categoryId:
-                event.target.name === "categoryId"
-                    ? event.target.value
-                    : this.props.productDetail.categoryId,
+            ...this.props.productDetail,
+            [event.target.name]: event.target.value
         });
     };
 
     addProduct = () => {
         if (this.state.file === null) {
-            alert("image is requierd!");
+            NotiError("Chưa chọn ảnh sản phẩm!");
             return false;
         }
         let { productDetail } = this.props;
@@ -112,14 +111,13 @@ class ProductDetail extends Component {
             .then((result) => {
                 this.props.addProduct(JSON.parse(result));
                 this.upload();
-                var listVersion = this.state.listVersion.map((v) => {
+                const listVersion = this.state.listVersion.map((v) => {
                     return {
                         ...v,
                         productId: JSON.parse(result).id,
                     };
                 });
-                ProductService.addVersion(listVersion);
-                alert("Thêm mới thành công");
+                ProductService.addVersion(listVersion).then(r => NotiSuccess("Thêm mới thành công!"));
                 this.props.onCancel();
                 return result;
             })
@@ -138,14 +136,13 @@ class ProductDetail extends Component {
                 if (this.state.file !== null) {
                     this.upload();
                 }
-                var listVersion = this.state.listVersion.map((v) => {
+                const listVersion = this.state.listVersion.map((v) => {
                     return {
                         ...v,
                         productId: JSON.parse(result).id,
                     };
                 });
-                ProductService.addVersion(listVersion);
-                alert("Cập nhật thành công");
+                ProductService.addVersion(listVersion).then(r => NotiSuccess("Cập nhật thành công!"));
             })
             .catch((error) => console.log("error", error));
     };
@@ -155,15 +152,16 @@ class ProductDetail extends Component {
             if (event.target.files[0].type.includes("image")) {
                 this.setState({
                     file: event.target.files[0],
+                    preImg: URL.createObjectURL(event.target.files[0])
                 });
             } else {
-                alert("Choose image only !");
+                NotiError("Chỉ chọn ảnh!");
                 this.setState({
                     file: null,
                 });
             }
         } else {
-            alert("Choose image only !");
+            NotiError("Chỉ chọn ảnh !");
             this.setState({
                 file: null,
             });
@@ -171,7 +169,7 @@ class ProductDetail extends Component {
     };
 
     upload = () => {
-        var data = new FormData();
+        const data = new FormData();
         data.append("files", this.state.file);
 
         axios
@@ -182,72 +180,77 @@ class ProductDetail extends Component {
             })
             .then((res) => console.log(res))
             .catch((err) => {
-                alert("Serve is not response: " + err);
+                NotiError("Serve is not response: " + err);
             });
     };
 
     onSubmit = (event) => {
         event.preventDefault();
         if (this.validate(this.props.productDetail)) {
-            var { action } = this.props;
+            const { action } = this.props;
             action === 0 ? this.addProduct() : this.updateProduct();
         }
     };
 
     removeFile = (event) => {
         event.preventDefault();
-        document.getElementById("img").value = "";
+        document.getElementById("icon-button-file").value = "";
         this.setState({
             file: null,
+            preImg: this.props.productDetail.image !== "" ? `http://localhost:8080/file/read/` + this.props.productDetail.image : "https://www.chanchao.com.tw/vietnamwood/images/default.jpg"
         });
     };
 
     onAddSize = () => {
-        var size = window.prompt("Nhập giá trị");
-        var { productDetail } = this.props;
-        var newListVersion = [];
-        if (this.state.listColor.length > 0) {
-            this.state.listColor.forEach((color) => {
-                newListVersion = [
-                    ...newListVersion,
-                    {
-                        id: -1,
-                        color,
-                        size,
-                        qty: 0,
-                        productId: productDetail.id,
-                    },
-                ];
+        const size = window.prompt("Nhập giá trị");
+        if (size !== null && size !== "") {
+            const { productDetail } = this.props;
+            let newListVersion = [];
+            if (this.state.listColor.length > 0) {
+                this.state.listColor.forEach((color) => {
+                    newListVersion = [
+                        ...newListVersion,
+                        {
+                            id: -1,
+                            color,
+                            size,
+                            qty: 0,
+                            productId: productDetail.id,
+                        },
+                    ];
+                });
+            }
+            this.setState({
+                listSize: [...this.state.listSize, size],
+                listVersion: [...this.state.listVersion, ...newListVersion],
             });
         }
-        this.setState({
-            listSize: [...this.state.listSize, size],
-            listVersion: [...this.state.listVersion, ...newListVersion],
-        });
     };
 
     onAddColor = () => {
-        var color = window.prompt("Nhập giá trị");
-        var { productDetail } = this.props;
-        var newListVersion = [];
-        if (this.state.listSize.length > 0) {
-            this.state.listSize.forEach((size) => {
-                newListVersion = [
-                    ...newListVersion,
-                    {
-                        id: -1,
-                        color,
-                        size,
-                        qty: 0,
-                        productId: productDetail.id,
-                    },
-                ];
+        let color = window.prompt("Nhập giá trị");
+        if (color !== null && color !== "") {
+            const { productDetail } = this.props;
+            let newListVersion = [];
+            if (this.state.listSize.length > 0) {
+                this.state.listSize.forEach(size => {
+                    newListVersion = [
+                        ...newListVersion,
+                        {
+                            id: -1,
+                            color,
+                            size,
+                            qty: 0,
+                            productId: productDetail.id,
+                        },
+                    ];
+                });
+            }
+            this.setState({
+                listColor: [...this.state.listColor, color],
+                listVersion: [...this.state.listVersion, ...newListVersion],
             });
         }
-        this.setState({
-            listColor: [...this.state.listColor, color],
-            listVersion: [...this.state.listVersion, ...newListVersion],
-        });
     };
 
     deleteSize = (size) => {
@@ -280,9 +283,9 @@ class ProductDetail extends Component {
                     ...this.state.listVersion.map((version) => {
                         return version.size === v.size && version.color === v.color
                             ? {
-                                  ...version,
-                                  qty: value,
-                              }
+                                ...version,
+                                qty: value,
+                            }
                             : version;
                     }),
                 ],
@@ -290,26 +293,11 @@ class ProductDetail extends Component {
         }
     };
 
-    // renderProductVersion = () => {
-    //     const { listSize, listColor } = this.state;
-    //     var listVersion = [];
-    //     listSize.forEach(size => {
-    //         listColor.forEach(color => {
-    //             listVersion = [...listVersion, {
-    //                 size,
-    //                 color,
-    //                 // qty: this.getQuantity(size, color)
-    //             }]
-    //         })
-    //     });
-    //     return listVersion;
-    // }
-
     render() {
-        var { productDetail } = this.props;
-        var { categories } = this.state;
+        const { productDetail } = this.props;
+        const { categories } = this.state;
 
-        var categoriesElement = categories.map((val, ind) => {
+        const categoriesElement = categories.map((val, ind) => {
             return (
                 <option key={ind} value={val.id}>
                     {val.name}
@@ -339,7 +327,7 @@ class ProductDetail extends Component {
                             <div className="title">
                                 <h6>Thông tin sản phẩm</h6>
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-2 mt-3">
                                 <label htmlFor="name" className="form-label">
                                     Tên sản phẩm <span className="text-danger">*</span>
                                 </label>
@@ -378,6 +366,7 @@ class ProductDetail extends Component {
                                         id="price"
                                         name="price"
                                         onChange={this.onchange}
+                                        min={1}
                                         value={productDetail.price}
                                     />
                                 </div>
@@ -408,35 +397,65 @@ class ProductDetail extends Component {
                                     >
                                         <option value="1">Kích hoạt</option>
                                         <option value="0">Ngừng kích hoạt</option>
+                                        <option value="2">Sản phẩm mới</option>
                                     </select>
                                 </div>
                             </div>
-                            <div className="mb-2 row">
+                            <div className="row">
                                 <div className="col">
-                                    <label htmlFor="image" className="form-label">
-                                        Chọn ảnh sản phẩm <span className="text-danger">*</span>
+                                    <label htmlFor="sale" className="form-label">
+                                        Giá sale
                                     </label>
                                     <input
-                                        id="img"
-                                        type="file"
                                         className="form-control"
-                                        name="image"
-                                        onChange={this.onChangeImage}
-                                    ></input>
-                                    <button className="btn" onClick={this.removeFile}>
-                                        <i className="bi bi-x-circle"></i>
-                                    </button>
+                                        type="number"
+                                        id="sale"
+                                        min={0}
+                                        name="sale"
+                                        onChange={this.onchange}
+                                        value={productDetail.sale}
+                                    />
+                                </div>
+                                <div className="col">
+                                    <label className="form-label">
+                                        Đã bán
+                                    </label>
+                                    <div className="sold-admin">{productDetail.sold}</div>
+                                </div>
+                                <div className="col-12 mt-3">
+                                    <label className="form-label">
+                                        Mô tả chi tiết sản phẩm
+                                    </label>
+                                    <textarea className="form-control" cols={112}
+                                        name="description"
+                                        onChange={this.onchange}
+                                        value={productDetail.description}
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div className="col-4 image-prod">
                             <div className="image">
                                 <h6>Ảnh sản phẩm</h6>
+                                <label htmlFor="icon-button-file">
+                                    <Input accept="image/*" id="icon-button-file" type="file" onChange={this.onChangeImage} />
+                                    <IconButton color="primary" aria-label="upload picture" component="span">
+                                        <PhotoCamera />
+                                    </IconButton>
+                                </label>
+                                <button className="btn text-danger" onClick={this.removeFile}>
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </button>
                                 <img
                                     className="w-100"
                                     alt="i am an"
-                                    src={"http://localhost:8080/file/read/" + productDetail.image}
-                                ></img>
+                                    src={this.state.preImg}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src =
+                                            "https://www.chanchao.com.tw/vietnamwood/images/default.jpg";
+                                    }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -450,7 +469,7 @@ class ProductDetail extends Component {
                                     <h6>Thuộc tính</h6>
                                 </div>
                                 <div className="col-6 text-end">
-                                    <button className="btn-version">Lưu thuộc tính</button>
+                                    {/* <button className="btn-version">Lưu thuộc tính</button> */}
                                 </div>
                                 <div className="col-12">
                                     <div className="row">
@@ -467,7 +486,7 @@ class ProductDetail extends Component {
                                                         <i
                                                             onClick={() => this.deleteSize(size)}
                                                             className="bi bi-x-lg"
-                                                        ></i>
+                                                        />
                                                     </span>
                                                 );
                                             })}
@@ -476,7 +495,7 @@ class ProductDetail extends Component {
                                             className="col-2 btn-add-property"
                                             onClick={this.onAddSize}
                                         >
-                                            <i className="bi bi-plus-circle"></i> Thêm size
+                                            <i className="bi bi-plus-circle" /> Thêm size
                                         </div>
                                     </div>
                                     <div className="row mt-3">
@@ -489,7 +508,7 @@ class ProductDetail extends Component {
                                                         <i
                                                             onClick={() => this.deleteColor(color)}
                                                             className="bi bi-x-lg"
-                                                        ></i>
+                                                        />
                                                     </span>
                                                 );
                                             })}
@@ -498,7 +517,7 @@ class ProductDetail extends Component {
                                             className="col-2 btn-add-property"
                                             onClick={this.onAddColor}
                                         >
-                                            <i className="bi bi-plus-circle"></i> Thêm màu
+                                            <i className="bi bi-plus-circle" /> Thêm màu
                                         </div>
                                     </div>
                                 </div>
@@ -506,48 +525,51 @@ class ProductDetail extends Component {
                         </div>
                     </div>
                 </div>
+                {
+                    !this.state.listVersion.length > 0 ? "" :
 
-                <div className="content-detail mt-3">
-                    <div className="row info">
-                        <div className="col">
-                            <h6>Phiên bản sản phẩm</h6>
-                        </div>
-                        <div className="col-12">
-                            <div className="tbl-version">
-                                <table className="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Tên phiên bản</th>
-                                            <th>Size</th>
-                                            <th>Màu sắc sản phẩm</th>
-                                            <th>Số lượng</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.listVersion.map((v, ind) => {
-                                            return (
-                                                <tr key={ind}>
-                                                    <td className="w-25">{`${v.size} - ${v.color}`}</td>
-                                                    <td className="w-25">{v.size}</td>
-                                                    <td className="w-25">{v.color}</td>
-                                                    <td className="w-25">
-                                                        <input
-                                                            name="qty"
-                                                            onChange={(e) => this.onChangeQty(e, v)}
-                                                            value={v.qty}
-                                                            type="number"
-                                                            className="form-control"
-                                                        />
-                                                    </td>
+                        (<div className="content-detail mt-3">
+                            <div className="row info">
+                                <div className="col">
+                                    <h6>Phiên bản sản phẩm</h6>
+                                </div>
+                                <div className="col-12">
+                                    <div className="tbl-version">
+                                        <table className="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tên phiên bản</th>
+                                                    <th>Size</th>
+                                                    <th>Màu sắc sản phẩm</th>
+                                                    <th>Số lượng</th>
                                                 </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.listVersion.map((v, ind) => {
+                                                    return (
+                                                        <tr key={ind}>
+                                                            <td className="w-25">{`${v.size} - ${v.color}`}</td>
+                                                            <td className="w-25">{v.size}</td>
+                                                            <td className="w-25">{v.color}</td>
+                                                            <td className="w-25">
+                                                                <input
+                                                                    name="qty"
+                                                                    onChange={(e) => this.onChangeQty(e, v)}
+                                                                    value={v.qty}
+                                                                    type="number"
+                                                                    className="form-control"
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div>)
+                }
             </div>
         );
     }

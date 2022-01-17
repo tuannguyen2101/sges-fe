@@ -1,37 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../../actions/index";
-import CategoryService from "../../../services/staffservice/CategoryService";
 import ProductService from "../../../services/staffservice/ProductService";
+import { NotiSuccess } from "../../noti/Noti";
 
 class ProductItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            categoryName: "",
-        };
-    }
-
-    findCate = () => {
-        CategoryService.findById(this.props.product.categoryId, this.props.auth)
-            .then((response) => response.text())
-            .then((result) => {
-                this.setState({
-                    categoryName: JSON.parse(result).name,
-                });
-            })
-            .catch((error) => console.log("error", error));
-    };
-
-    componentDidMount = () => {
-        this.findCate();
-    };
 
     onChangeStatus = () => {
-        if (window.confirm("Are you sure?")) {
+        if (window.confirm(this.props.product.status === 1 ? "Bạn chắc chắn muốn xóa?" : "Kích hoạt sản phẩm ?")) {
             ProductService.changeStatus(this.props.product, this.props.auth)
                 .then((response) => response.text())
                 .then((result) => {
+                    NotiSuccess(this.props.product.status === 0 ? "Xóa thành công!" : "Đã kích hoạt!")
                     this.props.changeStatusProduct(this.props.product);
                 })
                 .catch((error) => console.log("error", error));
@@ -46,38 +26,48 @@ class ProductItem extends Component {
     render() {
         var { product } = this.props;
         return (
-            <tr>
-                <th scope="row">{product.id}</th>
-                <td style={{width:'300px'}}>{product.name}</td>
-                <td className="text-center"><img
-                    width={50}
-                    height={50}
-                    style={{objectFit: 'cover'}}
-                    className=""
-                    alt="i am an"
-                    src={"http://localhost:8080/file/read/" + product.image}
-                ></img></td>
-                <td className="text-end">{product.price}</td>
-                <td className="text-center">{product.createDate}</td>
-                <td className="text-center">{this.state.categoryName}</td>
-                <td className="text-center">
-                <i className="bi bi-circle-fill" style={{color: `${product.status === 1 ? '#00ff44' : 'red'}`}}></i>
-                {`${product.status === 1 ? 'Kích hoạt' : 'Ngừng kích hoạt'}`}</td>
-                <td className="text-end ps-0 pe-0">
-                    <button className="btn" onClick={this.onEdit}>
-                        <i className="bi bi-pen"></i>
-                    </button>
-                </td>
-                <td className="text-center ps-0 pe-0">
-                    <button className="btn" onClick={this.onChangeStatus}>
-                        {product.status === 1 ? (
-                            <i className="bi bi-trash"></i>
-                        ) : (
-                            <i className="bi bi-arrow-counterclockwise"></i>
-                        )}
-                    </button>
-                </td>
-            </tr>
+            <div className="row p-3 pt-hi">
+                <div className="col-5 hihi">{product.name}</div>
+                <div className="col-1 text-center">
+                    <img
+                        width={50}
+                        height={50}
+                        style={{ objectFit: 'cover' }}
+                        className="pt-img"
+                        onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                                "http://localhost:8080/file/read/no-image-800x600.png";
+                        }}
+                        src={"http://localhost:8080/file/read/" + product.image}
+                        alt="hi"
+                    ></img>
+                </div>
+                <div className="col-1 text-end price-admin">
+                    {
+                        product.price.toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                        })
+                    }
+                </div>
+                <div className="col text-center">{product.createDate}</div>
+                <div className="col text-center">{product.categoryName}</div>
+                <div className="col-1 text-end">
+                    <div className="row">
+                        <button className="btn col" onClick={this.onEdit}>
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button className="btn col" onClick={this.onChangeStatus}>
+                            {product.status === 1 || product.status === 2 ? (
+                                <i className="bi bi-trash"></i>
+                            ) : (
+                                <i className="bi bi-arrow-counterclockwise"></i>
+                            )}
+                        </button>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

@@ -50,7 +50,7 @@ const Shop = () => {
                     .findProduct("", name, n, s, p, d)
                     .then((response) => response.json())
                     .then((result) => {
-                        setPage({ result });
+                        setPage(result);
                         dispatch(findAll(result));
                     })
                     .catch((error) => console.log("error", error));
@@ -59,7 +59,7 @@ const Shop = () => {
                     .findProduct("", "", n, s, p, d)
                     .then((response) => response.json())
                     .then((result) => {
-                        setPage({ result });
+                        setPage(result);
                         dispatch(findAll(result));
                     })
                     .catch((error) => console.log("error", error));
@@ -108,7 +108,7 @@ const Shop = () => {
     };
 
     const prev = () => {
-        return page.result.first != true
+        return page.first != true
             ? setDataFind({
                   ...dataFind,
                   n: dataFind.n - 1,
@@ -117,7 +117,7 @@ const Shop = () => {
     };
 
     const select = (n) => {
-        return Number(n) >= 0 && Number(n) <= page.result.totalPages
+        return Number(n) >= 0 && Number(n) <= page.totalPages
             ? setDataFind({
                   ...dataFind,
                   n: n,
@@ -126,7 +126,7 @@ const Shop = () => {
     };
 
     const next = () => {
-        return !page.result.last
+        return !page.last
             ? setDataFind({
                   ...dataFind,
                   n: dataFind.n + 1,
@@ -167,8 +167,8 @@ const Shop = () => {
                 <div className="pt-5" style={{ backgroundColor: "#fff" }}></div>
                 <div className="filter py-3 mb-3">
                     <div className="container">
-                        <div className="filter-content row m-0">
-                            <div className="col-left col-6 d-flex justify-content-start align-items-center">
+                        <div className="filter-content m-0 d-flex justify-content-between align-items-center">
+                            <div className="col-left d-flex justify-content-start align-items-center">
                                 <span className="d-flex align-items-center px-2">Lọc sản phẩm</span>
                                 <div className="col-auto">
                                     <div className="dropdown">
@@ -218,7 +218,7 @@ const Shop = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-right col-6 d-flex justify-content-end align-items-center">
+                            <div className="col-right d-flex justify-content-end align-items-center">
                                 <span className="d-flex align-items-center px-2">Sắp xếp theo</span>
                                 <div className="col-auto">
                                     <div
