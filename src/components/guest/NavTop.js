@@ -196,7 +196,7 @@ const NavTop = () => {
 
                             {!auth && (
                                 <>
-                                    <Link to="/login">
+                                    <Link to="/signup">
                                         <div className="btn">
                                             <span>Đăng ký</span>
                                         </div>

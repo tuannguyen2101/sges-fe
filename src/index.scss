@@ -67,12 +67,21 @@ code {
   border-radius: 2px;
 }
 
+.save-btn{
+  
+  height: 150px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.panel-body{
+text-align: center;
+}
+
 .table-footer {
   border-top: 1px solid #DEE2E6;
   background-color: white;
   padding: 10px;
 }
-
 .btn-paginate {
   background-color: white;
   color: #33A0FF;
@@ -122,7 +131,20 @@ code {
   padding: 5px;
   border: none;
 }
+.signup{
+  color: rgb(245, 243, 243);
+  width: 440px;
+  
+}
+.btn-forgot{
 
+  align-content: center;
+  margin-left: 169px;
+}
+
+.link:hover{
+  color: rgb(62, 9, 209);
+}
 .btn-add-property {
   color: #33A0FF;
   cursor: pointer;

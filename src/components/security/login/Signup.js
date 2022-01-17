@@ -7,17 +7,14 @@ import SignupService from "../../../services/loginservice/SignupService";
 // import LoginService from "../../../services/loginservice/LoginService";
 import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
 
+
 const Signup = () => {
     const auth = useSelector((state) => state.auth);
-
-
-    const [currentProfile, setCurrentProfile] = useState({
+    const [signup, setSignup] = useState({
         username: "",
-        email: "",
-        fullName: "",
-        
-        
         password: "",
+        fullName: "",
+        email: "",
         photo: "",
 
     });
@@ -26,17 +23,17 @@ const Signup = () => {
 
 
     const renProfile = () => {
-        setCurrentProfile({
+        setSignup({
             username: auth ? auth.username : "",
-            email: auth ? auth.email : "",
-            fullName: auth ? auth.fullName : "",
             password: auth ? auth.password : "",
+            fullName: auth ? auth.fullName : "",
+            email: auth ? auth.email : "",
             photo: auth ? auth.photo : "",
 
             username: "",
-            email: "",
-            fullName: "",
             password: "",
+            fullName: "",
+            email: "",
             photo: "",
         });
     };
@@ -45,196 +42,195 @@ const Signup = () => {
 
     const onChange = (event) => {
         const { name, value } = event.target;
-        setCurrentProfile({
-            ...currentProfile,
+        setSignup({
+            ...signup,
             [name]: value,
             // [text]:value,
         });
     };
-    const checkForm = (username,email,fullName,password,photo) => {
-        if (username!== "" && email !== "" && fullName!== "" && password !== "" && photo !== "" ) {
-            return true;
-        } else {
-            NotiError("email không được để trống ");
+    const checkForm = (username, email, fullName, password) => {
+debugger
+       if (username == "" && email == "" && fullName == "" && password == "" ) {
+            NotiError("Không được để trống các ô dữ liệu");
+            return false;
+        } else if (username.length < 6) {
+            NotiError("Username phải dài ít nhất 6 ký tự");
+            return false;
+        }
+        else if (email.length < 5) {
+            NotiError("Email phải dài ít nhất 5 ký tự");
+            return false;
+        }
+        else if (email.split("").filter(x => x === "@").length !== 1) {
+            NotiError("Email phải chứa @");
+            return false;
+        }
+        else if (email.indexOf(".") === -1) {
+            NotiError("Email phải chứa ít nhất một dấu chấm");
+            return false;
+        }
+        else if (password.length < 6) {
+            NotiError("Mật khẩu phải dài ít nhất 6 ký tự");
+            return false;
+        }
+
+    };
+    const checkEmail = (username, email, password) => {
+        // return !username.length < 6 || !email.length < 5 || email.includes("@") || email.includes(".") || !password.length < 6;
+        if (username.length < 6) {
+            NotiError("Username phải dài ít nhất 6 ký tự");
+            return false;
+        }
+        if (email.length < 5) {
+            NotiError("Email phải dài ít nhất 5 ký tự");
+            return false;
+        }
+        if (email.split("").filter(x => x === "@").length !== 1) {
+            NotiError("Email phải chứa @");
+            return false;
+        }
+        if (email.indexOf(".") === -1) {
+            NotiError("Email phải chứa ít nhất một dấu chấm");
+            return false;
+        }
+        if (password.length < 6) {
+            NotiError("Mật khẩu phải dài ít nhất 6 ký tự");
             return false;
         }
     };
     const change = () => {
-      if(checkForm){
-        // NotiSuccess("Đăng kí tài khoản thành công!");
-        SignupService.signup(currentProfile.username, currentProfile.email, currentProfile.fullName, currentProfile.password, currentProfile.photo).then(
-  
-            (response) => {
-                if (response.status === 500) {
-                    setCurrentProfile({
-                        ...currentProfile,
-                        username: "",
-                        email: "",
-                        fullName: "",
-                        password: "",
-                        photo: "",
-                    });
-                    NotiError("Đăng kí tài khoản thất bại!");
-                } else if (response.status === 200) {
+        // if (checkEmail(signup.username, signup.email, signup.password)) {
+        //     console.log(signup.username, signup.email, signup.password);
+        if (checkForm(signup.username, signup.email, signup.fullName, signup.password)) {
+          
+            SignupService.signup(signup.username, signup.password, signup.fullName, signup.email, signup.photo).then(
+                (response) => {
+                    if (response.status === 500) {
+                        setSignup({
+                            ...signup,
+                            username: "",
+                            email: "",
+                            fullName: "",
+                            password: "",
+                            photo: "",
+                        });
+                        NotiError("Đăng kí tài khoản thất bại!");
+                    } else if (response.status === 200) {
 
-                    setCurrentProfile({
-                        ...currentProfile,
-                        username: "",
-                        email: "",
-                        fullName: "",
-                        password: "",
-                        photo: "",
-                    });
-                    NotiSuccess("Đăng kí tài khoản thành công!");
+                        setSignup({
+                            ...signup,
+                            username: "",
+                            email: "",
+                            fullName: "",
+                            password: "",
+                            photo: "",
+                        });
+                        NotiSuccess("Đăng kí tài khoản thành công!");
+                    }
+                    else if (response.status === 400) {
+
+                        setSignup({
+                            ...signup,
+                            username: "",
+                            email: "",
+                            fullName: "",
+                            password: "",
+                            photo: "",
+                        });
+                        NotiError("Đăng kí tài khoản thất bại!");
+                    }
                 }
-                else if (response.status === 400) {
+            );
 
-                    setCurrentProfile({
-                        ...currentProfile,
-                        username: "",
-                        email: "",
-                        fullName: "",
-                        password: "",
-                        photo: "",
-                    });
-                    NotiError("Đăng kí tài khoản thất bại!");
-                }
-            }
-        );
-
-
+            // };
+        };
     };
 
-    };
+
 
     useEffect(() => {
         renProfile();
     }, [auth]);
 
 
+
     return (
         <section id="addJE">
-            <div class="container p-2">
-                <div class="row mt-2">
-                    <div class="col-8 offset-2">
-                        <hr />
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="text-center">ADD NEW ACCOUNT</h3>
+
+            <div className="login p-5">
+                <div className="container d-flex justify-content-center">
+                    <div className="card col-5">
+                        <div className="p-4">
+                            <div className="login-title mb-3 text-center">
+                                <span>Đăng kí</span>
                             </div>
-                        </div>
-                        <div class="from-signup1 form-group col-md-6">
-                            <label for="emaild">fullname</label>
-                            <div
-                                className="col-8 content d-flex align-items-center"
-                                style={{
-                                    position: "relative",
-                                    paddingRight: "0",
-                                }}
-                            >
-                                <input
-                                    class="from-signup"
-                                    type="text"
-                                    id="fullname"
-                                    value={currentProfile.fullName}
-                                    name="fullName"
-                                    onChange={onChange}
-                                />
+
+                            <div className="login-field my-4 px-4">
+
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        className="form-control"
+                                        placeholder="fullname "
+                                        value={signup.fullName}
+                                        onChange={onChange}
+
+                                    />
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        className="form-control"
+                                        placeholder="username "
+                                        value={signup.username}
+                                        onChange={onChange}
+
+                                    />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        className="form-control"
+                                        placeholder="email "
+                                        value={signup.email}
+                                        onChange={onChange}
+
+                                    />
+                                    <input
+                                        type="text"
+                                        name="photo"
+                                        className="form-control"
+                                        placeholder="photo "
+                                        value={signup.photo}
+                                        onChange={onChange}
+
+                                    />
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        className="form-control"
+                                        placeholder="password"
+                                        value={signup.password}
+                                        onChange={onChange}
+
+                                    />
+                                </div>
+                                <div className="login-btn">
+                                    {/* <button className="btn w-100 form-control"> */}
+                                    <Link to="#" className="save-btn col-6" onClick={change}>
+                                        <div className="btn signup">Đăng kí</div>
+                                    </Link>
+                                    {/* </button> */}
+                                </div>
+
+
+                                {/* </form> */}
                             </div>
-                        </div>
-
-             
-
-
-<div class="from-signup1 form-group col-md-6">
-                            <label for="emaild">passWord</label>
-                            <div
-                                className="col-8 content d-flex align-items-center"
-                                style={{
-                                    position: "relative",
-                                    paddingRight: "0",
-                                }}
-                            >
-                                <input
-                                    class="from-signup"
-                                    type="password"
-                                    id="email"
-                                    value={currentProfile.email}
-                                    name="email"
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-
-                        <div class="from-signup1 form-group col-md-6">
-                            <label for="emaild">username</label>
-                            <div
-                                className="col-8 content d-flex align-items-center"
-                                style={{
-                                    position: "relative",
-                                    paddingRight: "0",
-                                }}
-                            >
-                                <input
-                                    class="from-signup"
-                                    type="text"
-                                    id="username"
-                                    value={currentProfile.username}
-                                    name="username"
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-
-
-                        <div class="form-group col-md-6">
-                            <label for="password">email</label>
-                            <input
-                                class="from-signup"
-                                type="email" name="password" id="password"
-                                aria-describedby="passwordHid" placeholder="email" value={currentProfile.password}
-
-                                onChange={onChange} />
-
-                        </div>
-                        <div class="from-signup1 form-group col-md-6">
-                            <label for="emaild">photo</label>
-                            <div
-                                className="col-8 content d-flex align-items-center"
-                                style={{
-                                    position: "relative",
-                                    paddingRight: "0",
-                                }}
-                            >
-                                <input
-                                    class="from-signup"
-                                    type="text"
-                                    id="photo"
-                                    value={currentProfile.photo}
-                                    name="photo"
-                                    onChange={onChange}
-                                />
-                            </div>
-                        </div>
-
-
-                        <div className="col-8" style={{ paddingRight: "0" }}>
-                            {
-                                <Link to="#" className="save-btn col-6" onClick={change}>
-                                    <div className="btn">Đăng kí</div>
-                                </Link>
-                            }
                         </div>
                     </div>
-                    <div class="card-footer text-muted"></div>
                 </div>
-
-
             </div>
-
-        </section >
-
+        </section>
     );
 }
 

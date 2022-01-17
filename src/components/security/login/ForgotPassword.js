@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ForgotPasswordService from "../../../services/loginservice/ForgotPasswordService";
 import Noti, { NotiError, NotiSuccess } from "../../noti/Noti";
+
+
 const ForgotPassword = () => {
+
     const auth = useSelector((state) => state.auth);
-
-
-    const [currentProfile, setCurrentProfile] = useState({
+    const [forgotPass, setForgotPass] = useState({
         email: "",
-
     });
 
     const [success, setSuccess] = useState(false);
@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 
 
     const renProfile = () => {
-        setCurrentProfile({
+        setForgotPass({
 
             email: auth ? auth.email : "",
             email: "",
@@ -27,105 +27,115 @@ const ForgotPassword = () => {
 
     const onChange = (event) => {
         const { name, value } = event.target;
-        setCurrentProfile({
-            ...currentProfile,
+        setForgotPass({
+            ...forgotPass,
             [name]: value,
         });
     };
-    const checkForm = (email) => {
-        if (email !== "") {
-            return true;
-        } else {
-            NotiError("email không được để trống ");
-            return false;
-        }
-    };
-    const change = () => {
-    debugger
-        if (checkForm) {
-            // NotiSuccess("Thay đổi mật khẩu thành công vui lòng check mail!");
-            ForgotPasswordService.forgotpassword(currentProfile.email).then(
-                (response) => {
-                    if (response.status === 500) {
-                        setCurrentProfile({
-                            ...currentProfile,
-                            email: "",
+  
+    const changepass = () => {
+      
+        if (checkEmail(forgotPass.email)) {
+                ForgotPasswordService.forgotpassword(forgotPass.email).then(
+                    (response) => {
+                        if (response.status === 500) {
+                            setForgotPass({
+                                ...forgotPass,
+                                email: "",
 
-                        });
-                        NotiError("Lỗi xác nhận tài khoản!");
-                    } else if (response.status === 200) {
-                        ForgotPasswordService.forgotpassword(
-                            currentProfile.email
+                            });
+                            NotiError("Lỗi xác nhận tài khoản!");
+                        } else if (response.status === 200) {
+                            ForgotPasswordService.forgotpassword(
+                                forgotPass.email
 
-                        );
-                        setCurrentProfile({
-                            ...currentProfile,
-                            email: "",
+                            );
+                            setForgotPass({
+                                ...forgotPass,
+                                email: "",
 
-                        });
-                        NotiSuccess("Thay đổi mật khẩu thành công vui lòng check mail!");
+                            });
+                            NotiSuccess("Thay đổi mật khẩu thành công vui lòng check mail!");
+                        }
+                        else if (response.status === 304) {
+                            ForgotPasswordService.forgotpassword(
+                                forgotPass.email
+
+                            );
+                            setForgotPass({
+                                ...forgotPass,
+                                email: "",
+
+                            });
+                            NotiSuccess("Thay đổi mật khẩu thành công vui lòng check mail!");
+                        }
                     }
-                    else if (response.status === 304) {
-                        ForgotPasswordService.forgotpassword(
-                            currentProfile.email
 
-                        );
-                        setCurrentProfile({
-                            ...currentProfile,
-                            email: "",
-
-                        });
-                        NotiSuccess("Thay đổi mật khẩu thành công vui lòng check mail!");
-                    }
-                }
-
-            );
+                );
 
 
+            
         };
     };
-    const checkValidate = () => {
-        return (
-            currentProfile.email !== ""
-        );
+
+
+    const checkEmail = (email) => {
+        
+        if (email == "") {
+            NotiError("Không được để trống các ô dữ liệu");
+            return false;
+        }else if (email.length < 5) {
+            NotiError("Email phải dài ít nhất 5 ký tự");
+            return false;
+        }
+        else if (email.split("").filter(x => x === "@").length !== 1) {
+            NotiError("Email phải chứa @");
+            return false;
+        }
+        else if (email.indexOf(".") === -1) {
+            NotiError("Email phải chứa ít nhất một dấu chấm");
+            return false;
+        }
+
     };
-
-
 
     useEffect(() => {
         renProfile();
     }, [auth]);
+
     return (
         <div class="modal-body">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="text-center">
+            <div className="login p-5">
+                <div className="container d-flex justify-content-center">
+                    <div className="card col-5">
+                        <div className="p-4">
+                            <div className="login-title mb-3 text-center">
+                                <span>Quên mật khẩu</span>
+                            </div>
 
-                            <p>If you have forgotten your password you can reset it here.</p>
-                            <div class="panel-body">
+                            <div className="login-field my-4 px-4">
 
-                                <div class="form-group">
-                                    <input class="form-control input-lg" placeholder="E-mail Address" name="email" value={currentProfile.email}
-
-                                        onChange={onChange} type="email" />
-
-
+                                <div className="form-group">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        className="form-control"
+                                        placeholder="email của bạn"
+                                        value={forgotPass.email}
+                                        onChange={onChange}
+                                    />
                                 </div>
+                                <div className="login-btn">
+                                    <Link to="#" className="save-btn col-6" onClick={changepass}>
+                                        <div className="btn signup">Xác nhận</div>
+                                    </Link>
+                                </div>
+
+
+
                             </div>
                         </div>
-
-                        <div className="col-8" style={{ paddingRight: "0" }}>
-                            {
-                                <Link to="#" className="save-btn col-6" onClick={change}>
-                                    <div className="btn">Xác nhận</div>
-                                </Link>
-                            }
-                        </div>
-
-
                     </div>
-
                 </div>
             </div>
         </div>

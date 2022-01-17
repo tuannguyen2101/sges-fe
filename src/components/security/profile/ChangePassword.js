@@ -66,42 +66,36 @@ const ChangePassword = () => {
     };
 
     const change = () => {
-        if (
-            checkValidate(
-                currentProfile.currentPassword,
-                currentProfile.newPassword,
-                currentProfile.confirmPassword
-            )
-        ) {
-            if (checkConfirm(currentProfile.newPassword, currentProfile.confirmPassword)) {
-                return NotiInfo("Tính năng đang được cập nhật!", "top-center");
-                // return LoginService.login(
-                //     currentProfile.username,
-                //     currentProfile.currentPassword
-                // ).then((response) => {
-                //     console.log(response);
-                //     if (response.status === 500) {
-                //         setCurrentProfile({
-                //             ...currentProfile,
-                //             currentPassword: "",
-                //             newPassword: "",
-                //             confirmPassword: "",
-                //         });
-                //         NotiError("Lỗi xác nhận tài khoản!");
-                //     } else if (response.status === 200) {
-                //         ProfileService.changePassword(
-                //             currentProfile.currentPassword,
-                //             currentProfile.newPassword
-                //         );
-                //         setCurrentProfile({
-                //             ...currentProfile,
-                //             currentPassword: "",
-                //             newPassword: "",
-                //             confirmPassword: "",
-                //         });
-                //         NotiSuccess("Thay đổi mật khẩu thành công!");
-                //     }
-                // });
+
+        if (checkValidate) {
+            if (checkConfirm) {
+               
+                LoginService.login(currentProfile.username, currentProfile.currentPassword).then(
+                    (response) => {
+                        if (response.status === 500) {
+                            setCurrentProfile({
+                                ...currentProfile,
+                                currentPassword: "",
+                                newPassword: "",
+                                confirmPassword: "",
+                            });
+                            NotiError("Lỗi xác nhận tài khoản!");
+                        } else if (response.status === 200) {
+                            ProfileService.changePassword(
+                                currentProfile.currentPassword,
+                                currentProfile.newPassword
+                            );
+                            setCurrentProfile({
+                                ...currentProfile,
+                                currentPassword: "",
+                                newPassword: "",
+                                confirmPassword: "",
+                            });
+                            NotiSuccess("Thay đổi mật khẩu thành công!");
+                        }
+                    }
+                );
+
             }
             // if (!checkConfirm(currentProfile.newPassword, currentProfile.confirmPassword)) {
             return NotiError("Xác nhận mật khẩu không chính xác!");
