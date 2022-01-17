@@ -84,7 +84,7 @@ class ProductDetail extends Component {
             NotiError("Chưa chọn loại sản phẩm!");
             return false;
         }
-        if (Number(product.sale) <= 0) {
+        if (isNaN(product.sale)) {
             NotiError("Giá sale không hợp lệ");
             return false;
         }
@@ -403,7 +403,7 @@ class ProductDetail extends Component {
                             <div className="row">
                                 <div className="col">
                                     <label htmlFor="sale" className="form-label">
-                                        Giảm sale
+                                        Giá sale
                                     </label>
                                     <input
                                         className="form-control"

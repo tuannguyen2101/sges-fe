@@ -91,7 +91,7 @@ export default class Authority extends Component {
                                 role.map((rol, index) => {
                                     return (
                                         <div className='col-2' key={index}>
-                                            <span className='me-2'>{index === 0 ? "ADMIN" : index === 1 ? "STAFF" : "GUEST"}</span>
+                                            <span className='me-2'>{index === 0 ? "ADMIN" : index === 1 ? "STAFF" : "CUSTOMER"}</span>
                                             <input className='form-check-input' onChange={(event) => {
                                                 this.onChange(event, acc.id, rol.id)
                                             }} type="checkbox" checked={this.isCheck(acc.id, rol.id)}
