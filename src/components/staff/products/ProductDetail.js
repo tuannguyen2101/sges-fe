@@ -76,7 +76,7 @@ class ProductDetail extends Component {
             NotiError("Tên không được để trống!");
             return false;
         }
-        if (Number(product.price) <= 0 || product.price === "") {
+        if (Number(product.price) <= 0 || product.price === "" || isNaN(product.price)) {
             NotiError("Giá không hợp lệ");
             return false;
         }
@@ -84,7 +84,7 @@ class ProductDetail extends Component {
             NotiError("Chưa chọn loại sản phẩm!");
             return false;
         }
-        if (Number(product.sale) < 0) {
+        if (Number(product.sale) < 0 || isNaN(product.sale)) {
             NotiError("Giá sale không hợp lệ");
             return false;
         }
@@ -366,6 +366,7 @@ class ProductDetail extends Component {
                                         id="price"
                                         name="price"
                                         onChange={this.onchange}
+                                        min={1}
                                         value={productDetail.price}
                                     />
                                 </div>
